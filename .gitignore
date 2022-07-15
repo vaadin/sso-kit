@@ -1,0 +1,13 @@
+.classpath
+*.project
+*.settings
+
+**/target
+**/error-screenshots
+
+**/.sts4-cache/*
+.factorypath
+
+*pom.xml.versionsBackup
+
+*.DS_Store
