@@ -11,6 +11,18 @@ import org.springframework.util.StringUtils;
 import com.vaadin.flow.server.auth.ViewAccessChecker;
 import com.vaadin.flow.spring.security.VaadinWebSecurity;
 
+/**
+ * This configuration bean is provided is no other {@link VaadinWebSecurity}
+ * beans are defined for the current application context.
+ * <p>
+ * It enables OAuth2/OpenID login for the providers defined in the current
+ * application configuration and enabled the {@link ViewAccessChecker} for the
+ * configured login route (which defaults to {@code /login}.
+ * <p>
+ * If you need a customized security configuration, you can extend this class or
+ * {@link VaadinWebSecurity} and override the {@link #configure(HttpSecurity)}
+ * method to configure custom security settings.
+ */
 @Configuration
 @EnableWebSecurity
 @ConditionalOnMissingBean(VaadinWebSecurity.class)
@@ -21,6 +33,14 @@ public class VaadinAuthSecurityConfiguration extends VaadinWebSecurity {
 
     private final ViewAccessChecker viewAccessChecker;
 
+    /**
+     * Creates an instance of this configuration bean.
+     *
+     * @param properties
+     *            the configuration properties
+     * @param viewAccessChecker
+     *            the view-access-checker
+     */
     public VaadinAuthSecurityConfiguration(VaadinAuthProperties properties,
             ViewAccessChecker viewAccessChecker) {
         this.properties = properties;
