@@ -1,6 +1,5 @@
 package com.vaadin.auth.starter;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,14 +17,9 @@ import com.vaadin.flow.spring.security.VaadinWebSecurity;
  * It enables OAuth2/OpenID login for the providers defined in the current
  * application configuration and enabled the {@link ViewAccessChecker} for the
  * configured login route (which defaults to {@code /login}.
- * <p>
- * If you need a customized security configuration, you can extend this class or
- * {@link VaadinWebSecurity} and override the {@link #configure(HttpSecurity)}
- * method to configure custom security settings.
  */
 @Configuration
 @EnableWebSecurity
-@ConditionalOnMissingBean(VaadinWebSecurity.class)
 @EnableConfigurationProperties(VaadinAuthProperties.class)
 public class VaadinAuthSecurityConfiguration extends VaadinWebSecurity {
 
@@ -53,7 +47,7 @@ public class VaadinAuthSecurityConfiguration extends VaadinWebSecurity {
 
         OAuth2LoginConfigurer<HttpSecurity> oauth2Login = http.oauth2Login();
 
-        final var loginRoute = properties.getLoginRoute();
+        final String loginRoute = properties.getLoginRoute();
         if (StringUtils.hasLength(loginRoute)) {
             // Permit all requests to the login route
             oauth2Login.loginPage(loginRoute).permitAll();

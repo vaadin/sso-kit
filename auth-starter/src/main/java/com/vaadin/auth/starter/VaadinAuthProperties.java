@@ -13,7 +13,12 @@ public class VaadinAuthProperties {
      */
     public static final String PREFIX = "vaadin.auth";
 
-    private String loginRoute = "/login";
+    /**
+     * The default login-route.
+     */
+    public static final String DEFAULT_LOGIN_ROUTE = "/login";
+
+    private String loginRoute = DEFAULT_LOGIN_ROUTE;
 
     /**
      * Gets the login-route property.
