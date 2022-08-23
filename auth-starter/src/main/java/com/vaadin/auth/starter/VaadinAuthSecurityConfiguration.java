@@ -15,9 +15,10 @@ import com.vaadin.flow.spring.security.VaadinWebSecurity;
  * This configuration bean is provided to auto-configure Vaadin and Spring to
  * allow single sign-on against external identity providers.
  * <p>
- * It enables OAuth2/OpenID login for the providers defined in the current
- * application configuration and enabled the {@link ViewAccessChecker} for the
- * configured login route (which defaults to {@code /login}.
+ * It enables OAuth2/OpenID login for the identity providers defined in the
+ * current application configuration and instructs the application to accept
+ * requests for the login route, which can be configured setting the
+ * {@code vaadin.auth.login-route} property (defaults to {@code /login}).
  * <p>
  * If you need a customized security configuration, you can disable this
  * auto-configuration class by setting the {@code vaadin.auth.auto-configure}
