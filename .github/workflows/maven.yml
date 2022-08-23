@@ -20,6 +20,8 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
+    - name: Install build tools
+      run: mvn -B install -pl :auth-buildtools
     - name: Validate formatting
       run: mvn -B formatter:validate
   unit-test:
