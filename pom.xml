@@ -13,7 +13,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>build-tools</module>
         <module>auth-starter</module>
     </modules>
 
@@ -94,16 +93,11 @@
                 <artifactId>formatter-maven-plugin</artifactId>
                 <version>${maven.formatter.version}</version>
                 <configuration>
-                    <configFile>formatter/VaadinJavaConventions.xml</configFile>
+                    <configFile>https://raw.githubusercontent.com/vaadin/flow/master/eclipse/VaadinJavaConventions.xml</configFile>
+                    <skipHtmlFormatting>true</skipHtmlFormatting>
+                    <lineEnding>LF</lineEnding>
                     <encoding>UTF-8</encoding>
                 </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>${project.groupId}</groupId>
-                        <artifactId>auth-buildtools</artifactId>
-                        <version>${project.version}</version>
-                    </dependency>
-                </dependencies>
             </plugin>
         </plugins>
     </build>
