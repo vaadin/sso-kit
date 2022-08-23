@@ -1,5 +1,6 @@
 package com.vaadin.auth.starter;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,15 +12,20 @@ import com.vaadin.flow.server.auth.ViewAccessChecker;
 import com.vaadin.flow.spring.security.VaadinWebSecurity;
 
 /**
- * This configuration bean is provided is no other {@link VaadinWebSecurity}
- * beans are defined for the current application context.
+ * This configuration bean is provided to auto-configure Vaadin and Spring to
+ * allow single sign-on against external identity providers.
  * <p>
  * It enables OAuth2/OpenID login for the providers defined in the current
  * application configuration and enabled the {@link ViewAccessChecker} for the
  * configured login route (which defaults to {@code /login}.
+ * <p>
+ * If you need a customized security configuration, you can disable this
+ * auto-configuration class by setting the {@code vaadin.auth.auto-configure}
+ * property to {@code false} and provide your own configuration class.
  */
 @Configuration
 @EnableWebSecurity
+@ConditionalOnProperty(name = "auto-configure", prefix = VaadinAuthProperties.PREFIX, matchIfMissing = true)
 @EnableConfigurationProperties(VaadinAuthProperties.class)
 public class VaadinAuthSecurityConfiguration extends VaadinWebSecurity {
 

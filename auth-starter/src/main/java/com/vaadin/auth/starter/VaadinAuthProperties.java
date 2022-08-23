@@ -18,7 +18,31 @@ public class VaadinAuthProperties {
      */
     public static final String DEFAULT_LOGIN_ROUTE = "/login";
 
+    private boolean autoConfigure = true;
+
     private String loginRoute = DEFAULT_LOGIN_ROUTE;
+
+    /**
+     * Checks is auto-configuration of {@link VaadinAuthSecurityConfiguration}
+     * is enabled.
+     *
+     * @return true, if auto-configuration is enabled
+     */
+    public boolean isAutoConfigure() {
+        return autoConfigure;
+    }
+
+    /**
+     * Enables or disables auto-configuration of
+     * {@link VaadinAuthSecurityConfiguration}.
+     *
+     * @param autoConfigure
+     *            {@code true} to enable auto-configuration, {@code false} to
+     *            disable
+     */
+    public void setAutoConfigure(boolean autoConfigure) {
+        this.autoConfigure = autoConfigure;
+    }
 
     /**
      * Gets the login-route property.

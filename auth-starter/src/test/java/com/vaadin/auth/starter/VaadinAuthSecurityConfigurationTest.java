@@ -38,16 +38,38 @@ public class VaadinAuthSecurityConfigurationTest {
     }
 
     @Test
-    public void configurationPropertiesBeanIsProvided() {
+    public void autoConfigureProperty_notSet_configurationEnabled() {
         contextRunner.run(ctx -> {
+            assertThat(ctx)
+                    .hasSingleBean(VaadinAuthSecurityConfiguration.class);
+        });
+    }
 
-            // Property beans is defined in context
-            assertThat(ctx).hasSingleBean(VaadinAuthProperties.class);
+    @Test
+    public void autoConfigureProperty_isFalse_configurationDisabled() {
+        contextRunner.withPropertyValues("vaadin.auth.auto-configure=false")
+                .run(ctx -> {
+                    assertThat(ctx).doesNotHaveBean(
+                            VaadinAuthSecurityConfiguration.class);
+                });
+    }
 
-            // Default login route property is set
+    @Test
+    public void loginRouteProperty_hasDefaultValue() {
+        contextRunner.run(ctx -> {
             String loginRoute = ctx.getBean(VaadinAuthProperties.class)
                     .getLoginRoute();
             assertEquals(VaadinAuthProperties.DEFAULT_LOGIN_ROUTE, loginRoute);
         });
+    }
+
+    @Test
+    public void loginRouteProperty_hasCustomValue() {
+        contextRunner.withPropertyValues("vaadin.auth.login-route=/custom")
+                .run(ctx -> {
+                    String loginRoute = ctx.getBean(VaadinAuthProperties.class)
+                            .getLoginRoute();
+                    assertEquals("/custom", loginRoute);
+                });
     }
 }
