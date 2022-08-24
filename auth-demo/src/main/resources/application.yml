@@ -1,0 +1,5 @@
+server:
+  port: ${PORT:8080}
+vaadin:
+  auth:
+    auto-configure: true

@@ -14,6 +14,7 @@
 
     <modules>
         <module>auth-starter</module>
+        <module>auth-demo</module>
     </modules>
 
     <properties>
@@ -21,7 +22,7 @@
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <flow.version>23.2-SNAPSHOT</flow.version>
+        <vaadin.version>23.2-SNAPSHOT</vaadin.version>
         <spring.boot.version>2.7.2</spring.boot.version>
         <maven.source.version>3.2.1</maven.source.version>
         <maven.javadoc.version>3.4.1</maven.javadoc.version>
@@ -35,6 +36,13 @@
         </repository>
     </repositories>
 
+    <pluginRepositories>
+        <pluginRepository>
+            <id>vaadin-prereleases</id>
+            <url>https://maven.vaadin.com/vaadin-prereleases</url>
+        </pluginRepository>
+    </pluginRepositories>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -47,7 +55,7 @@
             <dependency>
                 <groupId>com.vaadin</groupId>
                 <artifactId>vaadin-spring</artifactId>
-                <version>${flow.version}</version>
+                <version>${vaadin.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
