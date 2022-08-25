@@ -1,28 +1,24 @@
 package com.vaadin.auth.demo.view;
 
 import javax.annotation.security.PermitAll;
-import javax.servlet.http.HttpServletRequest;
 
+import com.vaadin.flow.component.html.Anchor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.avatar.Avatar;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.VaadinServletRequest;
 
 @PermitAll
 @PageTitle("Profile")
 @Route(layout = MainLayout.class, value = "profile")
 public class ProfileView extends VerticalLayout {
 
-    private static final String LOGOUT_SUCCESS_URL = "/";
+    private static final String LOGOUT = "/logout";
 
     private final Avatar avatar = new Avatar();
 
@@ -54,12 +50,12 @@ public class ProfileView extends VerticalLayout {
 
         add(avatar, nameField, emailField);
 
-        add(new Button("Logout", click -> {
-            UI.getCurrent().getPage().setLocation(LOGOUT_SUCCESS_URL);
-            SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
-            HttpServletRequest request = VaadinServletRequest.getCurrent()
-                    .getHttpServletRequest();
-            logoutHandler.logout(request, null, null);
-        }));
+        add(logoutLink());
+    }
+
+    private Anchor logoutLink() {
+        final var link = new Anchor(LOGOUT, "Logout");
+        link.getElement().setAttribute("router-ignore", true);
+        return link;
     }
 }
