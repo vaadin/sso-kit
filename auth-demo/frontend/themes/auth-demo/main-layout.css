@@ -1,0 +1,61 @@
+.view-title {
+  margin: 0;
+  font-size: var(--lumo-font-size-l);
+}
+
+.view-header {
+  align-items: center;
+  background-color: var(--lumo-base-color);
+  border-bottom: 1px solid var(--lumo-contrast-10pct);
+  box-sizing: border-box;
+  display: flex;
+  height: var(--lumo-size-xl);
+  width: 100%;
+}
+
+.view-toggle {
+  color: var(--lumo-secondary-text-color);
+}
+
+.app-name {
+  align-items: center;
+  display: flex;
+  height: var(--lumo-size-xl);
+  margin: 0 var(--lumo-space-m);
+  font-size: var(--lumo-font-size-m);
+}
+
+.drawer-section {
+  align-items: stretch;
+  background: linear-gradient(var(--lumo-shade-5pct), var(--lumo-shade-5pct));
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  min-height: 100%;
+}
+
+.app-nav {
+  border-bottom: 1px solid var(--lumo-contrast-10pct);
+  color: var(--lumo-secondary-text-color);
+  flex: 1;
+  font-size: var(--lumo-font-size-s);
+  overflow: auto;
+  padding: 0 var(--lumo-space-s);
+}
+
+.app-nav .nav-item-icon {
+  font-size: var(--lumo-icon-size-s);
+}
+
+.app-nav-footer {
+  align-items: center;
+  display: flex;
+  gap: var(--lumo-space-s);
+  padding: var(--lumo-space-m);
+}
+
+.app-nav-footer vaadin-context-menu {
+  cursor: var(--lumo-clickable-cursor);
+  display: contents;
+  font-weight: 500;
+}
