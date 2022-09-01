@@ -16,9 +16,6 @@ public class LoginView extends VerticalLayout {
         setAlignItems(FlexComponent.Alignment.CENTER);
         getStyle().set("padding", "200px");
         add(loginLink("keycloak", "Keycloak"));
-        add(loginLink("okta", "Okta"));
-        add(loginLink("azure", "Azure"));
-        add(loginLink("google", "Google"));
     }
 
     private Anchor loginLink(String id, String name) {
