@@ -1,17 +1,16 @@
 package com.vaadin.auth.starter;
 
+import com.vaadin.flow.server.auth.ViewAccessChecker;
+import com.vaadin.flow.spring.security.VaadinWebSecurity;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.util.StringUtils;
-
-import com.vaadin.flow.server.auth.ViewAccessChecker;
-import com.vaadin.flow.spring.security.VaadinWebSecurity;
 
 /**
  * This configuration bean is provided to auto-configure Vaadin and Spring to
@@ -36,53 +35,46 @@ public class VaadinAuthSecurityConfiguration extends VaadinWebSecurity {
 
     private final ViewAccessChecker viewAccessChecker;
 
+    private final ApplicationEventPublisher eventPublisher;
+
     private final ClientRegistrationRepository clientRegistrationRepository;
 
     /**
      * Creates an instance of this configuration bean.
      *
      * @param properties
-     *            the configuration properties
+     *         the configuration properties
      * @param viewAccessChecker
-     *            the view-access-checker
+     *         the view-access-checker
      */
     public VaadinAuthSecurityConfiguration(VaadinAuthProperties properties,
             ViewAccessChecker viewAccessChecker,
+            ApplicationEventPublisher eventPublisher,
             ClientRegistrationRepository clientRegistrationRepository) {
         this.properties = properties;
         this.viewAccessChecker = viewAccessChecker;
+        this.eventPublisher = eventPublisher;
         this.clientRegistrationRepository = clientRegistrationRepository;
+    }
+
+    @Bean
+    public VaadinAuthContext getAuthenticationContext() {
+        return new VaadinAuthContextImpl(eventPublisher, clientRegistrationRepository);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
 
-        http.oauth2Login(oauth2Login -> {
-            final String loginRoute = properties.getLoginRoute();
-            if (StringUtils.hasLength(loginRoute)) {
-                // Permit all requests to the login route
-                oauth2Login.loginPage(loginRoute).permitAll();
-                // Sets the login route as endpoint for redirection when trying to
-                // access a protected view without authorization
-                viewAccessChecker.setLoginView(loginRoute);
-            }
-        }).logout(logout -> logout
-                .logoutSuccessHandler(oidcLogoutSuccessHandler())
-//                .invalidateHttpSession(true)
-//                .clearAuthentication(true)
-//                .deleteCookies("JSESSIONID")
-        );
-    }
+        final String loginRoute = properties.getLoginRoute();
+        if (StringUtils.hasLength(loginRoute)) {
+            // Permit all requests to the login route
+            http.oauth2Login().loginPage(loginRoute).permitAll();
 
-    private LogoutSuccessHandler oidcLogoutSuccessHandler() {
-        OidcClientInitiatedLogoutSuccessHandler oidcLogoutSuccessHandler =
-                new OidcClientInitiatedLogoutSuccessHandler(this.clientRegistrationRepository);
-
-        // Sets the location that the End-User's User Agent will be redirected to
-        // after the logout has been performed at the Provider
-        oidcLogoutSuccessHandler.setPostLogoutRedirectUri("{baseUrl}");
-
-        return oidcLogoutSuccessHandler;
+            // Sets the login route as endpoint for redirection when trying to
+            // access a protected view without authorization
+            viewAccessChecker.setLoginView(loginRoute);
+        }
     }
 }
+
