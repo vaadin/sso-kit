@@ -59,7 +59,8 @@ public class VaadinAuthSecurityConfiguration extends VaadinWebSecurity {
 
     @Bean
     public VaadinAuthContext getAuthenticationContext() {
-        return new VaadinAuthContextImpl(eventPublisher, clientRegistrationRepository);
+        return new VaadinAuthContextImpl(properties, eventPublisher,
+                clientRegistrationRepository);
     }
 
     @Override

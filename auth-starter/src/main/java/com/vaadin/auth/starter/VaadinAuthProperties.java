@@ -18,9 +18,16 @@ public class VaadinAuthProperties {
      */
     public static final String DEFAULT_LOGIN_ROUTE = "/login";
 
+    /**
+     * The default logout-redirect-url.
+     */
+    public static final String DEFAULT_LOGOUT_REDIRECT_URL = "/";
+
     private boolean autoConfigure = true;
 
     private String loginRoute = DEFAULT_LOGIN_ROUTE;
+
+    private String logoutRedirectUrl = DEFAULT_LOGOUT_REDIRECT_URL;
 
     /**
      * Checks is auto-configuration of {@link VaadinAuthSecurityConfiguration}
@@ -37,8 +44,8 @@ public class VaadinAuthProperties {
      * {@link VaadinAuthSecurityConfiguration}.
      *
      * @param autoConfigure
-     *            {@code true} to enable auto-configuration, {@code false} to
-     *            disable
+     *         {@code true} to enable auto-configuration, {@code false} to
+     *         disable
      */
     public void setAutoConfigure(boolean autoConfigure) {
         this.autoConfigure = autoConfigure;
@@ -54,12 +61,32 @@ public class VaadinAuthProperties {
     }
 
     /**
-     * Set the login-route property.
+     * Sets the login-route property.
      *
      * @param loginRoute
-     *            the login-route property
+     *         the login-route property
      */
     public void setLoginRoute(String loginRoute) {
         this.loginRoute = loginRoute;
     }
+
+    /**
+     * Gets the logout-redirect-url property.
+     *
+     * @return the logout-redirect-url property
+     */
+    public String getLogoutRedirectUrl() {
+        return logoutRedirectUrl;
+    }
+
+    /**
+     * Sets the logout-redirect-url property.
+     *
+     * @param logoutRedirectUrl
+     *         the logout-redirect-url property
+     */
+    public void setLogoutRedirectUrl(String logoutRedirectUrl) {
+        this.logoutRedirectUrl = logoutRedirectUrl;
+    }
 }
+

@@ -19,6 +19,8 @@ import java.util.Optional;
 
 public class VaadinAuthContextImpl implements VaadinAuthContext {
 
+    private final VaadinAuthProperties properties;
+
     private final ApplicationEventPublisher eventPublisher;
 
     private final ClientRegistrationRepository clientRegistrationRepository;
@@ -26,8 +28,10 @@ public class VaadinAuthContextImpl implements VaadinAuthContext {
     /**
      * Default implementation of the {@link VaadinAuthContext} interface.
      */
-    public VaadinAuthContextImpl(ApplicationEventPublisher eventPublisher,
+    public VaadinAuthContextImpl(VaadinAuthProperties properties,
+            ApplicationEventPublisher eventPublisher,
             ClientRegistrationRepository clientRegistrationRepository) {
+        this.properties = properties;
         this.eventPublisher = eventPublisher;
         this.clientRegistrationRepository = clientRegistrationRepository;
     }
@@ -51,6 +55,7 @@ public class VaadinAuthContextImpl implements VaadinAuthContext {
         var res = VaadinServletResponse.getCurrent().getHttpServletResponse();
         handler.logout(req, res, auth);
         var oidcLogoutHandler = new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository);
+        oidcLogoutHandler.setPostLogoutRedirectUri(properties.getLogoutRedirectUrl());
         try {
             oidcLogoutHandler.onLogoutSuccess(req, res, auth);
         } catch (IOException | ServletException e) {
