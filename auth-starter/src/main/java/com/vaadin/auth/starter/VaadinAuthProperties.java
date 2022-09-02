@@ -44,8 +44,8 @@ public class VaadinAuthProperties {
      * {@link VaadinAuthSecurityConfiguration}.
      *
      * @param autoConfigure
-     *         {@code true} to enable auto-configuration, {@code false} to
-     *         disable
+     *            {@code true} to enable auto-configuration, {@code false} to
+     *            disable
      */
     public void setAutoConfigure(boolean autoConfigure) {
         this.autoConfigure = autoConfigure;
@@ -64,7 +64,7 @@ public class VaadinAuthProperties {
      * Sets the login-route property.
      *
      * @param loginRoute
-     *         the login-route property
+     *            the login-route property
      */
     public void setLoginRoute(String loginRoute) {
         this.loginRoute = loginRoute;
@@ -83,10 +83,9 @@ public class VaadinAuthProperties {
      * Sets the logout-redirect-url property.
      *
      * @param logoutRedirectUrl
-     *         the logout-redirect-url property
+     *            the logout-redirect-url property
      */
     public void setLogoutRedirectUrl(String logoutRedirectUrl) {
         this.logoutRedirectUrl = logoutRedirectUrl;
     }
 }
-

@@ -43,9 +43,9 @@ public class VaadinAuthSecurityConfiguration extends VaadinWebSecurity {
      * Creates an instance of this configuration bean.
      *
      * @param properties
-     *         the configuration properties
+     *            the configuration properties
      * @param viewAccessChecker
-     *         the view-access-checker
+     *            the view-access-checker
      */
     public VaadinAuthSecurityConfiguration(VaadinAuthProperties properties,
             ViewAccessChecker viewAccessChecker,
@@ -78,4 +78,3 @@ public class VaadinAuthSecurityConfiguration extends VaadinWebSecurity {
         }
     }
 }
-

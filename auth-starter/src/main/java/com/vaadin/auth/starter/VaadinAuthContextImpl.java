@@ -50,12 +50,15 @@ public class VaadinAuthContextImpl implements VaadinAuthContext {
         var logoutHandler = new SecurityContextLogoutHandler();
         var eventPublishingHandler = new LogoutSuccessEventPublishingLogoutHandler();
         eventPublishingHandler.setApplicationEventPublisher(eventPublisher);
-        var handler = new CompositeLogoutHandler(logoutHandler, eventPublishingHandler);
+        var handler = new CompositeLogoutHandler(logoutHandler,
+                eventPublishingHandler);
         var req = VaadinServletRequest.getCurrent().getHttpServletRequest();
         var res = VaadinServletResponse.getCurrent().getHttpServletResponse();
         handler.logout(req, res, auth);
-        var oidcLogoutHandler = new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository);
-        oidcLogoutHandler.setPostLogoutRedirectUri(properties.getLogoutRedirectUrl());
+        var oidcLogoutHandler = new OidcClientInitiatedLogoutSuccessHandler(
+                clientRegistrationRepository);
+        oidcLogoutHandler.setPostLogoutRedirectUri(
+                properties.getLogoutRedirectUrl());
         try {
             oidcLogoutHandler.onLogoutSuccess(req, res, auth);
         } catch (IOException | ServletException e) {
