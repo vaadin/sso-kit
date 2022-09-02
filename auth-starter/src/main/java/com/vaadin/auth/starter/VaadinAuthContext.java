@@ -5,17 +5,23 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import java.util.Optional;
 
 /**
- * An interface to access the authentication context of the application
- *
+ * An interface to access the authentication context of the application.
+ * <p>
+ * An instance of this interface is available for injection as bean in view and
+ * layout classes.
+ * 
  * @author Vaadin Ltd
  * @since 1.0
  */
 public interface VaadinAuthContext {
+
     /**
-     * Gets the authenticated user on the application done by the SSO providers
+     * Gets an {@link Optional} with an instance of the current user if it has
+     * been authenticated by a OpenID Connect provider, or empty if the user is
+     * not authenticated or has been authenticated by other means.
      *
-     * @return an optional {@link OidcUser} object if the user is authenticated
-     *         or an optional {@code null} otherwise
+     * @return an {@link Optional} with the current OIDC authenticated user, or
+     *         empty if none available
      */
     Optional<OidcUser> getAuthenticatedUser();
 }

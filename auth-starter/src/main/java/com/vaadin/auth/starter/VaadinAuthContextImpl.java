@@ -8,7 +8,6 @@ import java.util.Optional;
 /**
  * Default implementation of the {@link VaadinAuthContext} interface.
  */
-
 public class VaadinAuthContextImpl implements VaadinAuthContext {
 
     @Override
