@@ -9,7 +9,7 @@ import java.util.Optional;
  * <p>
  * An instance of this interface is available for injection as bean in view and
  * layout classes.
- * 
+ *
  * @author Vaadin Ltd
  * @since 1.0
  */

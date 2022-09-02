@@ -3,8 +3,7 @@ package com.vaadin.auth.demo.view;
 import javax.annotation.security.PermitAll;
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import com.vaadin.auth.starter.VaadinAuthContext;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 
 import com.vaadin.flow.component.UI;
@@ -30,15 +29,8 @@ public class ProfileView extends VerticalLayout {
 
     private final EmailField emailField = new EmailField("E-mail");
 
-    public ProfileView() {
-        OidcUser user = (OidcUser) SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal();
-
-        String fullName = user.getFullName();
-        String email = user.getEmail();
-        String picture = user.getPicture();
-
-        setSpacing(false);
+    public ProfileView(VaadinAuthContext context) {
+        var optionalUser = context.getAuthenticatedUser();
 
         avatar.setWidth("96px");
         avatar.setHeight("96px");
@@ -47,10 +39,18 @@ public class ProfileView extends VerticalLayout {
         nameField.setReadOnly(true);
         emailField.setReadOnly(true);
 
-        avatar.setName(fullName);
-        avatar.setImage(picture);
-        nameField.setValue(fullName);
-        emailField.setValue(email);
+        setSpacing(false);
+
+        optionalUser.ifPresent(user -> {
+            String fullName = user.getFullName();
+            String email = user.getEmail();
+            String picture = user.getPicture();
+
+            avatar.setName(fullName);
+            avatar.setImage(picture);
+            nameField.setValue(fullName);
+            emailField.setValue(email);
+        });
 
         add(avatar, nameField, emailField);
 
