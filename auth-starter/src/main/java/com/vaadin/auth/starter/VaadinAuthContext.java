@@ -26,7 +26,9 @@ public interface VaadinAuthContext {
     Optional<OidcUser> getAuthenticatedUser();
 
     /**
-     * Logs out the authenticated user.
+     * Initiates the logout process of the current OIDC authenticated user by
+     * invalidating the local session and then notifying the OIDC provider of
+     * the logout.
      */
     void logout();
 }

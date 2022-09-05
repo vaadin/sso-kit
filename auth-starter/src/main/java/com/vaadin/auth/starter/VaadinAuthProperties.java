@@ -14,20 +14,32 @@ public class VaadinAuthProperties {
     public static final String PREFIX = "vaadin.auth";
 
     /**
-     * The default login-route.
+     * The default login route. Unauthorized requests will be redirected to this
+     * route. If there are no views mapped to this route, Spring's default login
+     * page will be generated.
      */
-    public static final String DEFAULT_LOGIN_ROUTE = "/login";
+    static final String DEFAULT_LOGIN_ROUTE = "/login";
 
     /**
-     * The default logout-redirect-url.
+     * The default logout-redirect route. Web browsers will be redirected to
+     * this route after the logout process has completed.
      */
-    public static final String DEFAULT_LOGOUT_REDIRECT_URL = "/";
+    static final String DEFAULT_LOGOUT_REDIRECT_ROUTE = "/";
 
+    /**
+     * Enables (or disables) auto-configuration.
+     */
     private boolean autoConfigure = true;
 
+    /**
+     * The route to redirect unauthorized requests to.
+     */
     private String loginRoute = DEFAULT_LOGIN_ROUTE;
 
-    private String logoutRedirectUrl = DEFAULT_LOGOUT_REDIRECT_URL;
+    /**
+     * The route to redirect to after successful logout.
+     */
+    private String logoutRedirectRoute = DEFAULT_LOGOUT_REDIRECT_ROUTE;
 
     /**
      * Checks is auto-configuration of {@link VaadinAuthSecurityConfiguration}
@@ -71,21 +83,21 @@ public class VaadinAuthProperties {
     }
 
     /**
-     * Gets the logout-redirect-url property.
+     * Gets the logout-redirect route.
      *
-     * @return the logout-redirect-url property
+     * @return the logout-redirect router
      */
-    public String getLogoutRedirectUrl() {
-        return logoutRedirectUrl;
+    public String getLogoutRedirectRoute() {
+        return logoutRedirectRoute;
     }
 
     /**
-     * Sets the logout-redirect-url property.
+     * Sets the logout-redirect router.
      *
-     * @param logoutRedirectUrl
-     *            the logout-redirect-url property
+     * @param logoutRedirectRoute
+     *            the logout-redirect route
      */
-    public void setLogoutRedirectUrl(String logoutRedirectUrl) {
-        this.logoutRedirectUrl = logoutRedirectUrl;
+    public void setLogoutRedirectRoute(String logoutRedirectRoute) {
+        this.logoutRedirectRoute = logoutRedirectRoute;
     }
 }
