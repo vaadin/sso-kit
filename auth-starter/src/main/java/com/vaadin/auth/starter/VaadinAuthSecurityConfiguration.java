@@ -2,6 +2,7 @@ package com.vaadin.auth.starter;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -63,5 +64,10 @@ public class VaadinAuthSecurityConfiguration extends VaadinWebSecurity {
             // access a protected view without authorization
             viewAccessChecker.setLoginView(loginRoute);
         }
+    }
+
+    @Bean
+    public VaadinAuthContext getAuthenticationContext() {
+        return new VaadinAuthContextImpl();
     }
 }
