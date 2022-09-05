@@ -1,5 +1,7 @@
 package com.vaadin.auth.demo.view;
 
+import javax.annotation.security.PermitAll;
+
 import com.vaadin.auth.starter.VaadinAuthContext;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
@@ -8,8 +10,6 @@ import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-
-import javax.annotation.security.PermitAll;
 
 @PermitAll
 @PageTitle("Profile")

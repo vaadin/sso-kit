@@ -1,7 +1,5 @@
 package com.vaadin.auth.starter;
 
-import com.vaadin.flow.server.auth.ViewAccessChecker;
-import com.vaadin.flow.spring.security.VaadinWebSecurity;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationEventPublisher;
@@ -11,6 +9,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.util.StringUtils;
+
+import com.vaadin.flow.server.auth.ViewAccessChecker;
+import com.vaadin.flow.spring.security.VaadinWebSecurity;
 
 /**
  * This configuration bean is provided to auto-configure Vaadin and Spring to
