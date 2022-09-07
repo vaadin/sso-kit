@@ -85,14 +85,14 @@ public class VaadinAuthProperties {
     /**
      * Gets the logout-redirect route.
      *
-     * @return the logout-redirect router
+     * @return the logout-redirect route
      */
     public String getLogoutRedirectRoute() {
         return logoutRedirectRoute;
     }
 
     /**
-     * Sets the logout-redirect router.
+     * Sets the logout-redirect route.
      *
      * @param logoutRedirectRoute
      *            the logout-redirect route
