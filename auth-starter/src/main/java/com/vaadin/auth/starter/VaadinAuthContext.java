@@ -1,8 +1,8 @@
 package com.vaadin.auth.starter;
 
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-
 import java.util.Optional;
+
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
 /**
  * An interface to access the authentication context of the application.
@@ -24,4 +24,11 @@ public interface VaadinAuthContext {
      *         empty if none available
      */
     Optional<OidcUser> getAuthenticatedUser();
+
+    /**
+     * Initiates the logout process of the current OIDC authenticated user by
+     * invalidating the local session and then notifying the OIDC provider of
+     * the logout.
+     */
+    void logout();
 }

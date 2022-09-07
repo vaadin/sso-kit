@@ -7,13 +7,17 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
+import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 
+import com.vaadin.auth.starter.VaadinAuthSecurityConfiguration.DefaultVaadinAuthContext;
 import com.vaadin.flow.spring.SpringBootAutoConfiguration;
 import com.vaadin.flow.spring.SpringSecurityAutoConfiguration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Test suite for {@link VaadinAuthSecurityConfiguration}.
@@ -71,5 +75,22 @@ public class VaadinAuthSecurityConfigurationTest {
                             .getLoginRoute();
                     assertEquals("/custom", loginRoute);
                 });
+    }
+
+    @Test
+    public void logoutHandlersAreSetOnAuthContext() {
+        contextRunner.run(ctx -> {
+            var authCtx = (DefaultVaadinAuthContext) ctx
+                    .getBean(VaadinAuthContext.class);
+            var successfulLogoutHandler = authCtx.getLogoutSuccessHandler();
+            var logoutHandler = authCtx.getLogoutHandler();
+
+            // Assert that the correct logout success handler has been set
+            assertInstanceOf(OidcClientInitiatedLogoutSuccessHandler.class,
+                    successfulLogoutHandler);
+
+            // Assert that a logout handler has been set
+            assertNotNull(logoutHandler);
+        });
     }
 }

@@ -14,13 +14,32 @@ public class VaadinAuthProperties {
     public static final String PREFIX = "vaadin.auth";
 
     /**
-     * The default login-route.
+     * The default login route. Unauthorized requests will be redirected to this
+     * route. If there are no views mapped to this route, Spring's default login
+     * page will be generated.
      */
-    public static final String DEFAULT_LOGIN_ROUTE = "/login";
+    static final String DEFAULT_LOGIN_ROUTE = "/login";
 
+    /**
+     * The default logout-redirect route. Web browsers will be redirected to
+     * this route after the logout process has completed.
+     */
+    static final String DEFAULT_LOGOUT_REDIRECT_ROUTE = "/";
+
+    /**
+     * Enables (or disables) auto-configuration.
+     */
     private boolean autoConfigure = true;
 
+    /**
+     * The route to redirect unauthorized requests to.
+     */
     private String loginRoute = DEFAULT_LOGIN_ROUTE;
+
+    /**
+     * The route to redirect to after successful logout.
+     */
+    private String logoutRedirectRoute = DEFAULT_LOGOUT_REDIRECT_ROUTE;
 
     /**
      * Checks is auto-configuration of {@link VaadinAuthSecurityConfiguration}
@@ -54,12 +73,31 @@ public class VaadinAuthProperties {
     }
 
     /**
-     * Set the login-route property.
+     * Sets the login-route property.
      *
      * @param loginRoute
      *            the login-route property
      */
     public void setLoginRoute(String loginRoute) {
         this.loginRoute = loginRoute;
+    }
+
+    /**
+     * Gets the logout-redirect route.
+     *
+     * @return the logout-redirect route
+     */
+    public String getLogoutRedirectRoute() {
+        return logoutRedirectRoute;
+    }
+
+    /**
+     * Sets the logout-redirect route.
+     *
+     * @param logoutRedirectRoute
+     *            the logout-redirect route
+     */
+    public void setLogoutRedirectRoute(String logoutRedirectRoute) {
+        this.logoutRedirectRoute = logoutRedirectRoute;
     }
 }
