@@ -3,4 +3,3 @@ server:
 vaadin:
   auth:
     auto-configure: true
-    logout-redirect-url: /
