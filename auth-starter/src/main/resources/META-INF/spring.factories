@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.vaadin.auth.starter.VaadinAuthDefaultBeans,\
 com.vaadin.auth.starter.VaadinAuthSecurityConfiguration
