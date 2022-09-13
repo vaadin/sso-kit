@@ -31,6 +31,7 @@ import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.session.SessionInformationExpiredEvent;
 import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 
+import com.vaadin.flow.server.HandlerHelper;
 import com.vaadin.flow.server.VaadinServletRequest;
 import com.vaadin.flow.server.VaadinServletResponse;
 import com.vaadin.flow.spring.security.VaadinSavedRequestAwareAuthenticationSuccessHandler;
@@ -48,6 +49,9 @@ import com.vaadin.flow.spring.security.VaadinWebSecurity;
  * If you need a customized security configuration, you can disable this
  * auto-configuration class by setting the {@code vaadin.auth.auto-configure}
  * property to {@code false} and provide your own configuration class.
+ *
+ * @author Vaadin Ltd
+ * @since 1.0
  */
 @Configuration
 @EnableWebSecurity
@@ -62,8 +66,6 @@ public class VaadinAuthSecurityConfiguration extends VaadinWebSecurity {
     private final VaadinSavedRequestAwareAuthenticationSuccessHandler loginSuccessHandler;
 
     private final DefaultVaadinAuthContext vaadinAuthContext;
-
-    private final VaadinUserService vaadinUserService;
 
     private final SessionRegistry sessionRegistry;
 
@@ -88,7 +90,6 @@ public class VaadinAuthSecurityConfiguration extends VaadinWebSecurity {
         this.logoutSuccessHandler = new OidcClientInitiatedLogoutSuccessHandler(
                 clientRegistrationRepository);
         this.vaadinAuthContext = new DefaultVaadinAuthContext();
-        this.vaadinUserService = new VaadinUserService();
         this.backChannelLogoutFilter = new BackChannelLogoutFilter(
                 sessionRegistry, clientRegistrationRepository);
     }
@@ -125,9 +126,6 @@ public class VaadinAuthSecurityConfiguration extends VaadinWebSecurity {
         final var maximumSessions = properties.getMaximumConcurrentSessions();
 
         http.oauth2Login(oauth2Login -> {
-            // Sets Vaadin's custom user-service.
-            oauth2Login.userInfoEndpoint().oidcUserService(vaadinUserService);
-
             // Sets Vaadin's login success handler that makes login redirects
             // compatible with Hilla endpoints. This is otherwise done
             // VaadinWebSecurity::setLoginView which it's not used for OIDC.
@@ -194,12 +192,12 @@ public class VaadinAuthSecurityConfiguration extends VaadinWebSecurity {
         private CompositeLogoutHandler logoutHandler;
 
         @Override
-        public Optional<VaadinUser> getAuthenticatedUser() {
+        public <U> Optional<U> getAuthenticatedUser(
+                Class<? extends U> userType) {
             return Optional.of(SecurityContextHolder.getContext())
                     .map(SecurityContext::getAuthentication)
                     .map(Authentication::getPrincipal)
-                    .filter(VaadinUser.class::isInstance)
-                    .map(VaadinUser.class::cast);
+                    .filter(userType::isInstance).map(userType::cast);
         }
 
         @Override
@@ -250,14 +248,17 @@ public class VaadinAuthSecurityConfiguration extends VaadinWebSecurity {
                 throws IOException, ServletException {
             final var request = event.getRequest();
             final var response = event.getResponse();
-            final var vaadinRequestParameter = request.getParameter("v-r");
             final var redirectRoute = '/' + request.getContextPath();
-            if ("uidl".equals(vaadinRequestParameter)) {
-                LOGGER.debug("Session expired during UIDL request: setting "
-                        + "Vaadin-Refresh token");
+            final var servletMapping = request.getHttpServletMapping()
+                    .getPattern();
+            if (HandlerHelper.isFrameworkInternalRequest(servletMapping,
+                    request)) {
+                LOGGER.debug("Session expired during internal request: writing "
+                        + "a Vaadin-Refresh token to the response body");
                 response.getWriter().write("Vaadin-Refresh: " + redirectRoute);
             } else {
-                LOGGER.debug("Session expired: setting redirect status");
+                LOGGER.debug(
+                        "Session expired: redirecting to " + redirectRoute);
                 response.setStatus(302);
                 response.setHeader("Location", redirectRoute);
             }

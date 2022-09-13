@@ -42,7 +42,7 @@ public class VaadinAuthContextTest {
         SecurityContextHolder.setContext(securityContext);
         var authContext = new DefaultVaadinAuthContext();
 
-        assertTrue(authContext.getAuthenticatedUser().isEmpty());
+        assertTrue(authContext.getAuthenticatedUser(OidcUser.class).isEmpty());
 
         SecurityContextHolder.clearContext();
     }
@@ -58,7 +58,7 @@ public class VaadinAuthContextTest {
         SecurityContextHolder.setContext(securityContext);
         var authContext = new DefaultVaadinAuthContext();
 
-        var user = authContext.getAuthenticatedUser().get();
+        var user = authContext.getAuthenticatedUser(OidcUser.class).get();
         assertInstanceOf(OidcUser.class, user);
 
         SecurityContextHolder.clearContext();

@@ -4,6 +4,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * Definition of configuration properties for the Vaadin Auth starter.
+ *
+ * @author Vaadin Ltd
+ * @since 1.0
  */
 @ConfigurationProperties(prefix = VaadinAuthProperties.PREFIX)
 public class VaadinAuthProperties {
