@@ -65,7 +65,7 @@ public class OidcLogoutTokenValidatorTest {
     public void invalidIssuer_validationFails() {
         // @formatter:off
         final var token = createValidLogoutToken()
-                .issuer("invalid")
+                .issuer("http://invalid")
                 .build();
         // @formatter:on
         final var result = validator.validate(token);

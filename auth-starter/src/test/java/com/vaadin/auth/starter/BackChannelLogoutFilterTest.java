@@ -17,7 +17,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
@@ -54,10 +53,10 @@ public class BackChannelLogoutFilterTest {
     @Mock
     private HttpServletResponse response;
 
-    @Spy
+    @Mock
     private FilterChain chain;
 
-    @Mock
+    @Mock(lenient = true)
     private SessionRegistry sessionRegistry;
 
     @Mock(lenient = true)
@@ -141,21 +140,21 @@ public class BackChannelLogoutFilterTest {
         when(sessionRegistry.getAllPrincipals())
                 .thenReturn(List.of(matchingOidcUser, nonMatchingOidcUser));
 
-        final var now = Date.from(Instant.now());
-        final var matchingOidcUserSession = spy(
-                new SessionInformation(matchingOidcUser, "foo", now));
+        final var matchingSession = createSessionSpy(matchingOidcUser);
+        final var nonMatchingSession = createSessionSpy(nonMatchingOidcUser);
 
         when(sessionRegistry.getAllSessions(matchingOidcUser, false))
-                .thenReturn(List.of(matchingOidcUserSession));
+                .thenReturn(List.of(matchingSession));
+        when(sessionRegistry.getAllSessions(nonMatchingOidcUser, false))
+                .thenReturn(List.of(nonMatchingSession));
 
         // Adds the SID claim to the logout token before filtering
         addClaimToLogoutToken(LogoutTokenClaimNames.SID, "1234");
 
         filter.doFilter(request, response, chain);
 
-        verify(matchingOidcUserSession).expireNow();
-        verify(sessionRegistry, never()).getAllSessions(nonMatchingOidcUser,
-                false);
+        verify(matchingSession).expireNow();
+        verify(nonMatchingSession, never()).expireNow();
         verify(response).setStatus(HttpServletResponse.SC_OK);
     }
 
@@ -175,19 +174,24 @@ public class BackChannelLogoutFilterTest {
         when(sessionRegistry.getAllPrincipals())
                 .thenReturn(List.of(matchingOidcUser, nonMatchingOidcUser));
 
-        final var now = Date.from(Instant.now());
-        final var matchingOidcUserSession = spy(
-                new SessionInformation(matchingOidcUser, "foo", now));
+        final var matchingSession = createSessionSpy(matchingOidcUser);
+        final var nonMatchingSession = createSessionSpy(nonMatchingOidcUser);
 
         when(sessionRegistry.getAllSessions(matchingOidcUser, false))
-                .thenReturn(List.of(matchingOidcUserSession));
+                .thenReturn(List.of(matchingSession));
+        when(sessionRegistry.getAllSessions(nonMatchingOidcUser, false))
+                .thenReturn(List.of(nonMatchingSession));
 
         filter.doFilter(request, response, chain);
 
-        verify(matchingOidcUserSession).expireNow();
-        verify(sessionRegistry, never()).getAllSessions(nonMatchingOidcUser,
-                false);
+        verify(matchingSession).expireNow();
+        verify(nonMatchingSession, never()).expireNow();
         verify(response).setStatus(HttpServletResponse.SC_OK);
+    }
+
+    private SessionInformation createSessionSpy(Object principal) {
+        final var now = Date.from(Instant.now());
+        return spy(new SessionInformation(principal, "foo", now));
     }
 
     private void addClaimToLogoutToken(String claimName, Object claimValue) {

@@ -36,7 +36,8 @@ public class VaadinAuthSecurityConfigurationTest {
                 .withConfiguration(
                         AutoConfigurations.of(SpringBootAutoConfiguration.class,
                                 SpringSecurityAutoConfiguration.class,
-                                VaadinAuthSecurityConfiguration.class))
+                                VaadinAuthSecurityConfiguration.class,
+                                VaadinAuthDefaultBeans.class))
                 .withBean(ClientRegistrationRepository.class,
                         () -> clientRegistrationRepository);
     }

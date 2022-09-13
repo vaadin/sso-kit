@@ -21,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.logout.CompositeLogoutHandler;
@@ -28,10 +29,7 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.savedrequest.RequestCache;
-import org.springframework.security.web.session.SessionInformationExpiredEvent;
-import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 
-import com.vaadin.flow.server.HandlerHelper;
 import com.vaadin.flow.server.VaadinServletRequest;
 import com.vaadin.flow.server.VaadinServletResponse;
 import com.vaadin.flow.spring.security.VaadinSavedRequestAwareAuthenticationSuccessHandler;
@@ -92,6 +90,16 @@ public class VaadinAuthSecurityConfiguration extends VaadinWebSecurity {
         this.vaadinAuthContext = new DefaultVaadinAuthContext();
         this.backChannelLogoutFilter = new BackChannelLogoutFilter(
                 sessionRegistry, clientRegistrationRepository);
+    }
+
+    /**
+     * Gets the default authentication-context bean.
+     *
+     * @return the authentication-context bean
+     */
+    @Bean
+    public VaadinAuthContext getAuthContext() {
+        return vaadinAuthContext;
     }
 
     /*
@@ -192,8 +200,8 @@ public class VaadinAuthSecurityConfiguration extends VaadinWebSecurity {
         private CompositeLogoutHandler logoutHandler;
 
         @Override
-        public <U> Optional<U> getAuthenticatedUser(
-                Class<? extends U> userType) {
+        public <U extends OidcUser> Optional<U> getAuthenticatedUser(
+                Class<U> userType) {
             return Optional.of(SecurityContextHolder.getContext())
                     .map(SecurityContext::getAuthentication)
                     .map(Authentication::getPrincipal)
@@ -233,35 +241,6 @@ public class VaadinAuthSecurityConfiguration extends VaadinWebSecurity {
         /* For testing purposes */
         CompositeLogoutHandler getLogoutHandler() {
             return logoutHandler;
-        }
-    }
-
-    static class VaadinExpiredSessionStrategy
-            implements SessionInformationExpiredStrategy {
-
-        private static final Logger LOGGER = LoggerFactory
-                .getLogger(VaadinExpiredSessionStrategy.class);
-
-        @Override
-        public void onExpiredSessionDetected(
-                SessionInformationExpiredEvent event)
-                throws IOException, ServletException {
-            final var request = event.getRequest();
-            final var response = event.getResponse();
-            final var redirectRoute = '/' + request.getContextPath();
-            final var servletMapping = request.getHttpServletMapping()
-                    .getPattern();
-            if (HandlerHelper.isFrameworkInternalRequest(servletMapping,
-                    request)) {
-                LOGGER.debug("Session expired during internal request: writing "
-                        + "a Vaadin-Refresh token to the response body");
-                response.getWriter().write("Vaadin-Refresh: " + redirectRoute);
-            } else {
-                LOGGER.debug(
-                        "Session expired: redirecting to " + redirectRoute);
-                response.setStatus(302);
-                response.setHeader("Location", redirectRoute);
-            }
         }
     }
 }

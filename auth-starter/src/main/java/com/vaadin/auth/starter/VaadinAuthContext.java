@@ -20,13 +20,15 @@ public interface VaadinAuthContext {
      * been authenticated by a OpenID Connect provider, or empty if the user is
      * not authenticated or has been authenticated by other means.
      *
+     * @param <U>
+     *            the type parameter of the expected user instance
      * @param userType
      *            the type of the expected user instance, for example
      *            {@link OidcUser} or a custom subclass
      * @return an {@link Optional} with the current OIDC authenticated user, or
      *         empty if none available
      */
-    <U> Optional<U> getAuthenticatedUser(Class<? extends U> userType);
+    <U extends OidcUser> Optional<U> getAuthenticatedUser(Class<U> userType);
 
     /**
      * Gets an {@link Optional} with an instance of the current user if it has
