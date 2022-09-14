@@ -8,13 +8,13 @@
         <version>2.0.5</version>
     </parent>
 
-    <artifactId>auth</artifactId>
+    <artifactId>sso-kit</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
-        <module>auth-starter</module>
-        <module>auth-demo</module>
+        <module>sso-kit-starter</module>
+        <module>sso-kit-demo</module>
     </modules>
 
     <properties>
