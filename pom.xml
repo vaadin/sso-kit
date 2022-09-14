@@ -8,13 +8,13 @@
         <version>2.0.5</version>
     </parent>
 
-    <artifactId>auth</artifactId>
+    <artifactId>sso-kit</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
-        <module>auth-starter</module>
-        <module>auth-demo</module>
+        <module>sso-kit-starter</module>
+        <module>sso-kit-demo</module>
     </modules>
 
     <properties>
@@ -26,6 +26,7 @@
         <spring.boot.version>2.7.2</spring.boot.version>
         <maven.source.version>3.2.1</maven.source.version>
         <maven.javadoc.version>3.4.1</maven.javadoc.version>
+        <maven.surefire.version>2.22.2</maven.surefire.version>
         <maven.formatter.version>2.20.0</maven.formatter.version>
     </properties>
 
@@ -94,6 +95,12 @@
                     <quiet>true</quiet>
                     <doclint>none</doclint>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.version}</version>
             </plugin>
 
             <plugin>
