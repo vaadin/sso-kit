@@ -44,8 +44,7 @@ public class SingleSignOnConfigurationTest {
     @Test
     public void autoConfigureProperty_notSet_configurationEnabled() {
         contextRunner.run(ctx -> {
-            assertThat(ctx)
-                    .hasSingleBean(SingleSignOnConfiguration.class);
+            assertThat(ctx).hasSingleBean(SingleSignOnConfiguration.class);
         });
     }
 
@@ -53,8 +52,8 @@ public class SingleSignOnConfigurationTest {
     public void autoConfigureProperty_isFalse_configurationDisabled() {
         contextRunner.withPropertyValues("vaadin.sso.auto-configure=false")
                 .run(ctx -> {
-                    assertThat(ctx).doesNotHaveBean(
-                            SingleSignOnConfiguration.class);
+                    assertThat(ctx)
+                            .doesNotHaveBean(SingleSignOnConfiguration.class);
                 });
     }
 
@@ -63,7 +62,8 @@ public class SingleSignOnConfigurationTest {
         contextRunner.run(ctx -> {
             String loginRoute = ctx.getBean(SingleSignOnProperties.class)
                     .getLoginRoute();
-            assertEquals(SingleSignOnProperties.DEFAULT_LOGIN_ROUTE, loginRoute);
+            assertEquals(SingleSignOnProperties.DEFAULT_LOGIN_ROUTE,
+                    loginRoute);
         });
     }
 
@@ -71,7 +71,8 @@ public class SingleSignOnConfigurationTest {
     public void loginRouteProperty_hasCustomValue() {
         contextRunner.withPropertyValues("vaadin.sso.login-route=/custom")
                 .run(ctx -> {
-                    String loginRoute = ctx.getBean(SingleSignOnProperties.class)
+                    String loginRoute = ctx
+                            .getBean(SingleSignOnProperties.class)
                             .getLoginRoute();
                     assertEquals("/custom", loginRoute);
                 });

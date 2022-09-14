@@ -42,8 +42,8 @@ public class SingleSignOnProperties {
     private String logoutRedirectRoute = DEFAULT_LOGOUT_REDIRECT_ROUTE;
 
     /**
-     * Checks is auto-configuration of {@link SingleSignOnConfiguration}
-     * is enabled.
+     * Checks is auto-configuration of {@link SingleSignOnConfiguration} is
+     * enabled.
      *
      * @return true, if auto-configuration is enabled
      */
