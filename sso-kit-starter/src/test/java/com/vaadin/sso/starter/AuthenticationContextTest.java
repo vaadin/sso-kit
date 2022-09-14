@@ -22,7 +22,7 @@ import com.vaadin.flow.server.VaadinRequest;
 import com.vaadin.flow.server.VaadinResponse;
 import com.vaadin.flow.server.VaadinServletRequest;
 import com.vaadin.flow.server.VaadinServletResponse;
-import com.vaadin.sso.starter.SingleSignOnConfiguration.DefaultVaadinAuthContext;
+import com.vaadin.sso.starter.SingleSignOnConfiguration.DefaultAuthenticationContext;
 
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -40,7 +40,7 @@ public class AuthenticationContextTest {
         when(securityContext.getAuthentication()).thenReturn(authentication);
 
         SecurityContextHolder.setContext(securityContext);
-        var authContext = new DefaultVaadinAuthContext();
+        var authContext = new DefaultAuthenticationContext();
 
         assertTrue(authContext.getAuthenticatedUser().isEmpty());
 
@@ -56,7 +56,7 @@ public class AuthenticationContextTest {
         when(securityContext.getAuthentication()).thenReturn(authentication);
 
         SecurityContextHolder.setContext(securityContext);
-        var authContext = new DefaultVaadinAuthContext();
+        var authContext = new DefaultAuthenticationContext();
 
         var user = authContext.getAuthenticatedUser().get();
         assertInstanceOf(OidcUser.class, user);
@@ -82,7 +82,7 @@ public class AuthenticationContextTest {
 
         var logoutSuccessHandler = spy(LogoutSuccessHandler.class);
         var logoutHandler = spy(LogoutHandler.class);
-        var authContext = new DefaultVaadinAuthContext();
+        var authContext = new DefaultAuthenticationContext();
         authContext.setLogoutHandlers(logoutSuccessHandler,
                 List.of(logoutHandler));
 

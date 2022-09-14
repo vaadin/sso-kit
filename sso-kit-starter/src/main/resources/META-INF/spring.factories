@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.vaadin.sso.starter.SsoKitConfiguration
+com.vaadin.sso.starter.SingleSignOnConfiguration

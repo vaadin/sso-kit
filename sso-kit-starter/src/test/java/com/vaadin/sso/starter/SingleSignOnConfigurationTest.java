@@ -12,7 +12,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 
 import com.vaadin.flow.spring.SpringBootAutoConfiguration;
 import com.vaadin.flow.spring.SpringSecurityAutoConfiguration;
-import com.vaadin.sso.starter.SingleSignOnConfiguration.DefaultVaadinAuthContext;
+import com.vaadin.sso.starter.SingleSignOnConfiguration.DefaultAuthenticationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -80,7 +80,7 @@ public class SingleSignOnConfigurationTest {
     @Test
     public void logoutHandlersAreSetOnAuthContext() {
         contextRunner.run(ctx -> {
-            var authCtx = (DefaultVaadinAuthContext) ctx
+            var authCtx = (DefaultAuthenticationContext) ctx
                     .getBean(AuthenticationContext.class);
             var successfulLogoutHandler = authCtx.getLogoutSuccessHandler();
             var logoutHandler = authCtx.getLogoutHandler();
