@@ -48,11 +48,11 @@ import com.vaadin.flow.spring.security.VaadinWebSecurity;
  */
 @Configuration
 @EnableWebSecurity
-@ConditionalOnProperty(name = "auto-configure", prefix = SsoKitProperties.PREFIX, matchIfMissing = true)
-@EnableConfigurationProperties(SsoKitProperties.class)
-public class SsoKitConfiguration extends VaadinWebSecurity {
+@ConditionalOnProperty(name = "auto-configure", prefix = SingleSignOnProperties.PREFIX, matchIfMissing = true)
+@EnableConfigurationProperties(SingleSignOnProperties.class)
+public class SingleSignOnConfiguration extends VaadinWebSecurity {
 
-    private final SsoKitProperties properties;
+    private final SingleSignOnProperties properties;
 
     private final OidcClientInitiatedLogoutSuccessHandler logoutSuccessHandler;
 
@@ -68,7 +68,7 @@ public class SsoKitConfiguration extends VaadinWebSecurity {
      * @param clientRegistrationRepository
      *            the client-registration repository
      */
-    public SsoKitConfiguration(SsoKitProperties properties,
+    public SingleSignOnConfiguration(SingleSignOnProperties properties,
             ClientRegistrationRepository clientRegistrationRepository) {
         this.properties = properties;
         this.loginSuccessHandler = new VaadinSavedRequestAwareAuthenticationSuccessHandler();
@@ -109,10 +109,10 @@ public class SsoKitConfiguration extends VaadinWebSecurity {
 
         final var loginRoute = Objects.requireNonNullElse(
                 properties.getLoginRoute(),
-                SsoKitProperties.DEFAULT_LOGIN_ROUTE);
+                SingleSignOnProperties.DEFAULT_LOGIN_ROUTE);
         final var logoutRedirectRoute = Objects.requireNonNullElse(
                 properties.getLogoutRedirectRoute(),
-                SsoKitProperties.DEFAULT_LOGOUT_REDIRECT_ROUTE);
+                SingleSignOnProperties.DEFAULT_LOGOUT_REDIRECT_ROUTE);
 
         http.oauth2Login(oauth2Login -> {
             // Sets Vaadin's login success handler that makes login redirects

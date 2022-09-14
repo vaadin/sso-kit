@@ -12,7 +12,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 
 import com.vaadin.flow.spring.SpringBootAutoConfiguration;
 import com.vaadin.flow.spring.SpringSecurityAutoConfiguration;
-import com.vaadin.sso.starter.SsoKitConfiguration.DefaultVaadinAuthContext;
+import com.vaadin.sso.starter.SingleSignOnConfiguration.DefaultVaadinAuthContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,10 +20,10 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
- * Test suite for {@link SsoKitConfiguration}.
+ * Test suite for {@link SingleSignOnConfiguration}.
  */
 @ExtendWith(MockitoExtension.class)
-public class SsoKitConfigurationTest {
+public class SingleSignOnConfigurationTest {
 
     private WebApplicationContextRunner contextRunner;
 
@@ -36,7 +36,7 @@ public class SsoKitConfigurationTest {
                 .withConfiguration(
                         AutoConfigurations.of(SpringBootAutoConfiguration.class,
                                 SpringSecurityAutoConfiguration.class,
-                                SsoKitConfiguration.class))
+                                SingleSignOnConfiguration.class))
                 .withBean(ClientRegistrationRepository.class,
                         () -> clientRegistrationRepository);
     }
@@ -45,7 +45,7 @@ public class SsoKitConfigurationTest {
     public void autoConfigureProperty_notSet_configurationEnabled() {
         contextRunner.run(ctx -> {
             assertThat(ctx)
-                    .hasSingleBean(SsoKitConfiguration.class);
+                    .hasSingleBean(SingleSignOnConfiguration.class);
         });
     }
 
@@ -54,16 +54,16 @@ public class SsoKitConfigurationTest {
         contextRunner.withPropertyValues("vaadin.sso.auto-configure=false")
                 .run(ctx -> {
                     assertThat(ctx).doesNotHaveBean(
-                            SsoKitConfiguration.class);
+                            SingleSignOnConfiguration.class);
                 });
     }
 
     @Test
     public void loginRouteProperty_hasDefaultValue() {
         contextRunner.run(ctx -> {
-            String loginRoute = ctx.getBean(SsoKitProperties.class)
+            String loginRoute = ctx.getBean(SingleSignOnProperties.class)
                     .getLoginRoute();
-            assertEquals(SsoKitProperties.DEFAULT_LOGIN_ROUTE, loginRoute);
+            assertEquals(SingleSignOnProperties.DEFAULT_LOGIN_ROUTE, loginRoute);
         });
     }
 
@@ -71,7 +71,7 @@ public class SsoKitConfigurationTest {
     public void loginRouteProperty_hasCustomValue() {
         contextRunner.withPropertyValues("vaadin.sso.login-route=/custom")
                 .run(ctx -> {
-                    String loginRoute = ctx.getBean(SsoKitProperties.class)
+                    String loginRoute = ctx.getBean(SingleSignOnProperties.class)
                             .getLoginRoute();
                     assertEquals("/custom", loginRoute);
                 });

@@ -22,7 +22,7 @@ import com.vaadin.flow.server.VaadinRequest;
 import com.vaadin.flow.server.VaadinResponse;
 import com.vaadin.flow.server.VaadinServletRequest;
 import com.vaadin.flow.server.VaadinServletResponse;
-import com.vaadin.sso.starter.SsoKitConfiguration.DefaultVaadinAuthContext;
+import com.vaadin.sso.starter.SingleSignOnConfiguration.DefaultVaadinAuthContext;
 
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;

@@ -5,8 +5,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * Definition of configuration properties for the SSO Kit starter.
  */
-@ConfigurationProperties(prefix = SsoKitProperties.PREFIX)
-public class SsoKitProperties {
+@ConfigurationProperties(prefix = SingleSignOnProperties.PREFIX)
+public class SingleSignOnProperties {
 
     /**
      * The prefix for SSO Kit starter properties.
@@ -42,7 +42,7 @@ public class SsoKitProperties {
     private String logoutRedirectRoute = DEFAULT_LOGOUT_REDIRECT_ROUTE;
 
     /**
-     * Checks is auto-configuration of {@link SsoKitConfiguration}
+     * Checks is auto-configuration of {@link SingleSignOnConfiguration}
      * is enabled.
      *
      * @return true, if auto-configuration is enabled
@@ -53,7 +53,7 @@ public class SsoKitProperties {
 
     /**
      * Enables or disables auto-configuration of
-     * {@link SsoKitConfiguration}.
+     * {@link SingleSignOnConfiguration}.
      *
      * @param autoConfigure
      *            {@code true} to enable auto-configuration, {@code false} to
