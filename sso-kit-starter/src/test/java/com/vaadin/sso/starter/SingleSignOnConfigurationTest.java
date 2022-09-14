@@ -60,7 +60,7 @@ public class SingleSignOnConfigurationTest {
     @Test
     public void loginRouteProperty_hasDefaultValue() {
         contextRunner.run(ctx -> {
-            String loginRoute = ctx.getBean(SingleSignOnProperties.class)
+            var loginRoute = ctx.getBean(SingleSignOnProperties.class)
                     .getLoginRoute();
             assertEquals(SingleSignOnProperties.DEFAULT_LOGIN_ROUTE,
                     loginRoute);
@@ -71,8 +71,7 @@ public class SingleSignOnConfigurationTest {
     public void loginRouteProperty_hasCustomValue() {
         contextRunner.withPropertyValues("vaadin.sso.login-route=/custom")
                 .run(ctx -> {
-                    String loginRoute = ctx
-                            .getBean(SingleSignOnProperties.class)
+                    var loginRoute = ctx.getBean(SingleSignOnProperties.class)
                             .getLoginRoute();
                     assertEquals("/custom", loginRoute);
                 });
