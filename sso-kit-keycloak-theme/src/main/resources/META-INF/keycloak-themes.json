@@ -1,6 +1,6 @@
 {
   "themes": [{
-      "name" : "auth-keycloak-theme",
+      "name" : "sso-kit-keycloak-theme",
       "types": [ "login" ]
   }]
 }
