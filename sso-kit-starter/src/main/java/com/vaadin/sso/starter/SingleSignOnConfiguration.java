@@ -58,7 +58,7 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
 
     private final VaadinSavedRequestAwareAuthenticationSuccessHandler loginSuccessHandler;
 
-    private final DefaultAuthenticationContext vaadinAuthContext;
+    private final DefaultAuthenticationContext authenticationContext;
 
     /**
      * Creates an instance of this configuration bean.
@@ -74,7 +74,7 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
         this.loginSuccessHandler = new VaadinSavedRequestAwareAuthenticationSuccessHandler();
         this.logoutSuccessHandler = new OidcClientInitiatedLogoutSuccessHandler(
                 clientRegistrationRepository);
-        this.vaadinAuthContext = new DefaultAuthenticationContext();
+        this.authenticationContext = new DefaultAuthenticationContext();
     }
 
     /**
@@ -84,7 +84,7 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
      */
     @Bean
     public AuthenticationContext getAuthContext() {
-        return vaadinAuthContext;
+        return authenticationContext;
     }
 
     /*
@@ -97,7 +97,7 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
         configure(http);
         final var securityFilterChain = http.build();
         final var logoutConfigurer = http.logout();
-        vaadinAuthContext.setLogoutHandlers(
+        authenticationContext.setLogoutHandlers(
                 logoutConfigurer.getLogoutSuccessHandler(),
                 logoutConfigurer.getLogoutHandlers());
         return securityFilterChain;
