@@ -41,7 +41,7 @@ public class MainLayout extends AppLayout {
     }
 
     private Component createDrawerContent() {
-        H1 appName = new H1("SSO Kit Demo");
+        H1 appName = new H1("Auth Demo");
         appName.addClassNames("app-name");
 
         Div section = new Div(appName, createNavigation(), createFooter());
