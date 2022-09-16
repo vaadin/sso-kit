@@ -52,7 +52,7 @@ body {
   );
 }
 
-.alert-error {
+.alert-error, .error-message {
   background: var(--lumo-error-color-10pct);
   color: var(--lumo-error-text-color);
   padding: var(--lumo-space-s);
@@ -267,7 +267,7 @@ body {
   min-width: calc(var(--lumo-button-size) * 2.5);
 }
 
-.error-message {
+.input-error-message {
   margin-left: calc(var(--lumo-border-radius-m) / 4);
   font-size: var(--lumo-font-size-xs);
   line-height: var(--lumo-line-height-xs);
@@ -277,7 +277,7 @@ body {
   max-height: 5em;
 }
 
-.error-message::before {
+.input-error-message::before {
   content: '';
   display: block;
   height: 0.4em;
