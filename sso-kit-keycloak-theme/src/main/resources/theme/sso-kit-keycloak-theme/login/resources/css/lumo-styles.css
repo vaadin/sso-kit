@@ -43,7 +43,7 @@ body {
   font-size: var(--lumo-font-size-xxxl);
   font-weight: 600;
   line-height: var(--lumo-line-height-xs);
-  margin: 0px;
+  margin: 0;
 }
 
 .form-title {
@@ -58,6 +58,7 @@ body {
   padding: var(--lumo-space-s);
   margin-block: var(--lumo-space-s);
   border-radius: var(--lumo-border-radius-s);
+  font-size: var(--lumo-font-size-s);
 }
 
 .form-card {
