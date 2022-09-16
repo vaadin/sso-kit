@@ -37,7 +37,7 @@ body {
   height: 100%;
 }
 
-.header-wrapper :where(h1, h2) {
+.header-wrapper :where(h1, h2, span) {
   color: inherit;
   font-family: var(--lumo-font-family);
   font-size: var(--lumo-font-size-xxxl);
