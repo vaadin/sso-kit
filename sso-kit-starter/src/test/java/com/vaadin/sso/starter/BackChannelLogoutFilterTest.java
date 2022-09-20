@@ -27,9 +27,6 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 
-import com.vaadin.sso.starter.BackChannelLogoutFilter;
-import com.vaadin.sso.starter.LogoutTokenClaimNames;
-
 import static org.mockito.AdditionalMatchers.not;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;

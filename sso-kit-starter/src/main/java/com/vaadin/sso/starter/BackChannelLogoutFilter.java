@@ -83,7 +83,7 @@ public class BackChannelLogoutFilter extends GenericFilterBean {
         final var httpRequest = (HttpServletRequest) request;
         final var httpResponse = (HttpServletResponse) response;
 
-        if (requiresLogout(httpRequest, httpResponse)) {
+        if (requiresLogout(httpRequest)) {
             logger.debug("Matching Back-Channel logout request");
             performLogout(httpRequest, httpResponse);
         }
@@ -167,8 +167,7 @@ public class BackChannelLogoutFilter extends GenericFilterBean {
         response.setStatus(HttpServletResponse.SC_OK);
     }
 
-    private boolean requiresLogout(HttpServletRequest request,
-            HttpServletResponse response) {
+    private boolean requiresLogout(HttpServletRequest request) {
         if (requestMatcher.matches(request)) {
             return true;
         }
@@ -201,12 +200,12 @@ public class BackChannelLogoutFilter extends GenericFilterBean {
      * Sets the back-channel logout route to match for this filter to handle the
      * requests.
      *
-     * @param backchannelLogoutRoute
+     * @param backChannelLogoutRoute
      *            the route to match, not {@code null}
      */
-    public void setBackChannelLogoutRoute(String backchannelLogoutRoute) {
-        Objects.requireNonNull(backchannelLogoutRoute);
+    public void setBackChannelLogoutRoute(String backChannelLogoutRoute) {
+        Objects.requireNonNull(backChannelLogoutRoute);
         setRequestMatcher(
-                new AntPathRequestMatcher(backchannelLogoutRoute, "POST"));
+                new AntPathRequestMatcher(backChannelLogoutRoute, "POST"));
     }
 }

@@ -18,7 +18,6 @@ import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.web.session.SessionInformationExpiredEvent;
 
 import com.vaadin.flow.shared.ApplicationConstants;
-import com.vaadin.sso.starter.UidlExpiredSessionStrategy;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

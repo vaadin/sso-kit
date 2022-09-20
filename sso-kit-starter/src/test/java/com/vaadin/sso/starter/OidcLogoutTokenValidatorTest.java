@@ -11,9 +11,6 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 import org.springframework.security.oauth2.jwt.Jwt;
 
-import com.vaadin.sso.starter.LogoutTokenClaimNames;
-import com.vaadin.sso.starter.OidcLogoutTokenValidator;
-
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

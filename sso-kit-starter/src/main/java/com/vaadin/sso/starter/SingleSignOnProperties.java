@@ -27,7 +27,7 @@ public class SingleSignOnProperties {
      * The default logout-redirect route. Web browsers will be redirected to
      * this route after the logout process has completed.
      */
-    static final String DEFAULT_LOGOUT_REDIRECT_ROUTE = "/";
+    static final String DEFAULT_LOGOUT_REDIRECT_ROUTE = "{baseUrl}";
 
     /**
      * The default Back-Channel Logout route. This should be the same as in the
@@ -68,7 +68,7 @@ public class SingleSignOnProperties {
 
     /**
      * The route to match Back-Channel logout requests against. The default
-     * value is {@code /backchannel-logout}.
+     * value is {@code /logout/back-channel/{registration-id}}.
      */
     private String backChannelLogoutRoute = DEFAULT_BACKCHANNEL_LOGOUT_ROUTE;
 
