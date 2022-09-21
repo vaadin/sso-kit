@@ -18,12 +18,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.logout.CompositeLogoutHandler;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.savedrequest.RequestCache;
@@ -45,6 +47,9 @@ import com.vaadin.flow.spring.security.VaadinWebSecurity;
  * If you need a customized security configuration, you can disable this
  * auto-configuration class by setting the {@code vaadin.sso.auto-configure}
  * property to {@code false} and provide your own configuration class.
+ *
+ * @author Vaadin Ltd
+ * @since 1.0
  */
 @Configuration
 @EnableWebSecurity
@@ -60,30 +65,40 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
 
     private final DefaultAuthenticationContext authenticationContext;
 
+    private final SessionRegistry sessionRegistry;
+
+    private final BackChannelLogoutFilter backChannelLogoutFilter;
+
     /**
      * Creates an instance of this configuration bean.
      *
      * @param properties
      *            the configuration properties
+     * @param sessionRegistry
+     *            the session registry
      * @param clientRegistrationRepository
      *            the client-registration repository
      */
     public SingleSignOnConfiguration(SingleSignOnProperties properties,
+            SessionRegistry sessionRegistry,
             ClientRegistrationRepository clientRegistrationRepository) {
         this.properties = properties;
+        this.sessionRegistry = sessionRegistry;
         this.loginSuccessHandler = new VaadinSavedRequestAwareAuthenticationSuccessHandler();
         this.logoutSuccessHandler = new OidcClientInitiatedLogoutSuccessHandler(
                 clientRegistrationRepository);
+        this.backChannelLogoutFilter = new BackChannelLogoutFilter(
+                sessionRegistry, clientRegistrationRepository);
         this.authenticationContext = new DefaultAuthenticationContext();
     }
 
     /**
-     * Gets the authentication context bean.
+     * Gets the default authentication-context bean.
      *
-     * @return the authentication context bean
+     * @return the authentication-context bean
      */
     @Bean
-    public AuthenticationContext getAuthContext() {
+    public AuthenticationContext getAuthenticationContext() {
         return authenticationContext;
     }
 
@@ -113,36 +128,66 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
         final var logoutRedirectRoute = Objects.requireNonNullElse(
                 properties.getLogoutRedirectRoute(),
                 SingleSignOnProperties.DEFAULT_LOGOUT_REDIRECT_ROUTE);
+        final var backChannelLogoutRoute = Objects.requireNonNullElse(
+                properties.getBackChannelLogoutRoute(),
+                SingleSignOnProperties.DEFAULT_BACKCHANNEL_LOGOUT_ROUTE);
+        final var maximumSessions = properties.getMaximumConcurrentSessions();
 
         http.oauth2Login(oauth2Login -> {
             // Sets Vaadin's login success handler that makes login redirects
             // compatible with Hilla endpoints. This is otherwise done
-            // VaadinWebSecurity::setLoginView which it's not used for OIDC
+            // VaadinWebSecurity::setLoginView which it's not used for OIDC.
             var requestCache = http.getSharedObject(RequestCache.class);
             if (requestCache != null) {
                 loginSuccessHandler.setRequestCache(requestCache);
             }
             oauth2Login.successHandler(loginSuccessHandler);
 
-            // Permit all requests to the login route
+            // Permit all requests to the login route.
             oauth2Login.loginPage(loginRoute).permitAll();
 
             // Sets the login route as endpoint for redirection when
-            // trying to access a protected view without authorization
+            // trying to access a protected view without authorization.
             getViewAccessChecker().setLoginView(loginRoute);
         }).logout(logout -> {
             // Configures a logout success handler that takes care of closing
             // both the local user session and the OIDC provider remote session,
             // redirecting the web browser to the configured logout redirect
-            // route when the process is completed
+            // route when the process is completed.
             logoutSuccessHandler.setPostLogoutRedirectUri(logoutRedirectRoute);
             logout.logoutSuccessHandler(logoutSuccessHandler);
         }).exceptionHandling(exceptionHandling -> {
             // Sets the configured login route as the entry point to redirect
-            // the web browser when an authentication exception is thrown
+            // the web browser when an authentication exception is thrown.
             var entryPoint = new LoginUrlAuthenticationEntryPoint(loginRoute);
             exceptionHandling.authenticationEntryPoint(entryPoint);
+        }).sessionManagement(sessionManagement -> {
+            sessionManagement.sessionConcurrency(concurrency -> {
+                // Sets the maximum number of concurrent sessions per user.
+                // The default is -1 which means no limit on the number of
+                // concurrent sessions per user.
+                concurrency.maximumSessions(maximumSessions);
+
+                // Sets the session-registry which is used for Back-Channel
+                concurrency.sessionRegistry(sessionRegistry);
+
+                // Sets the Vaadin-Refresh token to handle expired UIDL requests
+                final var expiredStrategy = new UidlExpiredSessionStrategy();
+                concurrency.expiredSessionStrategy(expiredStrategy);
+            });
         });
+
+        if (properties.isBackChannelLogout()) {
+            backChannelLogoutFilter
+                    .setBackChannelLogoutRoute(backChannelLogoutRoute);
+
+            // Adds the Back-Channel logout filter to the filter chain
+            http.addFilterAfter(backChannelLogoutFilter, LogoutFilter.class);
+
+            // Disable CSRF for Back-Channel logout requests
+            final var matcher = backChannelLogoutFilter.getRequestMatcher();
+            http.csrf().ignoringRequestMatchers(matcher);
+        }
     }
 
     static class DefaultAuthenticationContext implements AuthenticationContext {
@@ -155,12 +200,12 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
         private CompositeLogoutHandler logoutHandler;
 
         @Override
-        public Optional<OidcUser> getAuthenticatedUser() {
+        public <U extends OidcUser> Optional<U> getAuthenticatedUser(
+                Class<U> userType) {
             return Optional.of(SecurityContextHolder.getContext())
                     .map(SecurityContext::getAuthentication)
                     .map(Authentication::getPrincipal)
-                    .filter(OidcUser.class::isInstance)
-                    .map(OidcUser.class::cast);
+                    .filter(userType::isInstance).map(userType::cast);
         }
 
         @Override
@@ -177,9 +222,8 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
                 logoutSuccessHandler.onLogoutSuccess(req, res, auth);
             } catch (IOException | ServletException e) {
                 // Raise a warning log message about the failure.
-                LOGGER.warn(
-                        "There was an error notifying the OIDC provider of the user logout",
-                        e);
+                LOGGER.warn("There was an error notifying the OIDC provider of "
+                        + "the user logout", e);
             }
         }
 

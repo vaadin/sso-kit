@@ -36,7 +36,8 @@ public class SingleSignOnConfigurationTest {
                 .withConfiguration(
                         AutoConfigurations.of(SpringBootAutoConfiguration.class,
                                 SpringSecurityAutoConfiguration.class,
-                                SingleSignOnConfiguration.class))
+                                SingleSignOnConfiguration.class,
+                                SingleSignOnDefaultBeans.class))
                 .withBean(ClientRegistrationRepository.class,
                         () -> clientRegistrationRepository);
     }
