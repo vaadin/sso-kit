@@ -36,7 +36,8 @@ public class SingleSignOnConfigurationTest {
                 .withConfiguration(
                         AutoConfigurations.of(SpringBootAutoConfiguration.class,
                                 SpringSecurityAutoConfiguration.class,
-                                SingleSignOnConfiguration.class))
+                                SingleSignOnConfiguration.class,
+                                SingleSignOnDefaultBeans.class))
                 .withBean(ClientRegistrationRepository.class,
                         () -> clientRegistrationRepository);
     }
@@ -55,6 +56,18 @@ public class SingleSignOnConfigurationTest {
                     assertThat(ctx)
                             .doesNotHaveBean(SingleSignOnConfiguration.class);
                 });
+    }
+
+    @Test
+    public void clientRepository_notAvailable_configurationDisabled() {
+        final var runner = new WebApplicationContextRunner().withConfiguration(
+                AutoConfigurations.of(SpringBootAutoConfiguration.class,
+                        SpringSecurityAutoConfiguration.class,
+                        SingleSignOnConfiguration.class,
+                        SingleSignOnDefaultBeans.class));
+        runner.run(ctx -> {
+            assertThat(ctx).doesNotHaveBean(SingleSignOnConfiguration.class);
+        });
     }
 
     @Test
