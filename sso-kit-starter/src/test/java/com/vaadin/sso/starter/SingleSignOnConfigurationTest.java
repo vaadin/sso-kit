@@ -59,6 +59,18 @@ public class SingleSignOnConfigurationTest {
     }
 
     @Test
+    public void clientRepository_notAvailable_configurationDisabled() {
+        final var runner = new WebApplicationContextRunner().withConfiguration(
+                AutoConfigurations.of(SpringBootAutoConfiguration.class,
+                        SpringSecurityAutoConfiguration.class,
+                        SingleSignOnConfiguration.class,
+                        SingleSignOnDefaultBeans.class));
+        runner.run(ctx -> {
+            assertThat(ctx).doesNotHaveBean(SingleSignOnConfiguration.class);
+        });
+    }
+
+    @Test
     public void loginRouteProperty_hasDefaultValue() {
         contextRunner.run(ctx -> {
             var loginRoute = ctx.getBean(SingleSignOnProperties.class)
