@@ -44,7 +44,13 @@
         <div id="kc-header" class="${properties.kcHeaderClass!}">
             <div id="kc-header-wrapper"
                  class="${properties.kcHeaderWrapperClass!}">
-                ${kcSanitize(msg("loginTitleHtml",(realm.displayNameHtml!'')))?no_esc}
+                <#if realm.displayNameHtml != realm.displayName>
+                    ${kcSanitize(msg("loginTitleHtml",(realm.displayNameHtml!'')))?no_esc}
+                <#else>
+                    <h1>
+                        ${kcSanitize(msg("loginTitleHtml",(realm.displayName!'')))?no_esc}
+                    </h1>
+                </#if>
             </div>
         </div>
         <div class="${properties.kcFormCardClass!}">
