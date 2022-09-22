@@ -13,6 +13,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>sso-kit-keycloak-theme</module>
+        <module>sso-kit-keycloak-lumo</module>
     </modules>
 </project>
