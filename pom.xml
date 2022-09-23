@@ -14,6 +14,7 @@
 
     <modules>
         <module>sso-kit-starter</module>
+        <module>sso-kit-keycloak</module>
         <module>sso-kit-demo</module>
     </modules>
 

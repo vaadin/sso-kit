@@ -11,3 +11,5 @@
 *pom.xml.versionsBackup
 
 *.DS_Store
+.idea/
+*.iml

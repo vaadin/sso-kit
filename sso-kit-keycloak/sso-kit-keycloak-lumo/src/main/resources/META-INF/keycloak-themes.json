@@ -1,0 +1,6 @@
+{
+  "themes": [{
+      "name" : "sso-kit-keycloak-lumo",
+      "types": [ "login" ]
+  }]
+}
