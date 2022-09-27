@@ -12,7 +12,7 @@ import org.springframework.security.web.session.SessionInformationExpiredStrateg
 import com.vaadin.flow.server.HandlerHelper;
 
 /**
- * The strategy to handle when an expired sessions is detected.
+ * A strategy to handle expired sessions which is aware of UIDL requests.
  *
  * @author Vaadin Ltd
  * @since 1.0

@@ -31,6 +31,7 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.savedrequest.RequestCache;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.server.VaadinServletRequest;
 import com.vaadin.flow.server.VaadinServletResponse;
 import com.vaadin.flow.spring.security.VaadinSavedRequestAwareAuthenticationSuccessHandler;
@@ -89,6 +90,8 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
         this.loginSuccessHandler = new VaadinSavedRequestAwareAuthenticationSuccessHandler();
         this.logoutSuccessHandler = new OidcClientInitiatedLogoutSuccessHandler(
                 clientRegistrationRepository);
+        this.logoutSuccessHandler
+                .setRedirectStrategy(new UidlRedirectStrategy());
         this.backChannelLogoutFilter = new BackChannelLogoutFilter(
                 sessionRegistry, clientRegistrationRepository);
         this.authenticationContext = new DefaultAuthenticationContext();
@@ -138,7 +141,7 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
         http.oauth2Login(oauth2Login -> {
             // Sets Vaadin's login success handler that makes login redirects
             // compatible with Hilla endpoints. This is otherwise done
-            // VaadinWebSecurity::setLoginView which it's not used for OIDC.
+            // VaadinWebSecurity::setLoginView which is not used for OIDC.
             var requestCache = http.getSharedObject(RequestCache.class);
             if (requestCache != null) {
                 loginSuccessHandler.setRequestCache(requestCache);
@@ -219,14 +222,17 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
             final var auth = SecurityContextHolder.getContext()
                     .getAuthentication();
 
+            final var ui = UI.getCurrent();
             logoutHandler.logout(req, res, auth);
-            try {
-                logoutSuccessHandler.onLogoutSuccess(req, res, auth);
-            } catch (IOException | ServletException e) {
-                // Raise a warning log message about the failure.
-                LOGGER.warn("There was an error notifying the OIDC provider of "
-                        + "the user logout", e);
-            }
+            ui.accessSynchronously(() -> {
+                try {
+                    logoutSuccessHandler.onLogoutSuccess(req, res, auth);
+                } catch (IOException | ServletException e) {
+                    // Raise a warning log message about the failure.
+                    LOGGER.warn("There was an error notifying the OIDC "
+                            + "provide of the user logout", e);
+                }
+            });
         }
 
         void setLogoutHandlers(LogoutSuccessHandler logoutSuccessHandler,
