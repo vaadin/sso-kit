@@ -1,8 +1,8 @@
 package com.vaadin.sso.starter;
 
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 
@@ -12,7 +12,7 @@ import org.springframework.security.core.session.SessionRegistryImpl;
  * @author Vaadin Ltd
  * @since 1.0
  */
-@Configuration
+@AutoConfiguration
 public class SingleSignOnDefaultBeans {
 
     /**
