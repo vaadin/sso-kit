@@ -38,6 +38,8 @@ public class SingleSignOnConfigurationTest {
                                 SpringSecurityAutoConfiguration.class,
                                 SingleSignOnConfiguration.class,
                                 SingleSignOnDefaultBeans.class))
+                .withPropertyValues(
+                        "spring.security.oauth2.client.registration.foo.client-id=foo")
                 .withBean(ClientRegistrationRepository.class,
                         () -> clientRegistrationRepository);
     }
