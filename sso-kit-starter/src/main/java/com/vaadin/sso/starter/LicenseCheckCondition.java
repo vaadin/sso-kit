@@ -55,6 +55,6 @@ class LicenseCheckCondition extends SpringBootCondition {
     // Package protected for testing
     void checkLicense(String version) {
         LicenseChecker.checkLicense(PRODUCT_NAME, version,
-                BuildType.DEVELOPMENT);
+                BuildType.PRODUCTION);
     }
 }
