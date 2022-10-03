@@ -230,7 +230,7 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
                 } catch (IOException | ServletException e) {
                     // Raise a warning log message about the failure.
                     LOGGER.warn("There was an error notifying the OIDC "
-                            + "provide of the user logout", e);
+                            + "provider of the user logout", e);
                 }
             });
         }
