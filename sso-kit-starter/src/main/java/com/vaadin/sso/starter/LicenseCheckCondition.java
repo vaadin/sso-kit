@@ -37,8 +37,8 @@ class LicenseCheckCondition extends SpringBootCondition {
 
             return ConditionOutcome.match();
         } catch (LicenseException e) {
-            return ConditionOutcome
-                    .noMatch("No valid license found for " + PRODUCT_NAME);
+            final var message = e.getMessage();
+            return ConditionOutcome.noMatch(message);
         }
     }
 
