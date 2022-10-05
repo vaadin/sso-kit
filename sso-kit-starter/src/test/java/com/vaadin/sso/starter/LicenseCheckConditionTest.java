@@ -6,12 +6,15 @@ import org.junit.jupiter.api.Test;
 
 import com.vaadin.pro.licensechecker.LicenseException;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LicenseCheckConditionTest {
 
     private static final String VERSION = "1.0";
+
+    private static final String EXCEPTION_MESSAGE = "Programmatically fail";
 
     @Test
     public void validLicense_positiveConditionOutcome() {
@@ -27,6 +30,7 @@ public class LicenseCheckConditionTest {
         var outcome = condition.getMatchOutcome(null, null);
 
         assertFalse(outcome.isMatch());
+        assertEquals(EXCEPTION_MESSAGE, outcome.getMessage());
     }
 
     static class TestableLicenseCheckCondition extends LicenseCheckCondition {
@@ -48,7 +52,7 @@ public class LicenseCheckConditionTest {
         @Override
         void checkLicense(String version) {
             if (!shouldSucceed) {
-                throw new LicenseException("Programmatically fail");
+                throw new LicenseException(EXCEPTION_MESSAGE);
             }
         }
     }
