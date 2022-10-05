@@ -56,7 +56,7 @@ import com.vaadin.flow.spring.security.VaadinWebSecurity;
  */
 @AutoConfiguration
 @EnableWebSecurity
-@Conditional(ClientsConfiguredCondition.class)
+@Conditional({ LicenseCheckCondition.class, ClientsConfiguredCondition.class })
 @ConditionalOnProperty(name = "auto-configure", prefix = SingleSignOnProperties.PREFIX, matchIfMissing = true)
 @EnableConfigurationProperties(SingleSignOnProperties.class)
 public class SingleSignOnConfiguration extends VaadinWebSecurity {
