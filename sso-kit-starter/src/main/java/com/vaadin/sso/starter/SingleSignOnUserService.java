@@ -3,6 +3,7 @@ package com.vaadin.sso.starter;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
@@ -63,6 +64,6 @@ public class SingleSignOnUserService extends OidcUserService {
         return roles.stream()
                 .map(role -> new OidcUserAuthority(ROLE_PREFIX + role, idToken,
                         userInfo))
-                .toList();
+                .collect(Collectors.toList());
     }
 }
