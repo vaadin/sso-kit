@@ -73,6 +73,8 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
 
     private final BackChannelLogoutFilter backChannelLogoutFilter;
 
+    private final SingleSignOnUserService userService;
+
     /**
      * Creates an instance of this configuration bean.
      *
@@ -96,6 +98,7 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
         this.backChannelLogoutFilter = new BackChannelLogoutFilter(
                 sessionRegistry, clientRegistrationRepository);
         this.authenticationContext = new DefaultAuthenticationContext();
+        this.userService = new SingleSignOnUserService();
     }
 
     /**
@@ -140,6 +143,8 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
         final var maximumSessions = properties.getMaximumConcurrentSessions();
 
         http.oauth2Login(oauth2Login -> {
+            oauth2Login.userInfoEndpoint().oidcUserService(userService);
+
             // Sets Vaadin's login success handler that makes login redirects
             // compatible with Hilla endpoints. This is otherwise done
             // VaadinWebSecurity::setLoginView which is not used for OIDC.
