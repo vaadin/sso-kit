@@ -1,6 +1,6 @@
 package com.vaadin.sso.demo.view;
 
-import javax.annotation.security.PermitAll;
+import jakarta.annotation.security.PermitAll;
 
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;

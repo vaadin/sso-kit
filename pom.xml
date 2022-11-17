@@ -19,12 +19,12 @@
     </modules>
 
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <vaadin.version>23.2-SNAPSHOT</vaadin.version>
-        <spring.boot.version>2.7.2</spring.boot.version>
+        <vaadin.version>24.0-SNAPSHOT</vaadin.version>
+        <spring.boot.version>3.0.0-RC2</spring.boot.version>
         <maven.source.version>3.2.1</maven.source.version>
         <maven.javadoc.version>3.4.1</maven.javadoc.version>
         <maven.surefire.version>2.22.2</maven.surefire.version>
@@ -36,12 +36,20 @@
             <id>vaadin-prereleases</id>
             <url>https://maven.vaadin.com/vaadin-prereleases/</url>
         </repository>
+        <repository>
+            <id>spring milestones</id>
+            <url>https://repo.spring.io/milestone</url>
+        </repository>
     </repositories>
 
     <pluginRepositories>
         <pluginRepository>
             <id>vaadin-prereleases</id>
             <url>https://maven.vaadin.com/vaadin-prereleases/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>spring milestones</id>
+            <url>https://repo.spring.io/milestone</url>
         </pluginRepository>
     </pluginRepositories>
 
@@ -62,7 +70,7 @@
             <dependency>
                 <groupId>com.vaadin</groupId>
                 <artifactId>license-checker</artifactId>
-                <version>1.10.0</version>
+                <version>1.10.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
