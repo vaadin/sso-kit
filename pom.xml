@@ -12,6 +12,13 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <licenses>
+        <license>
+          <name>Vaadin Commercial License</name>
+          <url>https://vaadin.com/commercial-license-and-service-terms</url>
+        </license>
+    </licenses>
+
     <modules>
         <module>sso-kit-starter</module>
         <module>sso-kit-keycloak</module>
