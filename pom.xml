@@ -30,7 +30,7 @@
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <flow.version>23.2-SNAPSHOT</flow.version>
+        <flow.version>23.3-SNAPSHOT</flow.version>
         <spring.boot.version>2.7.2</spring.boot.version>
         <maven.source.version>3.2.1</maven.source.version>
         <maven.javadoc.version>3.4.1</maven.javadoc.version>
