@@ -55,8 +55,8 @@ class LicenseCheckerServiceInitListenerTest {
         when(service.getDeploymentConfiguration().isProductionMode())
                 .thenReturn(false);
 
-        final var version = getProperties()
-                .getProperty(LicenseCheckerServiceInitListener.VERSION_PROPERTY);
+        final var version = getProperties().getProperty(
+                LicenseCheckerServiceInitListener.VERSION_PROPERTY);
 
         // Assert version is in X.Y format
         assertThat(version, matchesPattern("^\\d\\.\\d.*"));
@@ -67,7 +67,8 @@ class LicenseCheckerServiceInitListenerTest {
         // Verify the license is checked
         BuildType buildType = null;
         licenseChecker.verify(() -> LicenseChecker.checkLicense(
-                LicenseCheckerServiceInitListener.PRODUCT_NAME, version, buildType));
+                LicenseCheckerServiceInitListener.PRODUCT_NAME, version,
+                buildType));
     }
 
     @Test
