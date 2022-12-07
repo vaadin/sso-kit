@@ -32,6 +32,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <flow.version>23.3-SNAPSHOT</flow.version>
         <spring.boot.version>2.7.4</spring.boot.version>
+        <maven.jar.version>3.3.0</maven.jar.version>
         <maven.source.version>3.2.1</maven.source.version>
         <maven.javadoc.version>3.4.1</maven.javadoc.version>
         <maven.surefire.version>2.22.2</maven.surefire.version>
