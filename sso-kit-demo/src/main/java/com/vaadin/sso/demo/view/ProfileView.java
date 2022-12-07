@@ -2,6 +2,8 @@ package com.vaadin.sso.demo.view;
 
 import javax.annotation.security.PermitAll;
 
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -9,7 +11,7 @@ import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.sso.starter.AuthenticationContext;
+import com.vaadin.flow.spring.security.AuthenticationContext;
 
 @PermitAll
 @PageTitle("Profile")
@@ -24,7 +26,7 @@ public class ProfileView extends VerticalLayout {
 
     public ProfileView(AuthenticationContext authContext) {
 
-        authContext.getAuthenticatedUser().ifPresent(user -> {
+        authContext.getAuthenticatedUser(OidcUser.class).ifPresent(user -> {
             String fullName = user.getFullName();
             String email = user.getEmail();
             String picture = user.getPicture();
