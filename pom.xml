@@ -22,7 +22,6 @@
     <modules>
         <module>sso-kit-starter</module>
         <module>sso-kit-keycloak</module>
-        <module>sso-kit-demo</module>
     </modules>
 
     <properties>
@@ -130,5 +129,19 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>demo</id>
+            <activation>
+                <property>
+                    <name>!release</name>
+                </property>
+            </activation>
+            <modules>
+                <module>sso-kit-demo</module>
+            </modules>
+        </profile>
+    </profiles>
 
 </project>
