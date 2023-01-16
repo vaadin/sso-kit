@@ -1,40 +1,30 @@
+/*-
+ * Copyright (C) 2022 Vaadin Ltd
+ *
+ * This program is available under Vaadin Commercial License and Service Terms.
+ *
+ *
+ * See <https://vaadin.com/commercial-license-and-service-terms> for the full
+ * license.
+ */
 package com.vaadin.sso.starter;
 
-import jakarta.servlet.ServletException;
-
-import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.security.oauth2.client.ClientsConfiguredCondition;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
-import org.springframework.security.web.authentication.logout.CompositeLogoutHandler;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
-import org.springframework.security.web.authentication.logout.LogoutHandler;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.savedrequest.RequestCache;
 
-import com.vaadin.flow.component.UI;
-import com.vaadin.flow.server.VaadinServletRequest;
-import com.vaadin.flow.server.VaadinServletResponse;
 import com.vaadin.flow.spring.security.VaadinSavedRequestAwareAuthenticationSuccessHandler;
 import com.vaadin.flow.spring.security.VaadinWebSecurity;
 
@@ -56,7 +46,7 @@ import com.vaadin.flow.spring.security.VaadinWebSecurity;
  */
 @AutoConfiguration
 @EnableWebSecurity
-@Conditional({ LicenseCheckCondition.class, ClientsConfiguredCondition.class })
+@Conditional(ClientsConfiguredCondition.class)
 @ConditionalOnProperty(name = "auto-configure", prefix = SingleSignOnProperties.PREFIX, matchIfMissing = true)
 @EnableConfigurationProperties(SingleSignOnProperties.class)
 public class SingleSignOnConfiguration extends VaadinWebSecurity {
@@ -66,8 +56,6 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
     private final OidcClientInitiatedLogoutSuccessHandler logoutSuccessHandler;
 
     private final VaadinSavedRequestAwareAuthenticationSuccessHandler loginSuccessHandler;
-
-    private final DefaultAuthenticationContext authenticationContext;
 
     private final SessionRegistry sessionRegistry;
 
@@ -95,33 +83,6 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
                 .setRedirectStrategy(new UidlRedirectStrategy());
         this.backChannelLogoutFilter = new BackChannelLogoutFilter(
                 sessionRegistry, clientRegistrationRepository);
-        this.authenticationContext = new DefaultAuthenticationContext();
-    }
-
-    /**
-     * Gets the default authentication-context bean.
-     *
-     * @return the authentication-context bean
-     */
-    @Bean
-    public AuthenticationContext getAuthenticationContext() {
-        return authenticationContext;
-    }
-
-    /*
-     * Overriding this to intercept filter-chain build and set the configured
-     * logout handlers in the authentication context.
-     */
-    @Bean(name = "VaadinSecurityFilterChainBean")
-    @Override
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        configure(http);
-        final var securityFilterChain = http.build();
-        final var logoutConfigurer = http.logout();
-        authenticationContext.setLogoutHandlers(
-                logoutConfigurer.getLogoutSuccessHandler(),
-                logoutConfigurer.getLogoutHandlers());
-        return securityFilterChain;
     }
 
     @Override
@@ -193,63 +154,6 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
             // Disable CSRF for Back-Channel logout requests
             final var matcher = backChannelLogoutFilter.getRequestMatcher();
             http.csrf().ignoringRequestMatchers(matcher);
-        }
-    }
-
-    static class DefaultAuthenticationContext implements AuthenticationContext {
-
-        private static final Logger LOGGER = LoggerFactory
-                .getLogger(AuthenticationContext.class);
-
-        private LogoutSuccessHandler logoutSuccessHandler;
-
-        private CompositeLogoutHandler logoutHandler;
-
-        @Override
-        public <U extends OidcUser> Optional<U> getAuthenticatedUser(
-                Class<U> userType) {
-            return Optional.of(SecurityContextHolder.getContext())
-                    .map(SecurityContext::getAuthentication)
-                    .map(Authentication::getPrincipal)
-                    .filter(userType::isInstance).map(userType::cast);
-        }
-
-        @Override
-        public void logout() {
-            final var req = VaadinServletRequest.getCurrent()
-                    .getHttpServletRequest();
-            final var res = VaadinServletResponse.getCurrent()
-                    .getHttpServletResponse();
-            final var auth = SecurityContextHolder.getContext()
-                    .getAuthentication();
-
-            final var ui = UI.getCurrent();
-            logoutHandler.logout(req, res, auth);
-            ui.accessSynchronously(() -> {
-                try {
-                    logoutSuccessHandler.onLogoutSuccess(req, res, auth);
-                } catch (IOException | ServletException e) {
-                    // Raise a warning log message about the failure.
-                    LOGGER.warn("There was an error notifying the OIDC "
-                            + "provider of the user logout", e);
-                }
-            });
-        }
-
-        void setLogoutHandlers(LogoutSuccessHandler logoutSuccessHandler,
-                List<LogoutHandler> logoutHandlers) {
-            this.logoutSuccessHandler = logoutSuccessHandler;
-            this.logoutHandler = new CompositeLogoutHandler(logoutHandlers);
-        }
-
-        /* For testing purposes */
-        LogoutSuccessHandler getLogoutSuccessHandler() {
-            return logoutSuccessHandler;
-        }
-
-        /* For testing purposes */
-        CompositeLogoutHandler getLogoutHandler() {
-            return logoutHandler;
         }
     }
 }

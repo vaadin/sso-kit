@@ -12,10 +12,16 @@
     <version>2.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <licenses>
+        <license>
+          <name>Vaadin Commercial License and Service Terms</name>
+          <url>https://vaadin.com/commercial-license-and-service-terms</url>
+        </license>
+    </licenses>
+
     <modules>
         <module>sso-kit-starter</module>
         <module>sso-kit-keycloak</module>
-        <module>sso-kit-demo</module>
     </modules>
 
     <properties>
@@ -23,8 +29,9 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <vaadin.version>24.0-SNAPSHOT</vaadin.version>
-        <spring.boot.version>3.0.0-RC2</spring.boot.version>
+        <flow.version>24.0-SNAPSHOT</flow.version>
+        <spring.boot.version>3.0.1</spring.boot.version>
+        <maven.jar.version>3.3.0</maven.jar.version>
         <maven.source.version>3.2.1</maven.source.version>
         <maven.javadoc.version>3.4.1</maven.javadoc.version>
         <maven.surefire.version>2.22.2</maven.surefire.version>
@@ -65,7 +72,7 @@
             <dependency>
                 <groupId>com.vaadin</groupId>
                 <artifactId>vaadin-spring</artifactId>
-                <version>${vaadin.version}</version>
+                <version>${flow.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.vaadin</groupId>
@@ -130,5 +137,19 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>demo</id>
+            <activation>
+                <property>
+                    <name>!release</name>
+                </property>
+            </activation>
+            <modules>
+                <module>sso-kit-demo</module>
+            </modules>
+        </profile>
+    </profiles>
 
 </project>
