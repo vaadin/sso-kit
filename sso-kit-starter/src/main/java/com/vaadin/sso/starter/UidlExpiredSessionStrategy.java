@@ -9,7 +9,7 @@
  */
 package com.vaadin.sso.starter;
 
-import javax.servlet.ServletException;
+import jakarta.servlet.ServletException;
 
 import java.io.IOException;
 

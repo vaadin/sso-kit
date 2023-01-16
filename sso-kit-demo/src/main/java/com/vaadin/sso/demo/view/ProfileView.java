@@ -1,6 +1,6 @@
 package com.vaadin.sso.demo.view;
 
-import javax.annotation.security.PermitAll;
+import jakarta.annotation.security.PermitAll;
 
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
