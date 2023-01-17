@@ -9,16 +9,16 @@
  */
 package com.vaadin.sso.starter;
 
+import java.io.IOException;
+import java.util.Objects;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import java.io.IOException;
-import java.util.Objects;
-
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.log.LogMessage;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
@@ -57,17 +57,22 @@ public class BackChannelLogoutFilter extends GenericFilterBean {
     private RequestMatcher requestMatcher = new AntPathRequestMatcher(
             SingleSignOnProperties.DEFAULT_BACKCHANNEL_LOGOUT_ROUTE);
 
+    private final ApplicationEventPublisher eventPublisher;
+
     /**
      * Creates an instance of the filter.
      *
      * @param sessionRegistry
      *            the session registry, {@code not null}
+     * @param eventPublisher
+     *            the event-publisher
      * @param clientRegistrationRepository
      *            the client-registration repository, {@code not null}
      */
     public BackChannelLogoutFilter(SessionRegistry sessionRegistry,
-            ClientRegistrationRepository clientRegistrationRepository) {
-        this(sessionRegistry, clientRegistrationRepository,
+            ClientRegistrationRepository clientRegistrationRepository,
+            ApplicationEventPublisher eventPublisher) {
+        this(sessionRegistry, clientRegistrationRepository, eventPublisher,
                 clientRegistration -> {
                     final var issuerUri = clientRegistration
                             .getProviderDetails().getIssuerUri();
@@ -77,13 +82,13 @@ public class BackChannelLogoutFilter extends GenericFilterBean {
 
     BackChannelLogoutFilter(SessionRegistry sessionRegistry,
             ClientRegistrationRepository clientRegistrationRepository,
+            ApplicationEventPublisher eventPublisher,
             JwtDecoderFactory<ClientRegistration> decoderFactory) {
-        Objects.requireNonNull(sessionRegistry);
-        Objects.requireNonNull(clientRegistrationRepository);
-        Objects.requireNonNull(decoderFactory);
-        this.sessionRegistry = sessionRegistry;
-        this.clientRegistrationRepository = clientRegistrationRepository;
-        this.decoderFactory = decoderFactory;
+        this.sessionRegistry = Objects.requireNonNull(sessionRegistry);
+        this.clientRegistrationRepository = Objects
+                .requireNonNull(clientRegistrationRepository);
+        this.eventPublisher = Objects.requireNonNull(eventPublisher);
+        this.decoderFactory = Objects.requireNonNull(decoderFactory);
     }
 
     @Override
@@ -169,7 +174,8 @@ public class BackChannelLogoutFilter extends GenericFilterBean {
             } else {
                 return false;
             }
-        }).flatMap(p -> sessionRegistry.getAllSessions(p, false).stream())
+        }).peek(p -> eventPublisher.publishEvent(new UserLogoutEvent(p)))
+                .flatMap(p -> sessionRegistry.getAllSessions(p, false).stream())
                 .forEach(SessionInformation::expireNow);
 
         // Set the response status to 200 OK as per specification

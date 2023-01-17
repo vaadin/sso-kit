@@ -23,6 +23,12 @@
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-spring</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>dev.hilla</groupId>
+            <artifactId>hilla</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>

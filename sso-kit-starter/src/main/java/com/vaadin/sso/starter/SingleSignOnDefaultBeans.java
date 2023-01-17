@@ -31,7 +31,7 @@ public class SingleSignOnDefaultBeans {
      */
     @Bean
     @ConditionalOnMissingBean
-    public SessionRegistry getSessionRegistry() {
+    SessionRegistry getSessionRegistry() {
         return new SessionRegistryImpl();
     }
 }

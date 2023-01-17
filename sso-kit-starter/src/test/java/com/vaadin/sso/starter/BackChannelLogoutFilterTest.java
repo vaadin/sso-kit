@@ -1,10 +1,5 @@
 package com.vaadin.sso.starter;
 
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Date;
@@ -12,12 +7,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mock.Strictness;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -56,11 +57,14 @@ public class BackChannelLogoutFilterTest {
     @Mock
     private FilterChain chain;
 
-    @Mock(lenient = true)
+    @Mock(strictness = Strictness.LENIENT)
     private SessionRegistry sessionRegistry;
 
-    @Mock(lenient = true)
+    @Mock(strictness = Strictness.LENIENT)
     private ClientRegistrationRepository clientRegistrationRepository;
+
+    @Mock
+    private ApplicationEventPublisher eventPublisher;
 
     private ClientRegistration clientRegistration;
 
@@ -80,7 +84,8 @@ public class BackChannelLogoutFilterTest {
         // @formatter:on
 
         filter = new BackChannelLogoutFilter(sessionRegistry,
-                clientRegistrationRepository, this::createJwtDecoder);
+                clientRegistrationRepository, eventPublisher,
+                this::createJwtDecoder);
 
         when(request.getServletPath()).thenReturn("/");
         when(clientRegistrationRepository.findByRegistrationId("test"))

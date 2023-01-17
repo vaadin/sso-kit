@@ -15,6 +15,7 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.security.oauth2.client.ClientsConfiguredCondition;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -70,10 +71,13 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
      *            the session registry
      * @param clientRegistrationRepository
      *            the client-registration repository
+     * @param eventPublisher
+     *            the event-publisher
      */
     public SingleSignOnConfiguration(SingleSignOnProperties properties,
             SessionRegistry sessionRegistry,
-            ClientRegistrationRepository clientRegistrationRepository) {
+            ClientRegistrationRepository clientRegistrationRepository,
+            ApplicationEventPublisher eventPublisher) {
         this.properties = properties;
         this.sessionRegistry = sessionRegistry;
         this.loginSuccessHandler = new VaadinSavedRequestAwareAuthenticationSuccessHandler();
@@ -82,7 +86,7 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
         this.logoutSuccessHandler
                 .setRedirectStrategy(new UidlRedirectStrategy());
         this.backChannelLogoutFilter = new BackChannelLogoutFilter(
-                sessionRegistry, clientRegistrationRepository);
+                sessionRegistry, clientRegistrationRepository, eventPublisher);
     }
 
     @Override

@@ -30,6 +30,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <flow.version>24.0-SNAPSHOT</flow.version>
+        <hilla.version>2.0-SNAPSHOT</hilla.version>
         <spring.boot.version>3.0.1</spring.boot.version>
         <maven.jar.version>3.3.0</maven.jar.version>
         <maven.source.version>3.2.1</maven.source.version>
@@ -73,6 +74,11 @@
                 <groupId>com.vaadin</groupId>
                 <artifactId>vaadin-spring</artifactId>
                 <version>${flow.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>dev.hilla</groupId>
+                <artifactId>hilla</artifactId>
+                <version>${hilla.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.vaadin</groupId>
