@@ -30,7 +30,7 @@ public class SingleSignOnProperties {
      * route. If there are no views mapped to this route, Spring's default login
      * page will be generated.
      */
-    static final String DEFAULT_LOGIN_ROUTE = "/login";
+    public static final String DEFAULT_LOGIN_ROUTE = "/login";
 
     /**
      * The default logout-redirect route. Web browsers will be redirected to
@@ -179,11 +179,11 @@ public class SingleSignOnProperties {
     /**
      * Sets the Back-Channel Logout route.
      *
-     * @param backchannelLogoutRoute
+     * @param backChannelLogoutRoute
      *            the Back-Channel Logout route
      */
-    public void setBackChannelLogoutRoute(String backchannelLogoutRoute) {
-        this.backChannelLogoutRoute = backchannelLogoutRoute;
+    public void setBackChannelLogoutRoute(String backChannelLogoutRoute) {
+        this.backChannelLogoutRoute = backChannelLogoutRoute;
     }
 
     /**

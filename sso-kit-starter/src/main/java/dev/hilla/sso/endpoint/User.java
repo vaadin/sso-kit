@@ -1,5 +1,5 @@
 /*-
- * Copyright (C) 2022-2023 Vaadin Ltd
+ * Copyright (C) 2022 Vaadin Ltd
  *
  * This program is available under Vaadin Commercial License and Service Terms.
  *
@@ -7,13 +7,23 @@
  * See <https://vaadin.com/commercial-license-and-service-terms> for the full
  * license.
  */
-package com.vaadin.sso.starter.hilla.endpoint;
+package dev.hilla.sso.endpoint;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import dev.hilla.Nonnull;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
+/**
+ * A convenience class that contains the information about the current user.
+ * Most fields are directly mapped to the OidcUser class.
+ */
 public class User {
+
+    private static final String ROLE_PREFIX = "ROLE_";
+    private static final int ROLE_PREFIX_LENGTH = ROLE_PREFIX.length();
 
     private String birthdate;
     private String email;
@@ -136,4 +146,34 @@ public class User {
         this.roles = roles;
     }
 
+    /**
+     * Maps the OidcUser to a User object.
+     *
+     * @param oidcUser
+     *            the OidcUser
+     * @return the User object, containing the information from the OidcUser and
+     *         a mapping of the roles.
+     */
+    public static User from(OidcUser oidcUser) {
+        User user = new User();
+        user.setBirthdate(oidcUser.getBirthdate());
+        user.setEmail(oidcUser.getEmail());
+        user.setFamilyName(oidcUser.getFamilyName());
+        user.setFullName(oidcUser.getFullName());
+        user.setGender(oidcUser.getGender());
+        user.setGivenName(oidcUser.getGivenName());
+        user.setLocale(oidcUser.getLocale());
+        user.setMiddleName(oidcUser.getMiddleName());
+        user.setNickName(oidcUser.getNickName());
+        user.setPhoneNumber(oidcUser.getPhoneNumber());
+        user.setPicture(oidcUser.getPicture());
+        user.setPreferredUsername(oidcUser.getPreferredUsername());
+
+        user.setRoles(oidcUser.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .filter(a -> a.startsWith(ROLE_PREFIX))
+                .map(a -> a.substring(ROLE_PREFIX_LENGTH))
+                .collect(Collectors.toSet()));
+        return user;
+    }
 }

@@ -165,7 +165,7 @@ public final class OidcLogoutTokenValidator
             return OAuth2TokenValidatorResult
                     .failure(invalidLogoutTokenClaims(invalidClaims));
         } else {
-            LOGGER.debug("Logout token validation succeded");
+            LOGGER.debug("Logout token validation succeeded");
             return OAuth2TokenValidatorResult.success();
         }
     }

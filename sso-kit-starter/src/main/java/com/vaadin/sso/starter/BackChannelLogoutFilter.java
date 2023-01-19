@@ -64,10 +64,10 @@ public class BackChannelLogoutFilter extends GenericFilterBean {
      *
      * @param sessionRegistry
      *            the session registry, {@code not null}
-     * @param eventPublisher
-     *            the event-publisher
      * @param clientRegistrationRepository
      *            the client-registration repository, {@code not null}
+     * @param eventPublisher
+     *            the event-publisher to publish logout events, {@code not null}
      */
     public BackChannelLogoutFilter(SessionRegistry sessionRegistry,
             ClientRegistrationRepository clientRegistrationRepository,
