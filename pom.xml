@@ -154,6 +154,7 @@
             </activation>
             <modules>
                 <module>sso-kit-demo</module>
+                <module>sso-kit-hilla-demo</module>
             </modules>
         </profile>
     </profiles>

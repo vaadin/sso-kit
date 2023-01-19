@@ -1,0 +1,7 @@
+server:
+  port: ${PORT:8080}
+vaadin:
+  launch-browser: true
+  whitelisted-packages: com.vaadin,org.vaadin,dev.hilla,com.example.application
+  sso:
+    back-channel-logout: true
