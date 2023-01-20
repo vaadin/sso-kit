@@ -10,18 +10,6 @@ export type ViewRoute = Route & AccessControl & {
   children?: ViewRoute[];
 };
 
-export const hasAccess = (route: Route) => {
-  const viewRoute = route as ViewRoute;
-  if (viewRoute.requiresLogin && !ssoKit.loggedIn) {
-    return false;
-  }
-
-  if (viewRoute.rolesAllowed) {
-    return viewRoute.rolesAllowed.some((role) => ssoKit.isUserInRole(role));
-  }
-  return true;
-};
-
 export const views: ViewRoute[] = [
   // place routes below (more info https://hilla.dev/docs/routing)
   {
@@ -35,9 +23,7 @@ export const views: ViewRoute[] = [
     requiresLogin: true,
     icon: 'la la-globe',
     title: 'Hello World',
-    action: async (_context, _command) => {
-      return hasAccess(_context.route) ? _command.component('hello-world-view') : _command.redirect('login');
-    },
+    action: ssoKit.protectedView('hello-world-view'),
   },
   {
     path: 'about',
@@ -51,9 +37,7 @@ export const routes: ViewRoute[] = [
     path: 'login',
     icon: '',
     title: 'Login',
-    action: async (_context, _command) => {
-      location.href = ssoKit.mainLoginUrl;
-    },
+    action: ssoKit.loginView(),
   },
   {
     path: '',

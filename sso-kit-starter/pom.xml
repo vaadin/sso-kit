@@ -27,7 +27,7 @@
         </dependency>
         <dependency>
             <groupId>dev.hilla</groupId>
-            <artifactId>hilla</artifactId>
+            <artifactId>endpoint</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>

@@ -1,4 +1,5 @@
 import { logout, Subscription } from "@hilla/frontend";
+import { Commands, Context } from "@vaadin/router";
 import Message from "Frontend/generated/dev/hilla/sso/endpoint/BackChannelLogoutSubscription/Message";
 import User from "Frontend/generated/dev/hilla/sso/endpoint/User";
 import { SingleSignOnEndpoint } from "Frontend/generated/endpoints";
@@ -145,6 +146,18 @@ class SsoKit {
         }
 
         return true;
+    };
+
+    protectedView = (componentName: string) => {
+        return (context: Context, command: Commands) => {
+            return this.hasAccess(context.route as AccessControl) ? command.component(componentName) : command.redirect('login');
+        }
+    };
+
+    loginView = () => {
+        return (_context: Context, _command: Commands) => {
+            location.href = ssoKit.mainLoginUrl;
+        }
     };
 }
 

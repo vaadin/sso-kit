@@ -1,4 +1,5 @@
 import { RouterLocation } from '@vaadin/router';
+import { makeAutoObservable } from 'mobx';
 
 export class AppStore {
   applicationName = 'sso-kit-hilla-demo';
@@ -7,6 +8,10 @@ export class AppStore {
   location = '';
 
   currentViewTitle = '';
+
+  constructor() {
+    makeAutoObservable(this);
+  }
 
   setLocation(location: RouterLocation) {
     const serverSideRoute = location.route?.path == '(.*)';

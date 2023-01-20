@@ -63,7 +63,11 @@ public class Application ...
 
 ### Protect the Endpoint
 
-Hilla allows fine-grained authorization on Endpoints and Endpoint methods. You can use annotations like `@PermitAll` or `@RolesAllowed(...)` to declare who can access what.
+Hilla allows fine-grained authorization on spring.security.oauth2.client.provider.keycloak.issuer-uri=http://localhost:8081/realms/hilla-realm
+spring.security.oauth2.client.registration.keycloak.client-id=hilla-client
+spring.security.oauth2.client.registration.keycloak.client-secret=2Saez6fVQjRFEBpY1A6AZq9gvVXAQKmC
+spring.security.oauth2.client.registration.keycloak.scope=profile,openid,email,roles
+Endpoints and Endpoint methods. You can use annotations like `@PermitAll` or `@RolesAllowed(...)` to declare who can access what.
 
 To try this feature, replace the `@AnonymousAllowed` annotation in `HelloWorldEndpoint.java` with `@PermitAll`, so that unauthenticated users will be unable to access the whole Endpoint. You could also apply the same annotation at method level.
 
@@ -82,38 +86,12 @@ spring.security.oauth2.client.registration.keycloak.scope=profile,openid,email,r
 
 Start the application using the `./mvnw` command (`.\mvnw` on Windows), so that Hilla generates TypeScript files.
 
-Inside the `AppStore` class in `app-store.ts` add this code:
+To complement the enpoint, the SSO Kit provides a TypeScript library that you can use in your project. It will be released as an NPM module. In the meanwhile, just copy the `sso-kit.ts` file somewhere in your project.
+
+Routes are set up in the `frontend/index.ts` file, but we need to delay that until the login information has been fetched, so open the file and wrap the `setRoutes` call as follows:
 
 ```typescript
-user: User | undefined = undefined;
-logoutUrl: string | undefined = undefined;
-
-async fetchAuthInfo() {
-  const authInfo = await AuthEndpoint.getAuthInfo();
-  this.user = authInfo.user;
-  this.logoutUrl = authInfo.logoutUrl;
-}
-
-clearUserInfo() {
-  this.user = undefined;
-  this.logoutUrl = undefined;
-}
-
-get loggedIn() {
-  return !!this.user;
-}
-
-isUserInRole(role: string) {
-  return this.user?.roles?.includes(role);
-}
-```
-
-You should be able to add the missing imports automatically.
-
-Open the `frontend/index.ts` file and delay the router setup until the login information has been fetched by wrapping the `setRoutes` call as follows:
-
-```typescript
-appStore.fetchAuthInfo().finally(() => {
+ssoKit.fetchAuthInfo().finally(() => {
   // Ensure router access checks are not done before we know if we are logged in
   router.setRoutes(routes);
 });
@@ -123,61 +101,34 @@ appStore.fetchAuthInfo().finally(() => {
 
 As the `HelloWorldEndpoint` is now only accessible to registered users, it makes sense to also protect the view that uses it.
 
-Open the `frontend/routes.ts` file and enrich the `ViewRoute` type:
+Open the `frontend/routes.ts` file and add `AccessControl` to the `ViewRoute` type:
 
 ```typescript
-export type ViewRoute = Route & {
-  title?: string;
-  icon?: string;
-  children?: ViewRoute[];
-  // add the following two properties
-  requiresLogin?: boolean;
-  rolesAllowed?: string[];
-};
+export type ViewRoute = Route & AccessControl & {
+  ...
+}
 ```
 
-The `rolesAllowed` property is not used in this example, but it is good to have it, as you can protect views according to user roles, e.g. `rolesAllowed: ['admin', 'manager']`. Those roles must be configured in the SSO provider.
-
-Then add a function to determine is the user has access to the requested view:
-
-```typescript
-export const hasAccess = (route: Route) => {
-  const viewRoute = route as ViewRoute;
-  if (viewRoute.requiresLogin && !appStore.loggedIn) {
-    return false;
-  }
-
-  if (viewRoute.rolesAllowed) {
-    return viewRoute.rolesAllowed.some((role) => appStore.isUserInRole(role));
-  }
-  return true;
-};
-```
-
-Modify the `hello` path so that it requires login and redirects to the SSO Login page if needed:
+To protect a view, add `requiresLogin: true` to its parameters, and replace the `component` parameter with `action: ssoKit.protectedView('component-name')`. So, for example, the `hello` view becomes:
 
 ```typescript
 {
   path: 'hello',
   requiresLogin: true,
+  action: ssoKit.protectedView('hello-world-view'),
   icon: 'la la-globe',
   title: 'Hello World',
-  action: async (_context, _command) => {
-    return hasAccess(_context.route) ? _command.component('hello-world-view') : _command.redirect('login');
-  },
 },
 ```
 
-Add a `login` route to the exported routes:
+Add a `login` route to the exported routes (pay attention to add it to `routes` and not to `views`):
 
 ```typescript
 {
   path: 'login',
   icon: '',
   title: 'Login',
-  action: async (_context, _command) => {
-    location.href = '/oauth2/authorization/keycloak';
-  },
+  action: ssoKit.loginView(),
 },
 ```
 
@@ -187,59 +138,23 @@ Open `frontend/views/main-layout.ts` and add a login/logout button in the `foote
 
 ```html
 <footer slot="drawer">
-  ${appStore.user
-    ? html`
-        <vaadin-menu-bar
-          theme="tertiary-inline contrast"
-          .items="${this.getUserMenuItems(appStore.user)}"
-          @item-selected="${this.userMenuItemSelected}"
-        ></vaadin-menu-bar>
-      `
-    : html`<a router-ignore href="/oauth2/authorization/keycloak">Sign in</a>`
-    )}
+${ssoKit.user
+  ? html`
+      <div className="flex items-center gap-m">
+        ${ssoKit.user.fullName}
+      </div>
+      <vaadin-button @click="${ssoKit.logoutFromApp}">Sign out</vaadin-button>
+    `
+  : html`<a router-ignore href="${ssoKit.mainLoginUrl}">Sign in</a>`
+}
 </footer>
-```
-
-Add the needed functions:
-
-```typescript
-private getUserMenuItems(user: User): MenuBarItem[] {
-  return [
-    {
-      component: this.createUserMenuItem(user),
-      children: [{ text: 'Sign out' }],
-    },
-  ];
-}
-
-private createUserMenuItem(user: User) {
-  const item = document.createElement('div');
-  item.style.display = 'flex';
-  item.style.alignItems = 'center';
-  item.style.gap = 'var(--lumo-space-s)';
-  render( // Note: import the one from `lit`
-    html`
-      <span>${user.fullName}</span>
-      <vaadin-icon icon="lumo:dropdown"></vaadin-icon>
-    `,
-    item
-  );
-  return item;
-}
-
-private async userMenuItemSelected(e: MenuBarItemSelectedEvent) {
-  if (e.detail.value.text === 'Sign out') {
-    await logout(); // Logout on the server
-    appStore.logoutUrl && (location.href = appStore.logoutUrl); // Logout on the provider
-  }
-}
 ```
 
 Filter out protected views from the menu by modifying the `getMenuRoutes` function:
 
 ```typescript
 private getMenuRoutes(): RouteInfo[] {
-  return views.filter((route) => route.title).filter((route) => hasAccess(route)) as RouteInfo[];
+  return views.filter((route) => route.title).filter((route) => ssoKit.hasAccess(route)) as RouteInfo[];
 }
 ```
 
@@ -269,45 +184,7 @@ Restart your application to enable Push support.
 
 ### Modify the client application
 
-Open `app-store.ts` again and add the following properties:
-
-```typescript
-backChannelLogoutEnabled = false;
-backChannelLogoutHappened = false;
-private logoutSubscription: Subscription<string> | undefined;
-```
-
-Add more code to the `fetchAuthInfo` and `clearUserInfo` functions to store values and subscribe to notifications:
-
-```typescript
-async fetchAuthInfo() {
-  const authInfo = await AuthEndpoint.getAuthInfo();
-  this.user = authInfo.user;
-  this.logoutUrl = authInfo.logoutUrl;
-  this.backChannelLogoutEnabled = authInfo.backChannelLogoutEnabled;
-
-  if (this.user && this.backChannelLogoutEnabled) {
-    this.logoutSubscription = await AuthEndpoint.backChannelLogout();
-
-    this.logoutSubscription.onNext(async () => {
-      this.backChannelLogoutHappened = true;
-    });
-  }
-}
-
-clearUserInfo() {
-  this.user = undefined;
-  this.logoutUrl = undefined;
-  this.backChannelLogoutHappened = false;
-
-  if (this.logoutSubscription) {
-    this.logoutSubscription.cancel();
-    this.logoutSubscription = undefined;
-  }
-}
-```
-
-Now, go to `main-layout.ts` and add a Confirm Dialog to notify the user, just above the empty `slot`:
+Go to `main-layout.ts` and add a Confirm Dialog to notify the user, just above the empty `slot`:
 
 ```typescript
 import '@vaadin/confirm-dialog';
@@ -316,27 +193,13 @@ import '@vaadin/confirm-dialog';
 ```html
 <vaadin-confirm-dialog
   header="Logged out"
-  cancel
-  @confirm="${() => this.afterLogout(true)}"
-  @cancel="${() => this.afterLogout(false)}"
-  .opened="${appStore.backChannelLogoutHappened}"
+  cancel-button-visible
+  @confirm="${ssoKit.relogin}"
+  @cancel="${ssoKit.logoutFromProvider}"
+  .opened="${ssoKit.backChannelLogoutHappened}"
 >
   <p>You have been logged out. Do you want to log in again?</p>
-  <p>If you click on "Cancel", the application will not work correctly until you log in again.</p>
 </vaadin-confirm-dialog>
-```
-
-And add the related `afterLogout` function:
-
-```typescript
-private async afterLogout(loginAgain: boolean) {
-  if (loginAgain) {
-    location.href = '/oauth2/authorization/keycloak';
-  } else {
-    await logout(); // Logout on the server
-    appStore.clearUserInfo(); // Logout on the client
-  }
-}
 ```
 
 To test this functionality, you need to log into the application, then close your session externally, for example from the Keycloak administration console.
