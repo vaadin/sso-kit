@@ -1,25 +1,23 @@
 import { Route } from '@vaadin/router';
-import { appStore } from './stores/app-store';
+import { AccessControl, ssoKit } from './kit/sso-kit';
 import './views/about/about-view';
 import './views/helloworld/hello-world-view';
 import './views/main-layout';
 
-export type ViewRoute = Route & {
+export type ViewRoute = Route & AccessControl & {
   title?: string;
   icon?: string;
-  requiresLogin?: boolean;
-  rolesAllowed?: string[];
   children?: ViewRoute[];
 };
 
 export const hasAccess = (route: Route) => {
   const viewRoute = route as ViewRoute;
-  if (viewRoute.requiresLogin && !appStore.loggedIn) {
+  if (viewRoute.requiresLogin && !ssoKit.loggedIn) {
     return false;
   }
 
   if (viewRoute.rolesAllowed) {
-    return viewRoute.rolesAllowed.some((role) => appStore.isUserInRole(role));
+    return viewRoute.rolesAllowed.some((role) => ssoKit.isUserInRole(role));
   }
   return true;
 };
@@ -54,7 +52,7 @@ export const routes: ViewRoute[] = [
     icon: '',
     title: 'Login',
     action: async (_context, _command) => {
-      location.href = `/oauth2/authorization/${appStore.registeredProviders[0]}`;
+      location.href = ssoKit.mainLoginUrl;
     },
   },
   {

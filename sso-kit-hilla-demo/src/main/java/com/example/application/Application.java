@@ -10,8 +10,7 @@ import com.vaadin.flow.theme.Theme;
  * The entry point of the Spring Boot application.
  */
 @SpringBootApplication(scanBasePackages = { "com.example.application",
-        "com.vaadin.sso.starter", "dev.hilla.sso.starter",
-        "dev.hilla.sso.endpoint" })
+        "dev.hilla.sso" })
 @Theme(value = "sso-kit-hilla-demo")
 public class Application implements AppShellConfigurator {
 
