@@ -63,11 +63,7 @@ public class Application ...
 
 ### Protect the Endpoint
 
-Hilla allows fine-grained authorization on spring.security.oauth2.client.provider.keycloak.issuer-uri=http://localhost:8081/realms/hilla-realm
-spring.security.oauth2.client.registration.keycloak.client-id=hilla-client
-spring.security.oauth2.client.registration.keycloak.client-secret=2Saez6fVQjRFEBpY1A6AZq9gvVXAQKmC
-spring.security.oauth2.client.registration.keycloak.scope=profile,openid,email,roles
-Endpoints and Endpoint methods. You can use annotations like `@PermitAll` or `@RolesAllowed(...)` to declare who can access what.
+Hilla allows fine-grained authorization on Endpoints and Endpoint methods. You can use annotations like `@PermitAll` or `@RolesAllowed(...)` to declare who can access what.
 
 To try this feature, replace the `@AnonymousAllowed` annotation in `HelloWorldEndpoint.java` with `@PermitAll`, so that unauthenticated users will be unable to access the whole Endpoint. You could also apply the same annotation at method level.
 
