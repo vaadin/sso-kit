@@ -49,7 +49,7 @@ public class SingleSignOnEndpoint {
      */
     @AnonymousAllowed
     @Nonnull
-    public SingleSignOnData allData() {
+    public SingleSignOnData fetchAll() {
         SingleSignOnData data = new SingleSignOnData();
         data.setRegisteredProviders(context.getRegisteredProviders());
 

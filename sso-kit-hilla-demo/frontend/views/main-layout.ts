@@ -91,6 +91,6 @@ export class MainLayout extends Layout {
   }
 
   private getMenuRoutes(): RouteInfo[] {
-    return views.filter((route) => route.title).filter((route) => ssoKit.hasAccess(route)) as RouteInfo[];
+    return views.filter((route) => route.title).filter((route) => !ssoKit.isForbidden(route)) as RouteInfo[];
   }
 }

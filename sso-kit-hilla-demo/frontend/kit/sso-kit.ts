@@ -6,7 +6,7 @@ import { SingleSignOnEndpoint } from "Frontend/generated/endpoints";
 import { makeAutoObservable } from "mobx";
 
 type AccessControl = {
-    access: boolean;
+    allowed: boolean;
 }
 
 export function loginUrl(provider: string) {
@@ -55,7 +55,7 @@ class SsoKit {
      * Fetches the authentication information from the server
      */
     fetchAuthInfo = async () => {
-        const authInfo = await SingleSignOnEndpoint.allData();
+        const authInfo = await SingleSignOnEndpoint.fetchAll();
         this.user = authInfo.user;
         this.logoutUrl = authInfo.logoutUrl;
         this.registeredProviders = authInfo.registeredProviders;
@@ -149,13 +149,18 @@ class SsoKit {
     };
 
     private static _cmd: Commands = {
-        component: (_name: string) => ({ access: true } as unknown as ComponentResult),
-        redirect: (name: string) => ({ access: name !== 'login' } as unknown as RedirectResult),
+        component: (_name: string) => ({ allowed: true } as unknown as ComponentResult),
+        redirect: (name: string) => ({ allowed: name !== 'login' } as unknown as RedirectResult),
         prevent: () => ({} as PreventResult),
     };
 
-    hasAccess = (route: Route) => {
-        return !route.action || (route.action(SsoKit._ctx, SsoKit._cmd) as unknown as AccessControl).access;
+    isForbidden = (route: Route) => {
+        try {
+            return route.action && !(route.action(SsoKit._ctx, SsoKit._cmd) as unknown as AccessControl).allowed;
+        } catch (e: any) {
+            // error can happen when an action uses our mock context and command and expects some valid values
+            return false;
+        }
     }
 
     protectedView = (componentName: string, rolesAllowed?: string[]) => {
