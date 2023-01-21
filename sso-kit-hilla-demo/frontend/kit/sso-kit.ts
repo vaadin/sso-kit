@@ -1,14 +1,13 @@
 import { logout, Subscription } from "@hilla/frontend";
-import { Commands, Context } from "@vaadin/router";
+import { Commands, ComponentResult, Context, PreventResult, RedirectResult, Route } from "@vaadin/router";
 import Message from "Frontend/generated/dev/hilla/sso/endpoint/BackChannelLogoutSubscription/Message";
 import User from "Frontend/generated/dev/hilla/sso/endpoint/User";
 import { SingleSignOnEndpoint } from "Frontend/generated/endpoints";
 import { makeAutoObservable } from "mobx";
 
-export type AccessControl = {
-    requiresLogin?: boolean;
-    rolesAllowed?: string[];
-};
+type AccessControl = {
+    access: boolean;
+}
 
 export function loginUrl(provider: string) {
     return `/oauth2/authorization/${provider}`;
@@ -136,21 +135,38 @@ class SsoKit {
         return this.loginUrls[0].link;
     }
 
-    hasAccess = (route: AccessControl) => {
-        if (route.requiresLogin && !this.loggedIn) {
-            return false;
-        }
-
-        if (route.rolesAllowed) {
-            return route.rolesAllowed.some((role) => this.isUserInRole(role));
-        }
-
-        return true;
+    private static _ctx: Context = {
+        pathname: '',
+        params: {},
+        route: {
+            component: '',
+            path: '',
+            redirect: '',
+        },
+        search: '',
+        hash: '',
+        next: () => new Promise(() => null),
     };
 
-    protectedView = (componentName: string) => {
+    private static _cmd: Commands = {
+        component: (_name: string) => ({ access: true } as unknown as ComponentResult),
+        redirect: (name: string) => ({ access: name !== 'login' } as unknown as RedirectResult),
+        prevent: () => ({} as PreventResult),
+    };
+
+    hasAccess = (route: Route) => {
+        return !route.action || (route.action(SsoKit._ctx, SsoKit._cmd) as unknown as AccessControl).access;
+    }
+
+    protectedView = (componentName: string, rolesAllowed?: string[]) => {
         return (context: Context, command: Commands) => {
-            return this.hasAccess(context.route as AccessControl) ? command.component(componentName) : command.redirect('login');
+            let access = this.loggedIn;
+
+            if (rolesAllowed) {
+                access &&= rolesAllowed.some((role) => this.isUserInRole(role));
+            }
+
+            return access ? command.component(componentName) : command.redirect('login');
         }
     };
 

@@ -1,10 +1,10 @@
 import { Route } from '@vaadin/router';
-import { AccessControl, ssoKit } from './kit/sso-kit';
+import { ssoKit } from './kit/sso-kit';
 import './views/about/about-view';
 import './views/helloworld/hello-world-view';
 import './views/main-layout';
 
-export type ViewRoute = Route & AccessControl & {
+export type ViewRoute = Route & {
   title?: string;
   icon?: string;
   children?: ViewRoute[];
@@ -20,10 +20,9 @@ export const views: ViewRoute[] = [
   },
   {
     path: 'hello',
-    requiresLogin: true,
+    action: ssoKit.protectedView('hello-world-view'),
     icon: 'la la-globe',
     title: 'Hello World',
-    action: ssoKit.protectedView('hello-world-view'),
   },
   {
     path: 'about',

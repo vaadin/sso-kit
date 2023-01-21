@@ -95,22 +95,13 @@ ssoKit.fetchAuthInfo().finally(() => {
 
 ### Add access control to existing routes
 
-As the `HelloWorldEndpoint` is now only accessible to registered users, it makes sense to also protect the view that uses it.
+As the `HelloWorldEndpoint` is now only accessible to registered users, it makes sense to also protect the view that uses it. They can be found in the `frontend/routes.ts` file.
 
-Open the `frontend/routes.ts` file and add `AccessControl` to the `ViewRoute` type:
-
-```typescript
-export type ViewRoute = Route & AccessControl & {
-  ...
-}
-```
-
-To protect a view, add `requiresLogin: true` to its parameters, and replace the `component` parameter with `action: ssoKit.protectedView('component-name')`. So, for example, the `hello` view becomes:
+To protect a view, replace its `component` parameter with `action: ssoKit.protectedView('component-name')`. So, for example, the `hello` view becomes:
 
 ```typescript
 {
   path: 'hello',
-  requiresLogin: true,
   action: ssoKit.protectedView('hello-world-view'),
   icon: 'la la-globe',
   title: 'Hello World',
