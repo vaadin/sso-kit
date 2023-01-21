@@ -185,4 +185,17 @@ public class SingleSignOnContext {
                 .getPrincipal();
         return backChannelLogoutSubscription.getFluxForUser(principal);
     }
+
+    public SingleSignOnData getSingleSignOnData() {
+        SingleSignOnData data = new SingleSignOnData();
+        data.setRegisteredProviders(getRegisteredProviders());
+
+        SingleSignOnContext.getOidcUser().ifPresent(u -> {
+            data.setUser(User.from(u));
+            data.setLogoutUrl(getLogoutUrl().orElseThrow());
+            data.setBackChannelLogoutEnabled(isBackChannelLogoutEnabled());
+        });
+
+        return data;
+    }
 }

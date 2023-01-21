@@ -50,17 +50,7 @@ public class SingleSignOnEndpoint {
     @AnonymousAllowed
     @Nonnull
     public SingleSignOnData fetchAll() {
-        SingleSignOnData data = new SingleSignOnData();
-        data.setRegisteredProviders(context.getRegisteredProviders());
-
-        SingleSignOnContext.getOidcUser().ifPresent(u -> {
-            data.setUser(User.from(u));
-            data.setLogoutUrl(context.getLogoutUrl().orElseThrow());
-            data.setBackChannelLogoutEnabled(
-                    context.isBackChannelLogoutEnabled());
-        });
-
-        return data;
+        return context.getSingleSignOnData();
     }
 
     /**

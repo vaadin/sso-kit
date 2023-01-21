@@ -84,15 +84,6 @@ Start the application using the `./mvnw` command (`.\mvnw` on Windows), so that 
 
 To complement the enpoint, the SSO Kit provides a TypeScript library that you can use in your project. It will be released as an NPM module. In the meanwhile, just copy the `sso-kit.ts` file somewhere in your project.
 
-Routes are set up in the `frontend/index.ts` file, but we need to delay that until the login information has been fetched, so open the file and wrap the `setRoutes` call as follows:
-
-```typescript
-ssoKit.fetchAuthInfo().finally(() => {
-  // Ensure router access checks are not done before we know if we are logged in
-  router.setRoutes(routes);
-});
-```
-
 ### Add access control to existing routes
 
 As the `HelloWorldEndpoint` is now only accessible to registered users, it makes sense to also protect the view that uses it. They can be found in the `frontend/routes.ts` file.

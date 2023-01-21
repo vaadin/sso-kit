@@ -1,9 +1,17 @@
 import { logout, Subscription } from "@hilla/frontend";
 import { Commands, ComponentResult, Context, PreventResult, RedirectResult, Route } from "@vaadin/router";
 import Message from "Frontend/generated/dev/hilla/sso/endpoint/BackChannelLogoutSubscription/Message";
+import SingleSignOnData from "Frontend/generated/dev/hilla/sso/endpoint/SingleSignOnData";
 import User from "Frontend/generated/dev/hilla/sso/endpoint/User";
 import { SingleSignOnEndpoint } from "Frontend/generated/endpoints";
 import { makeAutoObservable } from "mobx";
+import { Buffer } from "buffer";
+
+declare global {
+  const Hilla: {
+    BootstrapSSO?: string;
+  };
+}
 
 type AccessControl = {
   allowed: boolean;
@@ -49,13 +57,8 @@ class SsoKit {
 
   constructor() {
     makeAutoObservable(this);
-  }
-
-  /**
-   * Fetches the authentication information from the server
-   */
-  fetchAuthInfo = async () => {
-    const authInfo = await SingleSignOnEndpoint.fetchAll();
+ 
+    const authInfo = JSON.parse(Buffer.from(Hilla.BootstrapSSO!, 'base64').toString('utf-8')) as SingleSignOnData;
     this.user = authInfo.user;
     this.logoutUrl = authInfo.logoutUrl;
     this.registeredProviders = authInfo.registeredProviders;
