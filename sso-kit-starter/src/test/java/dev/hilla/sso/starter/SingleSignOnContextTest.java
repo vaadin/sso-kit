@@ -7,7 +7,7 @@
  * See <https://vaadin.com/commercial-license-and-service-terms> for the full
  * license.
  */
-package dev.hilla.sso.endpoint;
+package dev.hilla.sso.starter;
 
 import java.util.List;
 

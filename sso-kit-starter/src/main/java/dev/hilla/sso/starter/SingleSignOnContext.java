@@ -7,7 +7,7 @@
  * See <https://vaadin.com/commercial-license-and-service-terms> for the full
  * license.
  */
-package dev.hilla.sso.endpoint;
+package dev.hilla.sso.starter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +15,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -38,6 +39,9 @@ import reactor.core.publisher.Flux;
  */
 @Component
 public class SingleSignOnContext {
+
+    private static final String ROLE_PREFIX = "ROLE_";
+    private static final int ROLE_PREFIX_LENGTH = ROLE_PREFIX.length();
 
     private final ClientRegistrationRepository clientRegistrationRepository;
 
@@ -191,11 +195,19 @@ public class SingleSignOnContext {
         data.setRegisteredProviders(getRegisteredProviders());
 
         SingleSignOnContext.getOidcUser().ifPresent(u -> {
-            data.setUser(User.from(u));
+            data.setAuthenticated(true);
+            data.setRoles(userRoles(u));
             data.setLogoutUrl(getLogoutUrl().orElseThrow());
             data.setBackChannelLogoutEnabled(isBackChannelLogoutEnabled());
         });
 
         return data;
+    }
+
+    public static List<String> userRoles(OidcUser user) {
+        return user.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .filter(a -> a.startsWith(ROLE_PREFIX))
+                .map(a -> a.substring(ROLE_PREFIX_LENGTH)).toList();
     }
 }

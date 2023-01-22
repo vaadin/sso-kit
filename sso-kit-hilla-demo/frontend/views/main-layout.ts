@@ -49,13 +49,8 @@ export class MainLayout extends Layout {
         </vaadin-scroller>
 
         <footer slot="drawer">
-          ${ssoKit.user
-            ? html`
-                <div className="flex items-center gap-m">
-                  ${ssoKit.user.fullName}
-                </div>
-                <vaadin-button @click="${ssoKit.logoutFromApp}">Sign out</vaadin-button>
-              `
+          ${ssoKit.authenticated
+            ? html`<vaadin-button @click="${ssoKit.logoutFromApp}">Sign out</vaadin-button>`
             : ssoKit.loginUrls.map(
               client => html`<a router-ignore href="${client.link}">Sign in with ${client.name}</a>`
             )}

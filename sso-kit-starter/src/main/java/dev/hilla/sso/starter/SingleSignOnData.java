@@ -7,7 +7,7 @@
  * See <https://vaadin.com/commercial-license-and-service-terms> for the full
  * license.
  */
-package dev.hilla.sso.endpoint;
+package dev.hilla.sso.starter;
 
 import java.util.List;
 
@@ -18,17 +18,28 @@ import dev.hilla.Nonnull;
  * session.
  */
 public class SingleSignOnData {
-    private User user;
+
+    private boolean authenticated;
+    private @Nonnull List<@Nonnull String> roles = List.of();
     private String logoutUrl;
     private @Nonnull List<@Nonnull String> registeredProviders = List.of();
     private boolean backChannelLogoutEnabled;
 
-    public User getUser() {
-        return user;
+    public boolean isAuthenticated() {
+        return authenticated;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setAuthenticated(boolean authenticated) {
+        this.authenticated = authenticated;
+    }
+
+    @Nonnull
+    public List<@Nonnull String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(@Nonnull List<@Nonnull String> roles) {
+        this.roles = roles;
     }
 
     public String getLogoutUrl() {

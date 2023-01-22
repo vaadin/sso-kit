@@ -1,16 +1,20 @@
 import { logout, Subscription } from "@hilla/frontend";
 import { Commands, ComponentResult, Context, PreventResult, RedirectResult, Route } from "@vaadin/router";
-import Message from "Frontend/generated/dev/hilla/sso/endpoint/BackChannelLogoutSubscription/Message";
-import SingleSignOnData from "Frontend/generated/dev/hilla/sso/endpoint/SingleSignOnData";
-import User from "Frontend/generated/dev/hilla/sso/endpoint/User";
-import { SingleSignOnEndpoint } from "Frontend/generated/endpoints";
-import { makeAutoObservable } from "mobx";
 import { Buffer } from "buffer";
+import { makeAutoObservable } from "mobx";
 
 declare global {
   const Hilla: {
     BootstrapSSO?: string;
   };
+}
+
+type BootstrapData = {
+  authenticated: boolean;
+  roles: string[];
+  logoutUrl: string | undefined;
+  registeredProviders: string[];
+  backChannelLogoutEnabled: boolean;
 }
 
 type AccessControl = {
@@ -25,10 +29,9 @@ export function loginUrl(provider: string) {
  * A store for authentication information
  */
 class SsoKit {
-  /**
-   * The currently logged in user. If undefined, the user is not logged in.
-   */
-  user: User | undefined = undefined;
+  authenticated = false;
+
+  roles: string[] = [];
 
   /**
    * A list of authentication providers. The first provider is the main provider.
@@ -53,22 +56,25 @@ class SsoKit {
   /**
    * The subscription to the back-channel logout event
    */
-  private logoutSubscription: Subscription<Message> | undefined;
+  private logoutSubscription: Subscription<any> | undefined;
 
   constructor() {
     makeAutoObservable(this);
- 
-    const authInfo = JSON.parse(Buffer.from(Hilla.BootstrapSSO!, 'base64').toString('utf-8')) as SingleSignOnData;
-    this.user = authInfo.user;
+
+    const authInfo = JSON.parse(Buffer.from(Hilla.BootstrapSSO!, 'base64').toString('utf-8')) as BootstrapData;
+    this.authenticated = authInfo.authenticated;
+    this.roles = authInfo.roles;
     this.logoutUrl = authInfo.logoutUrl;
     this.registeredProviders = authInfo.registeredProviders;
     this.backChannelLogoutEnabled = authInfo.backChannelLogoutEnabled;
 
-    if (this.user && this.backChannelLogoutEnabled) {
-      this.logoutSubscription = SingleSignOnEndpoint.backChannelLogoutSubscription();
+    if (this.authenticated && this.backChannelLogoutEnabled) {
+      import("Frontend/generated/BackChannelLogoutEndpoint").then((endpoint) => {
+        this.logoutSubscription = endpoint.subscribe();
 
-      this.logoutSubscription.onNext(async () => {
-        this.backChannelLogoutHappened = true;
+        this.logoutSubscription.onNext(async () => {
+          this.backChannelLogoutHappened = true;
+        });
       });
     }
   }
@@ -77,7 +83,7 @@ class SsoKit {
    * Clears the authentication information
    */
   clearUserInfo = () => {
-    this.user = undefined;
+    this.authenticated = false;
     this.logoutUrl = undefined;
     this.backChannelLogoutHappened = false;
 
@@ -91,7 +97,7 @@ class SsoKit {
    * Returns true if the user is logged in
    */
   get loggedIn() {
-    return !!this.user;
+    return this.authenticated;
   }
 
   /**
@@ -100,7 +106,7 @@ class SsoKit {
    * @returns true if the user has the given role
    */
   isUserInRole = (role: string) => {
-    return this.user?.roles?.includes(role);
+    return this.roles.includes(role);
   }
 
   /**
