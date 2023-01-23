@@ -69,10 +69,11 @@ class SsoKit {
     this.backChannelLogoutEnabled = authInfo.backChannelLogoutEnabled;
 
     if (this.authenticated && this.backChannelLogoutEnabled) {
+      // @ts-ignore: the imported file might not exist, but in that case backChannelLogoutEnabled will be false
       import("Frontend/generated/BackChannelLogoutEndpoint").then((endpoint) => {
         this.logoutSubscription = endpoint.subscribe();
 
-        this.logoutSubscription.onNext(async () => {
+        this.logoutSubscription!.onNext(async () => {
           this.backChannelLogoutHappened = true;
         });
       });

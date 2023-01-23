@@ -11,7 +11,7 @@ This guide explains how to add both authentication and SSO Kit to an existing Hi
 Create a Hilla application using this command:
 
 ```bash
-npx @hilla/cli init hilla-sso
+npx @hilla/cli@latest init --next hilla-sso
 ```
 
 ### Add dependencies
@@ -41,17 +41,18 @@ Add the `sso-kit-starter` module and the other required dependencies to the `pom
 
 Then add authentication to your application as explained in the [relevant section of the Hilla documentation](https://hilla.dev/docs/lit/guides/security). While all the details are explained there, let's walk the necessary steps in sequence.
 
-### Add a Hilla Endpoint
+### Configure the SSO provider in Spring
 
-An [AuthEndpoint](sso-kit-hilla-starter/src/main/java/dev/hilla/sso/endpoint/AuthEndpoint.java) is already included in the kit. To use it, you must [enable the new Hilla multi-module engine](https://hilla.dev/docs/lit/reference/configuration/#java-compiler-options). The easiest way to enable it is to create (or modify) the `src/main/resources/vaadin-featureflags.properties` file and add this line:
+As a provider is needed, let's suppose you have a local Keycloak running on your machine on port 8081. Get the realm name, the client name, and the client secret and add those values to your `application.properties` file:
 
 ```properties
-com.vaadin.experimental.hillaEngine=true
+spring.security.oauth2.client.provider.keycloak.issuer-uri=http://localhost:8081/realms/your-realm
+spring.security.oauth2.client.registration.keycloak.client-id=your-client
+spring.security.oauth2.client.registration.keycloak.client-secret=your-secret
+spring.security.oauth2.client.registration.keycloak.scope=profile,openid,email,roles
 ```
 
-Otherwise, or if you want to customize the returned data, copy the [whole package](https://github.com/vaadin/sso-kit-hilla/tree/main/sso-kit-hilla-starter/src/main/java/dev/hilla/sso/endpoint) into your application and modify it.
-
-Unless you use the same package name as for your application (by default it is `com.example.application` in generated Hilla projects), you have to whitelist your package in Spring Boot for Hilla to be able to find the Endpoint. Open your `Application.java` and add the package to the annotation:
+### Scan Kit package
 
 ```java
 @SpringBootApplication(scanBasePackages = {
@@ -65,24 +66,15 @@ public class Application ...
 
 Hilla allows fine-grained authorization on Endpoints and Endpoint methods. You can use annotations like `@PermitAll` or `@RolesAllowed(...)` to declare who can access what.
 
-To try this feature, replace the `@AnonymousAllowed` annotation in `HelloWorldEndpoint.java` with `@PermitAll`, so that unauthenticated users will be unable to access the whole Endpoint. You could also apply the same annotation at method level.
+The generated application contains an example of an Endpoint, named `HelloWorldEndpoint.java`. To protect it, open the file and replace the `@AnonymousAllowed` annotation with `@PermitAll`, so that unauthenticated users will be unable to access the whole Endpoint. You could also apply the same annotation at method level.
 
-### Configure the SSO provider in Spring
+### Add the TypeScript library
 
-As a provider is needed, let's suppose you have a local Keycloak running on your machine on port 8081. Get a realm name, a client name, and the client secret and add those values to your `application.properties` file:
+The SSO Kit will contain a TypeScript library for Hilla. Before it's ready, copy the `sso-kit.ts` file from the example application to your application.
 
-```properties
-spring.security.oauth2.client.provider.keycloak.issuer-uri=http://localhost:8081/realms/your-realm
-spring.security.oauth2.client.registration.keycloak.client-id=your-client
-spring.security.oauth2.client.registration.keycloak.client-secret=your-secret
-spring.security.oauth2.client.registration.keycloak.scope=profile,openid,email,roles
-```
-
-### Use the Endpoint
+### Start the application
 
 Start the application using the `./mvnw` command (`.\mvnw` on Windows), so that Hilla generates TypeScript files.
-
-To complement the enpoint, the SSO Kit provides a TypeScript library that you can use in your project. It will be released as an NPM module. In the meanwhile, just copy the `sso-kit.ts` file somewhere in your project.
 
 ### Add access control to existing routes
 
@@ -93,7 +85,7 @@ To protect a view, replace its `component` parameter with `action: ssoKit.protec
 ```typescript
 {
   path: 'hello',
-  action: ssoKit.protectedView('hello-world-view'),
+  action: ssoKit.protectedView('hello-world-view'), // this line has been modified
   icon: 'la la-globe',
   title: 'Hello World',
 },
@@ -116,15 +108,12 @@ Open `frontend/views/main-layout.ts` and add a login/logout button in the `foote
 
 ```html
 <footer slot="drawer">
-${ssoKit.user
-  ? html`
-      <div className="flex items-center gap-m">
-        ${ssoKit.user.fullName}
-      </div>
-      <vaadin-button @click="${ssoKit.logoutFromApp}">Sign out</vaadin-button>
-    `
-  : html`<a router-ignore href="${ssoKit.mainLoginUrl}">Sign in</a>`
-}
+          ${ssoKit.authenticated
+            ? html`<vaadin-button @click="${ssoKit.logoutFromApp}">Sign out</vaadin-button>`
+            : ssoKit.loginUrls.map(
+              client => html`<a router-ignore href="${client.link}">Sign in with ${client.name}</a>`
+            )
+          }
 </footer>
 ```
 
@@ -139,6 +128,26 @@ private getMenuRoutes(): RouteInfo[] {
 Try to customize your views further, for example to change the root view to not use `hello-world`, which is protected, or to add a new view.
 
 Now test the application: log in, log out, and try to use the Endpoint by clicking on the "Say hello" button in both cases.
+
+### Add a Hilla Endpoint
+
+An [AuthEndpoint](sso-kit-hilla-starter/src/main/java/dev/hilla/sso/endpoint/AuthEndpoint.java) is already included in the kit. To use it, you must [enable the new Hilla multi-module engine](https://hilla.dev/docs/lit/reference/configuration/#java-compiler-options). The easiest way to enable it is to create (or modify) the `src/main/resources/vaadin-featureflags.properties` file and add this line:
+
+```properties
+com.vaadin.experimental.hillaEngine=true
+```
+
+
+
+
+
+Otherwise, or if you want to customize the returned data, copy the [whole package](https://github.com/vaadin/sso-kit-hilla/tree/main/sso-kit-hilla-starter/src/main/java/dev/hilla/sso/endpoint) into your application and modify it.
+
+Unless you use the same package name as for your application (by default it is `com.example.application` in generated Hilla projects), you have to whitelist your package in Spring Boot for Hilla to be able to find the Endpoint. Open your `Application.java` and add the package to the annotation:
+
+### Use the Endpoint
+
+To complement the enpoint, the SSO Kit provides a TypeScript library that you can use in your project. It will be released as an NPM module. In the meanwhile, just copy the `sso-kit.ts` file somewhere in your project.
 
 ## Add support for Back-Channel Logout
 

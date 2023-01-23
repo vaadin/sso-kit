@@ -15,12 +15,15 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.internal.JsonUtils;
 import com.vaadin.flow.server.VaadinServiceInitListener;
 
 import elemental.json.JsonValue;
 
 @Component
+// Used to decode Base64 in the browser
+@NpmPackage(value = "buffer", version = "^6.0.3")
 public class BootstrapDataServiceListener implements VaadinServiceInitListener {
 
     private final SingleSignOnContext singleSignOnContext;

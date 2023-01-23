@@ -53,7 +53,8 @@ export class MainLayout extends Layout {
             ? html`<vaadin-button @click="${ssoKit.logoutFromApp}">Sign out</vaadin-button>`
             : ssoKit.loginUrls.map(
               client => html`<a router-ignore href="${client.link}">Sign in with ${client.name}</a>`
-            )}
+            )
+          }
         </footer>
 
         <vaadin-drawer-toggle slot="navbar" aria-label="Menu toggle"></vaadin-drawer-toggle>
