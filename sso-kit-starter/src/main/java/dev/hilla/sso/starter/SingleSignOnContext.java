@@ -97,6 +97,7 @@ public class SingleSignOnContext {
      * @return a list of identifiers of the registered OAuth2 providers, as
      *         defined in the application properties.
      */
+    @Nonnull
     public List<@Nonnull String> getRegisteredProviders() {
         // Use the Optional pattern to walk the client registration repository
         // down to the client registrations
@@ -129,7 +130,7 @@ public class SingleSignOnContext {
      *
      * @return the URL of the back-channel logout endpoint as an Optional.
      */
-    public Optional<String> getLogoutUrl() {
+    public Optional<String> getLogoutLink() {
         // Use the Optional pattern to walk the security context and get the
         // authentication token
         return Optional.of(SecurityContextHolder.getContext())
@@ -137,10 +138,10 @@ public class SingleSignOnContext {
                 .filter(OAuth2AuthenticationToken.class::isInstance)
                 .map(OAuth2AuthenticationToken.class::cast)
                 // build the URL from the token
-                .map(token -> buildLogoutUrl(token));
+                .map(token -> buildLogoutLink(token));
     }
 
-    private String buildLogoutUrl(
+    private String buildLogoutLink(
             OAuth2AuthenticationToken authenticationToken) {
         // Build the logout URL according to the OpenID Connect specification
         var registrationId = authenticationToken
@@ -192,12 +193,12 @@ public class SingleSignOnContext {
 
     public SingleSignOnData getSingleSignOnData() {
         SingleSignOnData data = new SingleSignOnData();
-        data.setRegisteredProviders(getRegisteredProviders());
+        data.setLoginLink(properties.getLoginRoute());
 
         SingleSignOnContext.getOidcUser().ifPresent(u -> {
             data.setAuthenticated(true);
             data.setRoles(userRoles(u));
-            data.setLogoutUrl(getLogoutUrl().orElseThrow());
+            data.setLogoutLink(getLogoutLink().orElseThrow());
             data.setBackChannelLogoutEnabled(isBackChannelLogoutEnabled());
         });
 

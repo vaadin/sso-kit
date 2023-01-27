@@ -21,8 +21,8 @@ public class SingleSignOnData {
 
     private boolean authenticated;
     private @Nonnull List<@Nonnull String> roles = List.of();
-    private String logoutUrl;
-    private @Nonnull List<@Nonnull String> registeredProviders = List.of();
+    private @Nonnull String loginLink = "";
+    private String logoutLink;
     private boolean backChannelLogoutEnabled;
 
     public boolean isAuthenticated() {
@@ -42,22 +42,21 @@ public class SingleSignOnData {
         this.roles = roles;
     }
 
-    public String getLogoutUrl() {
-        return logoutUrl;
-    }
-
-    public void setLogoutUrl(String logoutUrl) {
-        this.logoutUrl = logoutUrl;
-    }
-
     @Nonnull
-    public List<@Nonnull String> getRegisteredProviders() {
-        return registeredProviders;
+    public String getLoginLink() {
+        return loginLink;
     }
 
-    public void setRegisteredProviders(
-            @Nonnull List<@Nonnull String> registeredProviders) {
-        this.registeredProviders = registeredProviders;
+    public void setLoginLink(@Nonnull String loginLink) {
+        this.loginLink = loginLink;
+    }
+
+    public String getLogoutLink() {
+        return logoutLink;
+    }
+
+    public void setLogoutLink(String logoutLink) {
+        this.logoutLink = logoutLink;
     }
 
     public boolean isBackChannelLogoutEnabled() {
