@@ -28,6 +28,8 @@ import org.springframework.security.web.savedrequest.RequestCache;
 
 import com.vaadin.flow.spring.security.VaadinSavedRequestAwareAuthenticationSuccessHandler;
 import com.vaadin.flow.spring.security.VaadinWebSecurity;
+import com.vaadin.sso.core.BackChannelLogoutFilter;
+import com.vaadin.sso.core.SingleSignOnProperties;
 
 /**
  * This configuration bean is provided to auto-configure Vaadin and Spring to

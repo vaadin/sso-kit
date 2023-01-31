@@ -7,7 +7,7 @@
  * See <https://vaadin.com/commercial-license-and-service-terms> for the full
  * license.
  */
-package com.vaadin.sso.starter;
+package dev.hilla.sso.starter;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,6 +44,7 @@ public class SingleSignOnConfigurationTest {
                         AutoConfigurations.of(SpringBootAutoConfiguration.class,
                                 SpringSecurityAutoConfiguration.class,
                                 SingleSignOnConfiguration.class,
+                                SingleSignOnProperties.class,
                                 SingleSignOnDefaultBeans.class))
                 .withPropertyValues(
                         "spring.security.oauth2.client.registration.foo.client-id=foo")
@@ -55,27 +56,6 @@ public class SingleSignOnConfigurationTest {
     public void autoConfigureProperty_notSet_configurationEnabled() {
         contextRunner.run(ctx -> {
             assertThat(ctx).hasSingleBean(SingleSignOnConfiguration.class);
-        });
-    }
-
-    @Test
-    public void autoConfigureProperty_isFalse_configurationDisabled() {
-        contextRunner.withPropertyValues("vaadin.sso.auto-configure=false")
-                .run(ctx -> {
-                    assertThat(ctx)
-                            .doesNotHaveBean(SingleSignOnConfiguration.class);
-                });
-    }
-
-    @Test
-    public void clientRepository_notAvailable_configurationDisabled() {
-        final var runner = new WebApplicationContextRunner().withConfiguration(
-                AutoConfigurations.of(SpringBootAutoConfiguration.class,
-                        SpringSecurityAutoConfiguration.class,
-                        SingleSignOnConfiguration.class,
-                        SingleSignOnDefaultBeans.class));
-        runner.run(ctx -> {
-            assertThat(ctx).doesNotHaveBean(SingleSignOnConfiguration.class);
         });
     }
 
