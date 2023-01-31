@@ -36,7 +36,7 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
     /**
      * Creates an instance of this configuration bean.
      *
-     * @param properties
+     * @param hillaSingleSignOnProperties
      *            the configuration properties
      * @param sessionRegistry
      *            the session registry
@@ -45,11 +45,11 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
      * @param eventPublisher
      *            the event publisher for logout events
      */
-    public SingleSignOnConfiguration(SingleSignOnProperties properties,
+    public SingleSignOnConfiguration(SingleSignOnProperties hillaSingleSignOnProperties,
             SessionRegistry sessionRegistry,
             ClientRegistrationRepository clientRegistrationRepository,
             ApplicationEventPublisher eventPublisher) {
-        this.properties = properties;
+        this.properties = hillaSingleSignOnProperties;
         this.sessionRegistry = sessionRegistry;
         backChannelLogoutFilter = new BackChannelLogoutFilter(sessionRegistry,
                 clientRegistrationRepository, eventPublisher);

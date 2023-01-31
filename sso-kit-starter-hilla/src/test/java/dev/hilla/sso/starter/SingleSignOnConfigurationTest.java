@@ -71,7 +71,7 @@ public class SingleSignOnConfigurationTest {
 
     @Test
     public void loginRouteProperty_hasCustomValue() {
-        contextRunner.withPropertyValues("vaadin.sso.login-route=/custom")
+        contextRunner.withPropertyValues("hilla.sso.login-route=/custom")
                 .run(ctx -> {
                     var loginRoute = ctx.getBean(SingleSignOnProperties.class)
                             .getLoginRoute();

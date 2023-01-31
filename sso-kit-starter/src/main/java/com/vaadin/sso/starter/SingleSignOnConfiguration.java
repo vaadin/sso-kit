@@ -14,7 +14,6 @@ import java.util.Objects;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.security.oauth2.client.ClientsConfiguredCondition;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,6 +28,7 @@ import org.springframework.security.web.savedrequest.RequestCache;
 import com.vaadin.flow.spring.security.VaadinSavedRequestAwareAuthenticationSuccessHandler;
 import com.vaadin.flow.spring.security.VaadinWebSecurity;
 import com.vaadin.sso.core.BackChannelLogoutFilter;
+import com.vaadin.sso.core.PropertiesConfiguration;
 import com.vaadin.sso.core.SingleSignOnProperties;
 
 /**
@@ -50,8 +50,7 @@ import com.vaadin.sso.core.SingleSignOnProperties;
 @AutoConfiguration
 @EnableWebSecurity
 @Conditional(ClientsConfiguredCondition.class)
-@ConditionalOnProperty(name = "auto-configure", prefix = SingleSignOnProperties.PREFIX, matchIfMissing = true)
-@EnableConfigurationProperties(SingleSignOnProperties.class)
+@ConditionalOnProperty(name = "auto-configure", prefix = PropertiesConfiguration.VAADIN_SSO_PREFIX, matchIfMissing = true)
 public class SingleSignOnConfiguration extends VaadinWebSecurity {
 
     private final SingleSignOnProperties properties;
@@ -67,7 +66,7 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
     /**
      * Creates an instance of this configuration bean.
      *
-     * @param properties
+     * @param vaadinSingleSignOnProperties
      *            the configuration properties
      * @param sessionRegistry
      *            the session registry
@@ -76,11 +75,11 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
      * @param eventPublisher
      *            the event-publisher
      */
-    public SingleSignOnConfiguration(SingleSignOnProperties properties,
+    public SingleSignOnConfiguration(SingleSignOnProperties vaadinSingleSignOnProperties,
             SessionRegistry sessionRegistry,
             ClientRegistrationRepository clientRegistrationRepository,
             ApplicationEventPublisher eventPublisher) {
-        this.properties = properties;
+        this.properties = vaadinSingleSignOnProperties;
         this.sessionRegistry = sessionRegistry;
         this.loginSuccessHandler = new VaadinSavedRequestAwareAuthenticationSuccessHandler();
         this.logoutSuccessHandler = new OidcClientInitiatedLogoutSuccessHandler(

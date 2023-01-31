@@ -51,13 +51,13 @@ public class SingleSignOnContext {
 
     public SingleSignOnContext(
             ClientRegistrationRepository clientRegistrationRepository,
-            SingleSignOnProperties properties,
+            SingleSignOnProperties hillaSingleSignOnProperties,
             BackChannelLogoutSubscription backChannelLogoutSubscription) {
         Objects.requireNonNull(clientRegistrationRepository);
-        Objects.requireNonNull(properties);
+        Objects.requireNonNull(hillaSingleSignOnProperties);
         Objects.requireNonNull(backChannelLogoutSubscription);
         this.clientRegistrationRepository = clientRegistrationRepository;
-        this.properties = properties;
+        this.properties = hillaSingleSignOnProperties;
         this.backChannelLogoutSubscription = backChannelLogoutSubscription;
     }
 
@@ -138,7 +138,7 @@ public class SingleSignOnContext {
                 .filter(OAuth2AuthenticationToken.class::isInstance)
                 .map(OAuth2AuthenticationToken.class::cast)
                 // build the URL from the token
-                .map(token -> buildLogoutLink(token));
+                .map(this::buildLogoutLink);
     }
 
     private String buildLogoutLink(

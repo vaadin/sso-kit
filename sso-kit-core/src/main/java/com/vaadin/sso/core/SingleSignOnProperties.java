@@ -9,21 +9,13 @@
  */
 package com.vaadin.sso.core;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
 /**
  * Definition of configuration properties for the SSO Kit starter.
  *
  * @author Vaadin Ltd
  * @since 1.0
  */
-@ConfigurationProperties(prefix = SingleSignOnProperties.PREFIX)
 public class SingleSignOnProperties {
-
-    /**
-     * The prefix for SSO Kit starter properties.
-     */
-    public static final String PREFIX = "vaadin.sso";
 
     /**
      * The default login route. Unauthorized requests will be redirected to this
