@@ -191,6 +191,12 @@ public class SingleSignOnContext {
         return backChannelLogoutSubscription.getFluxForUser(principal);
     }
 
+    /**
+     * Returns the data for the single sign-on, to be used to get everything
+     * with a single request.
+     *
+     * @return the data for the single sign-on.
+     */
     public SingleSignOnData getSingleSignOnData() {
         SingleSignOnData data = new SingleSignOnData();
         data.setLoginLink(properties.getLoginRoute());
@@ -205,6 +211,13 @@ public class SingleSignOnContext {
         return data;
     }
 
+    /**
+     * Returns the roles of the user, converted by removing the standard prefix.
+     *
+     * @param user
+     *            the OIDC user.
+     * @return the roles of the user.
+     */
     public static List<String> userRoles(OidcUser user) {
         return user.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)

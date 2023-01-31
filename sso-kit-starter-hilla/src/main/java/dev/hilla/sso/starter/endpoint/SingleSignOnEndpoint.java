@@ -18,6 +18,9 @@ import dev.hilla.Nonnull;
 import dev.hilla.sso.starter.SingleSignOnContext;
 import dev.hilla.sso.starter.SingleSignOnData;
 
+/**
+ * Endpoint for fetching the SSO data
+ */
 @Endpoint
 @AnonymousAllowed
 public class SingleSignOnEndpoint {
@@ -28,11 +31,22 @@ public class SingleSignOnEndpoint {
         this.singleSignOnContext = singleSignOnContext;
     }
 
+    /**
+     * Fetches the essential SSO data in a single call
+     *
+     * @return the SSO data
+     */
     @Nonnull
     public SingleSignOnData fetchAll() {
         return singleSignOnContext.getSingleSignOnData();
     }
 
+    /**
+     * Gets a list of the registered SSO providers
+     *
+     * @return a list of the registered SSO providers, as defined in the
+     *         application properties
+     */
     @Nonnull
     public List<@Nonnull String> getRegisteredProviders() {
         return singleSignOnContext.getRegisteredProviders();

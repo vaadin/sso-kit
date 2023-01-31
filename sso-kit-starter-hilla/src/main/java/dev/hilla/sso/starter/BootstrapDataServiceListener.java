@@ -19,6 +19,9 @@ import com.vaadin.flow.server.VaadinServiceInitListener;
 
 import elemental.json.JsonValue;
 
+/**
+ * This class is responsible for injecting the SSO data into the index.html
+ */
 @Component
 public class BootstrapDataServiceListener implements VaadinServiceInitListener {
 
@@ -38,6 +41,7 @@ public class BootstrapDataServiceListener implements VaadinServiceInitListener {
                     window.Hilla.SSO = JSON.parse("%s");
                     """.formatted(quotesEscaped(json(data)));
 
+            // Use DataNode() instead of text() to avoid escaping the script
             var scriptNode = indexHtmlResponse.getDocument()
                     .createElement("script").appendChild(new DataNode(script));
             indexHtmlResponse.getDocument().body().appendChild(scriptNode);
