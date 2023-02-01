@@ -8,6 +8,8 @@
         <version>2.0-SNAPSHOT</version>
     </parent>
 
+    <name>sso-kit-starter-flow</name>
+
     <artifactId>sso-kit-starter</artifactId>
 
     <properties>
