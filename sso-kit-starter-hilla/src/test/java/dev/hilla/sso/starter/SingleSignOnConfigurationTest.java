@@ -7,7 +7,7 @@
  * See <https://vaadin.com/commercial-license-and-service-terms> for the full
  * license.
  */
-package com.vaadin.sso.starter;
+package dev.hilla.sso.starter;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,7 +58,7 @@ public class SingleSignOnConfigurationTest {
 
     @Test
     public void autoConfigureProperty_isFalse_configurationDisabled() {
-        contextRunner.withPropertyValues("vaadin.sso.auto-configure=false")
+        contextRunner.withPropertyValues("hilla.sso.auto-configure=false")
                 .run(ctx -> {
                     assertThat(ctx)
                             .doesNotHaveBean(SingleSignOnConfiguration.class);
@@ -89,7 +89,7 @@ public class SingleSignOnConfigurationTest {
 
     @Test
     public void loginRouteProperty_hasCustomValue() {
-        contextRunner.withPropertyValues("vaadin.sso.login-route=/custom")
+        contextRunner.withPropertyValues("hilla.sso.login-route=/custom")
                 .run(ctx -> {
                     var loginRoute = ctx.getBean(SingleSignOnProperties.class)
                             .getLoginRoute();

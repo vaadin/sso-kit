@@ -7,7 +7,7 @@
  * See <https://vaadin.com/commercial-license-and-service-terms> for the full
  * license.
  */
-package com.vaadin.sso.starter;
+package dev.hilla.sso.starter;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -25,5 +25,5 @@ public class SingleSignOnProperties extends AbstractSingleSignOnProperties {
     /**
      * The prefix for SSO Kit starter properties.
      */
-    public static final String PREFIX = "vaadin.sso";
+    public static final String PREFIX = "hilla.sso";
 }
