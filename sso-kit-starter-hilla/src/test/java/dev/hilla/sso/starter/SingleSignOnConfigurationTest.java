@@ -20,8 +20,6 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 
 import com.vaadin.flow.spring.SpringBootAutoConfiguration;
 import com.vaadin.flow.spring.SpringSecurityAutoConfiguration;
-import com.vaadin.sso.core.SingleSignOnDefaultBeans;
-import com.vaadin.sso.core.SingleSignOnProperties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -71,7 +69,7 @@ public class SingleSignOnConfigurationTest {
 
     @Test
     public void loginRouteProperty_hasCustomValue() {
-        contextRunner.withPropertyValues("vaadin.sso.login-route=/custom")
+        contextRunner.withPropertyValues("hilla.sso.login-route=/custom")
                 .run(ctx -> {
                     var loginRoute = ctx.getBean(SingleSignOnProperties.class)
                             .getLoginRoute();

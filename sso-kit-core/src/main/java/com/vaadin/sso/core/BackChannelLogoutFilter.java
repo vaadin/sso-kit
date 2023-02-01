@@ -9,15 +9,16 @@
  */
 package com.vaadin.sso.core;
 
-import java.io.IOException;
-import java.util.Objects;
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.util.Objects;
+
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.log.LogMessage;
 import org.springframework.security.core.session.SessionInformation;
@@ -55,7 +56,7 @@ public class BackChannelLogoutFilter extends GenericFilterBean {
     private final JwtDecoderFactory<ClientRegistration> decoderFactory;
 
     private RequestMatcher requestMatcher = new AntPathRequestMatcher(
-            SingleSignOnProperties.DEFAULT_BACKCHANNEL_LOGOUT_ROUTE);
+            AbstractSingleSignOnProperties.DEFAULT_BACKCHANNEL_LOGOUT_ROUTE);
 
     private final ApplicationEventPublisher eventPublisher;
 

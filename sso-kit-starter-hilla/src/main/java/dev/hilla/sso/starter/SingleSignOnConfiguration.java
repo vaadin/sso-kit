@@ -21,7 +21,6 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 import com.vaadin.flow.spring.security.VaadinWebSecurity;
 import com.vaadin.sso.core.BackChannelLogoutFilter;
-import com.vaadin.sso.core.SingleSignOnProperties;
 
 @Configuration
 @EnableWebSecurity
