@@ -8,7 +8,7 @@
         <version>2.0-SNAPSHOT</version>
     </parent>
 
-    <name>sso-kit-starter-hilla</name>
+    <name>SSO Kit starter for Hilla</name>
 
     <groupId>dev.hilla</groupId>
     <artifactId>sso-kit-starter</artifactId>
