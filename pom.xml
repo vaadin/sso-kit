@@ -8,6 +8,8 @@
         <version>2.1.0</version>
     </parent>
 
+    <name>SSO Kit</name>
+
     <artifactId>sso-kit</artifactId>
     <version>2.0-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -22,7 +24,6 @@
     <modules>
         <module>sso-kit-core</module>
         <module>sso-kit-starter</module>
-        <module>sso-kit-starter-hilla</module>
         <module>sso-kit-keycloak</module>
     </modules>
 
@@ -148,6 +149,17 @@
             </activation>
             <modules>
                 <module>sso-kit-demo</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>hilla</id>
+            <activation>
+                <property>
+                    <name>!skipHilla</name>
+                </property>
+            </activation>
+            <modules>
+                <module>sso-kit-starter-hilla</module>
             </modules>
         </profile>
     </profiles>
