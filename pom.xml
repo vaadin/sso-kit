@@ -24,7 +24,6 @@
     <modules>
         <module>sso-kit-core</module>
         <module>sso-kit-starter</module>
-        <module>sso-kit-starter-hilla</module>
         <module>sso-kit-keycloak</module>
     </modules>
 
