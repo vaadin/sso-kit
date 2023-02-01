@@ -8,7 +8,7 @@
         <version>2.0-SNAPSHOT</version>
     </parent>
 
-    <name>SSO Kit starter for Flow</name>
+    <name>SSO Kit Starter for Flow</name>
 
     <artifactId>sso-kit-starter</artifactId>
 

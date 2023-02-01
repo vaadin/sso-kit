@@ -8,7 +8,7 @@
         <version>2.0-SNAPSHOT</version>
     </parent>
 
-    <name>SSO Kit Lumo theme for Keycloak</name>
+    <name>SSO Kit Lumo Theme for Keycloak</name>
 
     <artifactId>sso-kit-keycloak-lumo</artifactId>
 

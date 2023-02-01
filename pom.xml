@@ -153,6 +153,11 @@
         </profile>
         <profile>
             <id>hilla</id>
+            <activation>
+                <property>
+                    <name>!skipHilla</name>
+                </property>
+            </activation>
             <modules>
                 <module>sso-kit-starter-hilla</module>
             </modules>
