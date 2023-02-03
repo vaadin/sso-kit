@@ -14,7 +14,7 @@
     <artifactId>sso-kit-starter</artifactId>
 
     <properties>
-        <cvdl.name>vaadin-sso-kit-hilla</cvdl.name>
+        <cvdl.name>hilla-sso-kit</cvdl.name>
     </properties>
 
     <dependencies>

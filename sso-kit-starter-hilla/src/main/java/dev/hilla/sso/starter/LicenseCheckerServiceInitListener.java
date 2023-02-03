@@ -31,7 +31,7 @@ public class LicenseCheckerServiceInitListener
 
     static final String VERSION_PROPERTY = "sso-kit.version";
 
-    static final String PRODUCT_NAME = "vaadin-sso-kit-hilla";
+    static final String PRODUCT_NAME = "hilla-sso-kit";
 
     @Override
     public void serviceInit(ServiceInitEvent event) {
