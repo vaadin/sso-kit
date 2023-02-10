@@ -86,12 +86,16 @@ class LicenseCheckerServiceInitListenerTest {
 
     @Test
     public void serviceInit_throwsError_whenPropertiesLoadFails() {
-        try (MockedStatic<PropertiesLoaderUtils> propertiesLoaderUtils = mockStatic(PropertiesLoaderUtils.class)) {
-            propertiesLoaderUtils.when(() -> PropertiesLoaderUtils.loadAllProperties(anyString())).thenThrow(new IOException());
+        try (MockedStatic<PropertiesLoaderUtils> propertiesLoaderUtils = mockStatic(
+                PropertiesLoaderUtils.class)) {
+            propertiesLoaderUtils.when(
+                    () -> PropertiesLoaderUtils.loadAllProperties(anyString()))
+                    .thenThrow(new IOException());
 
             final var listener = new LicenseCheckerServiceInitListener();
 
-            assertThrows(ExceptionInInitializerError.class, () -> listener.serviceInit(new ServiceInitEvent(service)));
+            assertThrows(ExceptionInInitializerError.class,
+                    () -> listener.serviceInit(new ServiceInitEvent(service)));
         }
     }
 

@@ -54,7 +54,8 @@ public class SingleSignOnConfigurationTest {
 
     @Test
     public void autoConfigureProperty_notSet_configurationEnabled() {
-        contextRunner.run(ctx -> assertThat(ctx).hasSingleBean(SingleSignOnConfiguration.class));
+        contextRunner.run(ctx -> assertThat(ctx)
+                .hasSingleBean(SingleSignOnConfiguration.class));
     }
 
     @Test
@@ -71,7 +72,8 @@ public class SingleSignOnConfigurationTest {
                         SpringSecurityAutoConfiguration.class,
                         SingleSignOnConfiguration.class,
                         SingleSignOnDefaultBeans.class));
-        runner.run(ctx -> assertThat(ctx).doesNotHaveBean(SingleSignOnConfiguration.class));
+        runner.run(ctx -> assertThat(ctx)
+                .doesNotHaveBean(SingleSignOnConfiguration.class));
     }
 
     @Test
@@ -98,9 +100,10 @@ public class SingleSignOnConfigurationTest {
     public void backChannelLogout_isTrue_backChannelLogoutFilterConfigured() {
         contextRunner.withPropertyValues("vaadin.sso.back-channel-logout=true")
                 .run(ctx -> {
-                    var filterChain = (SecurityFilterChain) ctx.getBean("VaadinSecurityFilterChainBean");
-                    assertTrue(filterChain.getFilters().stream()
-                            .anyMatch(filter -> filter instanceof BackChannelLogoutFilter));
+                    var filterChain = (SecurityFilterChain) ctx
+                            .getBean("VaadinSecurityFilterChainBean");
+                    assertTrue(filterChain.getFilters().stream().anyMatch(
+                            filter -> filter instanceof BackChannelLogoutFilter));
                 });
     }
 
@@ -108,9 +111,10 @@ public class SingleSignOnConfigurationTest {
     public void backChannelLogout_isFalse_backChannelLogoutFilterNotConfigured() {
         contextRunner.withPropertyValues("vaadin.sso.back-channel-logout=false")
                 .run(ctx -> {
-                    var filterChain = (SecurityFilterChain) ctx.getBean("VaadinSecurityFilterChainBean");
-                    assertTrue(filterChain.getFilters().stream()
-                            .noneMatch(filter -> filter instanceof BackChannelLogoutFilter));
+                    var filterChain = (SecurityFilterChain) ctx
+                            .getBean("VaadinSecurityFilterChainBean");
+                    assertTrue(filterChain.getFilters().stream().noneMatch(
+                            filter -> filter instanceof BackChannelLogoutFilter));
                 });
     }
 }
