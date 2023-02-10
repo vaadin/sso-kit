@@ -29,6 +29,8 @@ import com.vaadin.pro.licensechecker.LicenseChecker;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.text.MatchesPattern.matchesPattern;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
@@ -80,6 +82,17 @@ class LicenseCheckerServiceInitListenerTest {
         listener.serviceInit(new ServiceInitEvent(service));
 
         licenseChecker.verifyNoInteractions();
+    }
+
+    @Test
+    public void serviceInit_throwsError_whenPropertiesLoadFails() {
+        try (MockedStatic<PropertiesLoaderUtils> propertiesLoaderUtils = mockStatic(PropertiesLoaderUtils.class)) {
+            propertiesLoaderUtils.when(() -> PropertiesLoaderUtils.loadAllProperties(anyString())).thenThrow(new IOException());
+
+            final var listener = new LicenseCheckerServiceInitListener();
+
+            assertThrows(ExceptionInInitializerError.class, () -> listener.serviceInit(new ServiceInitEvent(service)));
+        }
     }
 
     private Properties getProperties() {

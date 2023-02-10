@@ -12,38 +12,40 @@ package dev.hilla.sso.starter;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import com.vaadin.sso.core.UserLogoutEvent;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 /**
  * Test suite for {@link BackChannelLogoutSubscription}.
  */
 @ExtendWith(MockitoExtension.class)
 public class BackChannelLogoutSubscriptionTest {
+
+    @Mock
+    private Consumer<Object> consumer;
+
     /**
      * Test BackChannelLogoutSubscription constructor
      */
     @Test
-    public void testBackChannelLogoutSubscriptionConstructor() {
+    public void backChannelLogoutSubscriptionConstructor_createsFlux() {
         var backChannelLogoutSubscription = new BackChannelLogoutSubscription();
         assertNotNull(ReflectionTestUtils
                 .getField(backChannelLogoutSubscription, "flux"));
     }
 
-    public static class DummyException extends RuntimeException {
-    }
-
     @Test
-    public void testOnApplicationEvent() {
+    public void onApplicationEvent_broadcastsEvent() {
         var backChannelLogoutSubscription = spy(
                 new BackChannelLogoutSubscription());
         var backChannelLogoutEvent = new UserLogoutEvent("foo");
@@ -53,11 +55,11 @@ public class BackChannelLogoutSubscriptionTest {
     }
 
     @Test
-    public void testGetFluxForUser() {
+    public void getFluxForUser_returnsFLux() {
         var backChannelLogoutSubscription = new BackChannelLogoutSubscription();
         var flux = backChannelLogoutSubscription.getFluxForUser("foo");
         assertNotNull(flux);
-        var received = new ArrayList<Object>();
+        var received = new ArrayList<>();
         flux.subscribe(received::add);
         backChannelLogoutSubscription.broadcast("bar");
         backChannelLogoutSubscription.broadcast("foo");
@@ -68,9 +70,8 @@ public class BackChannelLogoutSubscriptionTest {
     }
 
     @Test
-    public void testBroadcast() {
+    public void broadcasts_anEvent() {
         var backChannelLogoutSubscription = new BackChannelLogoutSubscription();
-        var consumer = mock(Consumer.class);
         ReflectionTestUtils.setField(backChannelLogoutSubscription, "consumer",
                 consumer);
         backChannelLogoutSubscription.broadcast("foo");

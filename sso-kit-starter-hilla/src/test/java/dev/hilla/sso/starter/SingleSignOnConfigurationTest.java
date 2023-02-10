@@ -17,12 +17,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.web.SecurityFilterChain;
 
 import com.vaadin.flow.spring.SpringBootAutoConfiguration;
 import com.vaadin.flow.spring.SpringSecurityAutoConfiguration;
+import com.vaadin.sso.core.BackChannelLogoutFilter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test suite for {@link SingleSignOnConfiguration}.
@@ -51,18 +54,15 @@ public class SingleSignOnConfigurationTest {
 
     @Test
     public void autoConfigureProperty_notSet_configurationEnabled() {
-        contextRunner.run(ctx -> {
-            assertThat(ctx).hasSingleBean(SingleSignOnConfiguration.class);
-        });
+        contextRunner.run(ctx -> assertThat(ctx)
+                .hasSingleBean(SingleSignOnConfiguration.class));
     }
 
     @Test
     public void autoConfigureProperty_isFalse_configurationDisabled() {
         contextRunner.withPropertyValues("hilla.sso.auto-configure=false")
-                .run(ctx -> {
-                    assertThat(ctx)
-                            .doesNotHaveBean(SingleSignOnConfiguration.class);
-                });
+                .run(ctx -> assertThat(ctx)
+                        .doesNotHaveBean(SingleSignOnConfiguration.class));
     }
 
     @Test
@@ -72,9 +72,8 @@ public class SingleSignOnConfigurationTest {
                         SpringSecurityAutoConfiguration.class,
                         SingleSignOnConfiguration.class,
                         SingleSignOnDefaultBeans.class));
-        runner.run(ctx -> {
-            assertThat(ctx).doesNotHaveBean(SingleSignOnConfiguration.class);
-        });
+        runner.run(ctx -> assertThat(ctx)
+                .doesNotHaveBean(SingleSignOnConfiguration.class));
     }
 
     @Test
@@ -94,6 +93,28 @@ public class SingleSignOnConfigurationTest {
                     var loginRoute = ctx.getBean(SingleSignOnProperties.class)
                             .getLoginRoute();
                     assertEquals("/custom", loginRoute);
+                });
+    }
+
+    @Test
+    public void backChannelLogout_isTrue_backChannelLogoutFilterConfigured() {
+        contextRunner.withPropertyValues("hilla.sso.back-channel-logout=true")
+                .run(ctx -> {
+                    var filterChain = (SecurityFilterChain) ctx
+                            .getBean("VaadinSecurityFilterChainBean");
+                    assertTrue(filterChain.getFilters().stream().anyMatch(
+                            filter -> filter instanceof BackChannelLogoutFilter));
+                });
+    }
+
+    @Test
+    public void backChannelLogout_isFalse_backChannelLogoutFilterNotConfigured() {
+        contextRunner.withPropertyValues("hilla.sso.back-channel-logout=false")
+                .run(ctx -> {
+                    var filterChain = (SecurityFilterChain) ctx
+                            .getBean("VaadinSecurityFilterChainBean");
+                    assertTrue(filterChain.getFilters().stream().noneMatch(
+                            filter -> filter instanceof BackChannelLogoutFilter));
                 });
     }
 }

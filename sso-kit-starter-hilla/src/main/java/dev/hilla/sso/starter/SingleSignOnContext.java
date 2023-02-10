@@ -113,6 +113,40 @@ public class SingleSignOnContext {
     }
 
     /**
+     * Returns the data for the single sign-on, to be used to get everything
+     * with a single request.
+     *
+     * @return the data for the single sign-on.
+     */
+    public SingleSignOnData getSingleSignOnData() {
+        SingleSignOnData data = new SingleSignOnData();
+        data.setLoginLink(properties.getLoginRoute());
+
+        getOidcUser().ifPresent(user -> {
+            data.setAuthenticated(true);
+            data.setRoles(userRoles(user));
+            data.setLogoutLink(getLogoutLink().orElseThrow());
+            data.setBackChannelLogoutEnabled(isBackChannelLogoutEnabled());
+        });
+
+        return data;
+    }
+
+    /**
+     * Returns the roles of the user, converted by removing the standard prefix.
+     *
+     * @param user
+     *            the OIDC user.
+     * @return the roles of the user.
+     */
+    public static List<String> userRoles(OidcUser user) {
+        return user.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .filter(a -> a.startsWith(ROLE_PREFIX))
+                .map(a -> a.substring(ROLE_PREFIX_LENGTH)).toList();
+    }
+
+    /**
      * Exposes the configuration property which determines whether the
      * back-channel logout is enabled.
      *
@@ -120,6 +154,17 @@ public class SingleSignOnContext {
      */
     public boolean isBackChannelLogoutEnabled() {
         return properties.isBackChannelLogout();
+    }
+
+    /**
+     * Returns the Flux of back-channel logout messages for the current user.
+     *
+     * @return a flux which is a filter of the global flux.
+     */
+    public Flux<BackChannelLogoutSubscription.Message> getBackChannelLogoutFlux() {
+        var principal = SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        return backChannelLogoutSubscription.getFluxForUser(principal);
     }
 
     /**
@@ -136,7 +181,7 @@ public class SingleSignOnContext {
                 .filter(OAuth2AuthenticationToken.class::isInstance)
                 .map(OAuth2AuthenticationToken.class::cast)
                 // build the URL from the token
-                .map(token -> buildLogoutLink(token));
+                .map(this::buildLogoutLink);
     }
 
     private String buildLogoutLink(
@@ -176,50 +221,5 @@ public class SingleSignOnContext {
             logoutUri = logoutRedirectRoute;
         }
         return logoutUri;
-    }
-
-    /**
-     * Returns the Flux of back-channel logout messages for the current user.
-     *
-     * @return a flux which is a filter of the global flux.
-     */
-    public Flux<BackChannelLogoutSubscription.Message> getBackChannelLogoutFlux() {
-        var principal = SecurityContextHolder.getContext().getAuthentication()
-                .getPrincipal();
-        return backChannelLogoutSubscription.getFluxForUser(principal);
-    }
-
-    /**
-     * Returns the data for the single sign-on, to be used to get everything
-     * with a single request.
-     *
-     * @return the data for the single sign-on.
-     */
-    public SingleSignOnData getSingleSignOnData() {
-        SingleSignOnData data = new SingleSignOnData();
-        data.setLoginLink(properties.getLoginRoute());
-
-        SingleSignOnContext.getOidcUser().ifPresent(u -> {
-            data.setAuthenticated(true);
-            data.setRoles(userRoles(u));
-            data.setLogoutLink(getLogoutLink().orElseThrow());
-            data.setBackChannelLogoutEnabled(isBackChannelLogoutEnabled());
-        });
-
-        return data;
-    }
-
-    /**
-     * Returns the roles of the user, converted by removing the standard prefix.
-     *
-     * @param user
-     *            the OIDC user.
-     * @return the roles of the user.
-     */
-    public static List<String> userRoles(OidcUser user) {
-        return user.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .filter(a -> a.startsWith(ROLE_PREFIX))
-                .map(a -> a.substring(ROLE_PREFIX_LENGTH)).toList();
     }
 }
