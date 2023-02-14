@@ -9,21 +9,22 @@
  */
 package dev.hilla.sso.starter;
 
-import java.util.List;
-
 import org.jsoup.nodes.DataNode;
 import org.springframework.stereotype.Component;
 
 import com.vaadin.flow.internal.JsonUtils;
 import com.vaadin.flow.server.VaadinServiceInitListener;
 
-import elemental.json.JsonValue;
-
 /**
  * This class is responsible for injecting the SSO data into the index.html
  */
 @Component
 public class BootstrapDataServiceListener implements VaadinServiceInitListener {
+
+    static final String SCRIPT_STRING = """
+            window.Hilla = window.Hilla || {};
+            window.Hilla.SSO = JSON.parse("%s");
+            """;
 
     private final SingleSignOnContext singleSignOnContext;
 
@@ -36,10 +37,7 @@ public class BootstrapDataServiceListener implements VaadinServiceInitListener {
     public void serviceInit(com.vaadin.flow.server.ServiceInitEvent event) {
         event.addIndexHtmlRequestListener(indexHtmlResponse -> {
             var data = singleSignOnContext.getSingleSignOnData();
-            var script = """
-                    window.Hilla = window.Hilla || {};
-                    window.Hilla.SSO = JSON.parse("%s");
-                    """.formatted(quotesEscaped(json(data)));
+            var script = SCRIPT_STRING.formatted(quotesEscaped(json(data)));
 
             // Use DataNode() instead of text() to avoid escaping the script
             var scriptNode = indexHtmlResponse.getDocument()
@@ -52,16 +50,7 @@ public class BootstrapDataServiceListener implements VaadinServiceInitListener {
         if (o == null) {
             return "null";
         }
-
-        JsonValue json;
-
-        if (o instanceof List<?> list) {
-            json = JsonUtils.listToJson(list);
-        } else {
-            json = JsonUtils.beanToJson(o);
-        }
-
-        return json.toJson();
+        return JsonUtils.beanToJson(o).toJson();
     }
 
     private String quotesEscaped(String s) {
