@@ -16,8 +16,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import dev.hilla.sso.starter.SingleSignOnContext;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -30,26 +28,17 @@ import static org.mockito.Mockito.mockStatic;
 
 public class UserEndpointTest {
 
-    private UserEndpoint userEndpoint = new UserEndpoint();
-    private MockedStatic<SingleSignOnContext> singleSignOnContextMockedStatic;
-
-    @BeforeEach
-    void setUp() {
-        userEndpoint = new UserEndpoint();
-        singleSignOnContextMockedStatic = mockStatic(SingleSignOnContext.class);
-    }
-
-    @AfterEach
-    void tearDown() {
-        singleSignOnContextMockedStatic.close();
-    }
-
     @Test
     public void serviceInit_indexHtmlRequestListenerIsAdded() {
-        singleSignOnContextMockedStatic.when(SingleSignOnContext::getOidcUser)
-                .thenReturn(Optional.of(createDefaultOidcUser()));
-        Optional<User> user = userEndpoint.getAuthenticatedUser();
-        user.ifPresent(u -> assertEquals("Test User", u.getFullName()));
+        try (MockedStatic<SingleSignOnContext> singleSignOnContextMockedStatic = mockStatic(
+                SingleSignOnContext.class)) {
+            var userEndpoint = new UserEndpoint();
+            singleSignOnContextMockedStatic
+                    .when(SingleSignOnContext::getOidcUser)
+                    .thenReturn(Optional.of(createDefaultOidcUser()));
+            Optional<User> user = userEndpoint.getAuthenticatedUser();
+            user.ifPresent(u -> assertEquals("Test User", u.getFullName()));
+        }
     }
 
     private DefaultOidcUser createDefaultOidcUser() {

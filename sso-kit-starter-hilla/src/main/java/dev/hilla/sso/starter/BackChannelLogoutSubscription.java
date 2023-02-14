@@ -68,14 +68,14 @@ public class BackChannelLogoutSubscription
      * Broadcast a back-channel logout event
      *
      * @param principal
-     * @return
+     *            the user that accepts the logout event.
+     * @return true if broadcast succeeds, false otherwise.
      */
     public boolean broadcast(Object principal) {
         if (consumer != null) {
             consumer.accept(principal);
             return true;
         }
-
         return false;
     }
 

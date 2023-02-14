@@ -10,18 +10,16 @@
 package dev.hilla.sso.starter;
 
 import java.util.ArrayList;
-import java.util.function.Consumer;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import com.vaadin.sso.core.UserLogoutEvent;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
@@ -30,19 +28,6 @@ import static org.mockito.Mockito.verify;
  */
 @ExtendWith(MockitoExtension.class)
 public class BackChannelLogoutSubscriptionTest {
-
-    @Mock
-    private Consumer<Object> consumer;
-
-    /**
-     * Test BackChannelLogoutSubscription constructor
-     */
-    @Test
-    public void backChannelLogoutSubscriptionConstructor_createsFlux() {
-        var backChannelLogoutSubscription = new BackChannelLogoutSubscription();
-        assertNotNull(ReflectionTestUtils
-                .getField(backChannelLogoutSubscription, "flux"));
-    }
 
     @Test
     public void onApplicationEvent_broadcastsEvent() {
@@ -55,7 +40,7 @@ public class BackChannelLogoutSubscriptionTest {
     }
 
     @Test
-    public void getFluxForUser_returnsFLux() {
+    public void getFluxForUser_returnsMessageFlux() {
         var backChannelLogoutSubscription = new BackChannelLogoutSubscription();
         var flux = backChannelLogoutSubscription.getFluxForUser("foo");
         assertNotNull(flux);
@@ -67,14 +52,9 @@ public class BackChannelLogoutSubscriptionTest {
         backChannelLogoutSubscription.broadcast("foo");
         backChannelLogoutSubscription.broadcast("bar");
         assertEquals(2, received.size());
-    }
-
-    @Test
-    public void broadcasts_anEvent() {
-        var backChannelLogoutSubscription = new BackChannelLogoutSubscription();
-        ReflectionTestUtils.setField(backChannelLogoutSubscription, "consumer",
-                consumer);
-        backChannelLogoutSubscription.broadcast("foo");
-        verify(consumer).accept("foo");
+        assertTrue(received
+                .get(0) instanceof BackChannelLogoutSubscription.Message);
+        assertTrue(received
+                .get(1) instanceof BackChannelLogoutSubscription.Message);
     }
 }
