@@ -1,7 +1,7 @@
 {
-  "name": "@sso-kit-starter/sso-kit-starter",
+  "name": "@sso-kit/sso-kit",
   "private": true,
-  "description": "SSO Kit Starter Hilla Client Library",
+  "description": "SSO Kit Hilla Client Library",
   "main": "index.js",
   "type": "module",
   "engines": {
