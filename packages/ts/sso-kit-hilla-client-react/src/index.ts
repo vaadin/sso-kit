@@ -5,6 +5,6 @@ const $wnd = window as any;
 $wnd.Vaadin = $wnd.Vaadin || {};
 $wnd.Vaadin.registrations = $wnd.Vaadin.registrations || [];
 $wnd.Vaadin.registrations.push({
-    is: '@sso-kit-starter/sso-kit-hilla-client-react',
+    is: '@sso-kit/sso-kit-hilla-client-react',
     version: /* updated-by-script */ '2.1-SNAPSHOT',
 });

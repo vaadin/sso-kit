@@ -1,7 +1,7 @@
 {
   "name": "@sso-kit/sso-kit-hilla-client-react",
   "version": "2.1-SNAPSHOT",
-  "description": "SSO Kit Starter Hilla Client React",
+  "description": "SSO Kit Hilla Client React",
   "main": "index.js",
   "module": "index.js",
   "type": "module",
