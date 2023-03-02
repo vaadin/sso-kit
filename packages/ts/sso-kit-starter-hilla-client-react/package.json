@@ -1,0 +1,53 @@
+{
+  "name": "@sso-kit-starter/sso-kit-starter-hilla-client-react",
+  "version": "2.1-SNAPSHOT",
+  "description": "SSO Kit Starter Hilla Client React",
+  "main": "index.js",
+  "module": "index.js",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vaadin/sso-kit.git",
+    "directory": "packages/ts/sso-kit-starter-hilla-client-react"
+  },
+  "keywords": [
+    "SSO Kit Starter Hilla React"
+  ],
+  "scripts": {
+    "build": "tsc --isolatedModules",
+    "lint": "eslint src/**/*.ts test/**/*.ts",
+    "test": "web-test-runner \"test/**/*.test.ts\" --config ../../../web-test-runner.config.js",
+    "test:coverage": "npm run test -- --coverage",
+    "test:watch": "npm run test -- --watch",
+    "typecheck": "tsc --noEmit --project test/tsconfig.json"
+  },
+  "exports": {
+    ".": {
+      "default": "./index.js"
+    },
+    "./SsoKit.js": {
+      "default": "./SsoKit.js"
+    }
+  },
+  "author": "Vaadin Ltd",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/vaadin/sso-kit/issues"
+  },
+  "homepage": "https://hilla.dev",
+  "files": [
+    "*.{d.ts.map,d.ts,js.map,js}"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+
+  },
+  "peerDependencies": {
+    "lit": "^2.3.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.5.2"
+  }
+}

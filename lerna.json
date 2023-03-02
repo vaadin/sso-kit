@@ -1,0 +1,6 @@
+{
+  "packages": ["packages/ts/*"],
+  "npmClient": "npm",
+  "useWorkspaces": true,
+  "version": "2.1-SNAPSHOT"
+}

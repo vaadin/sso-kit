@@ -1,15 +1,34 @@
 .classpath
 *.project
 *.settings
-
-**/target
-**/error-screenshots
-
 **/.sts4-cache/*
 .factorypath
 
-*pom.xml.versionsBackup
-
+# Mac
 *.DS_Store
-.idea/
+
+# Intellij Idea files
+.idea
 *.iml
+
+# VS Code
+.vscode
+
+# Java files
+*pom.xml.versionsBackup
+**/target
+**/error-screenshots
+
+# NodeJS files
+**/dist
+node_modules
+
+# Testing files
+.coverage
+
+# Generated code
+packages/ts/*/*.d.ts
+packages/ts/*/*.d.ts.map
+packages/ts/*/*.js
+packages/ts/*/*.js.map
+packages/ts/*/.coverage
