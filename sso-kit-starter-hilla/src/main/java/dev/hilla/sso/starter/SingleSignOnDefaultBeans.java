@@ -11,7 +11,11 @@ package dev.hilla.sso.starter;
 
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.security.oauth2.client.ClientsConfiguredCondition;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 
@@ -22,6 +26,9 @@ import org.springframework.security.core.session.SessionRegistryImpl;
  * @since 1.0
  */
 @AutoConfiguration
+@Conditional(ClientsConfiguredCondition.class)
+@ConditionalOnProperty(name = "auto-configure", prefix = SingleSignOnProperties.PREFIX, matchIfMissing = true)
+@ComponentScan
 public class SingleSignOnDefaultBeans {
 
     /**
