@@ -1,7 +1,7 @@
 {
   "name": "@sso-kit/sso-kit",
   "private": true,
-  "description": "SSO Kit Hilla Client Library",
+  "description": "SSO Kit Client",
   "main": "index.js",
   "type": "module",
   "engines": {
@@ -9,7 +9,7 @@
     "npm": ">=7"
   },
   "workspaces": [
-    "packages/ts/*"
+    "sso-kit-client/*"
   ],
   "scripts": {
     "check": "concurrently npm:lint npm:typecheck",

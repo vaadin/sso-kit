@@ -1,17 +1,17 @@
 {
-  "name": "@sso-kit/sso-kit-hilla-client-lit",
+  "name": "@sso-kit/sso-kit-client-lit",
   "version": "2.1-SNAPSHOT",
-  "description": "SSO Kit Hilla Client Lit",
+  "description": "SSO Kit Client Lit",
   "main": "index.js",
   "module": "index.js",
   "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/vaadin/sso-kit.git",
-    "directory": "packages/ts/sso-kit-hilla-client-lit"
+    "directory": "sso-kit-client/sso-kit-client-lit"
   },
   "keywords": [
-    "SSO Kit Hilla Lit"
+    "SSO Kit Client Lit"
   ],
   "scripts": {
     "build": "tsc --isolatedModules",

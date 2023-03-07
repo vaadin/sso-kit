@@ -31,4 +31,4 @@ packages/ts/*/*.d.ts
 packages/ts/*/*.d.ts.map
 packages/ts/*/*.js
 packages/ts/*/*.js.map
-packages/ts/*/.coverage
+sso-kit-client/ts/*/.coverage
