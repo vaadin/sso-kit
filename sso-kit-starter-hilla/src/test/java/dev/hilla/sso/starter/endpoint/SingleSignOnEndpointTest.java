@@ -20,7 +20,8 @@ public class SingleSignOnEndpointTest {
         when(singleSignOnContext.getSingleSignOnData())
                 .thenReturn(expectedSingleSignOnData);
 
-        var singleSignOnEndpoint = new SingleSignOnEndpoint(singleSignOnContext);
+        var singleSignOnEndpoint = new SingleSignOnEndpoint(
+                singleSignOnContext);
         var singleSignOnData = singleSignOnEndpoint.fetchAll();
 
         assertEquals(expectedSingleSignOnData, singleSignOnData);
@@ -34,7 +35,8 @@ public class SingleSignOnEndpointTest {
         when(singleSignOnContext.getRegisteredProviders())
                 .thenReturn(expectedProviders);
 
-        var singleSignOnEndpoint = new SingleSignOnEndpoint(singleSignOnContext);
+        var singleSignOnEndpoint = new SingleSignOnEndpoint(
+                singleSignOnContext);
         var providers = singleSignOnEndpoint.getRegisteredProviders();
 
         assertEquals(providers, expectedProviders);
