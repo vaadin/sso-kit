@@ -22,10 +22,10 @@ import reactor.core.publisher.Flux;
 @Endpoint
 public class BackChannelLogoutEndpoint {
 
-    private final SingleSignOnContext context;
+    private final SingleSignOnContext singleSignOnContext;
 
-    public BackChannelLogoutEndpoint(SingleSignOnContext context) {
-        this.context = context;
+    public BackChannelLogoutEndpoint(SingleSignOnContext singleSignOnContext) {
+        this.singleSignOnContext = singleSignOnContext;
     }
 
     /**
@@ -36,6 +36,6 @@ public class BackChannelLogoutEndpoint {
     @PermitAll
     @Nonnull
     public Flux<BackChannelLogoutSubscription.@Nonnull Message> subscribe() {
-        return context.getBackChannelLogoutFlux();
+        return singleSignOnContext.getBackChannelLogoutFlux();
     }
 }

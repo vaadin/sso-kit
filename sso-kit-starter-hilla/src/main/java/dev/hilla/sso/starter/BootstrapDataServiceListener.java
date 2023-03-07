@@ -10,7 +10,6 @@
 package dev.hilla.sso.starter;
 
 import org.jsoup.nodes.DataNode;
-import org.springframework.stereotype.Component;
 
 import com.vaadin.flow.internal.JsonUtils;
 import com.vaadin.flow.server.VaadinServiceInitListener;
@@ -18,7 +17,6 @@ import com.vaadin.flow.server.VaadinServiceInitListener;
 /**
  * This class is responsible for injecting the SSO data into the index.html
  */
-@Component
 public class BootstrapDataServiceListener implements VaadinServiceInitListener {
 
     static final String SCRIPT_STRING = """

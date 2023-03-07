@@ -29,7 +29,7 @@ import static org.mockito.Mockito.mockStatic;
 public class UserEndpointTest {
 
     @Test
-    public void serviceInit_indexHtmlRequestListenerIsAdded() {
+    public void getAuthenticatedUser_returnsTheExpectedUser() {
         try (MockedStatic<SingleSignOnContext> singleSignOnContextMockedStatic = mockStatic(
                 SingleSignOnContext.class)) {
             var userEndpoint = new UserEndpoint();

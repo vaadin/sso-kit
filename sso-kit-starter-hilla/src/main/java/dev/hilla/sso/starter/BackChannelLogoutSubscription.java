@@ -13,7 +13,6 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.springframework.context.ApplicationListener;
-import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.vaadin.sso.core.UserLogoutEvent;
@@ -24,7 +23,6 @@ import reactor.core.publisher.Flux;
  * A subscription for broadcasting back-channel logout events to the subscribed
  * clients.
  */
-@Component
 public class BackChannelLogoutSubscription
         implements ApplicationListener<UserLogoutEvent> {
 
