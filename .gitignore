@@ -27,8 +27,8 @@ node_modules
 .coverage
 
 # Generated code
-packages/ts/*/*.d.ts
-packages/ts/*/*.d.ts.map
-packages/ts/*/*.js
-packages/ts/*/*.js.map
-sso-kit-client/ts/*/.coverage
+sso-kit-client/*/*.d.ts
+sso-kit-client/*/*.d.ts.map
+sso-kit-client/*/*.js
+sso-kit-client/*/*.js.map
+sso-kit-client/*/.coverage
