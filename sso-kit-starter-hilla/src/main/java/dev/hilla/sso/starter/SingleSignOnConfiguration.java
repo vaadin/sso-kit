@@ -63,11 +63,14 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
             ApplicationEventPublisher eventPublisher) {
         this.properties = properties;
         this.sessionRegistry = sessionRegistry;
-        this.backChannelLogoutFilter = new BackChannelLogoutFilter(sessionRegistry,
-                clientRegistrationRepository, eventPublisher);
+        this.backChannelLogoutFilter = new BackChannelLogoutFilter(
+                sessionRegistry, clientRegistrationRepository, eventPublisher);
         this.backChannelLogoutSubscription = new BackChannelLogoutSubscription();
-        this.singleSignOnContext = new SingleSignOnContext(clientRegistrationRepository, properties, backChannelLogoutSubscription);
-        this.bootstrapDataServiceListener = new BootstrapDataServiceListener(singleSignOnContext);
+        this.singleSignOnContext = new SingleSignOnContext(
+                clientRegistrationRepository, properties,
+                backChannelLogoutSubscription);
+        this.bootstrapDataServiceListener = new BootstrapDataServiceListener(
+                singleSignOnContext);
     }
 
     @Bean
