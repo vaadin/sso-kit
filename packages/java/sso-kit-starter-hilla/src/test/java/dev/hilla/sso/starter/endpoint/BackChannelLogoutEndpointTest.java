@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 public class BackChannelLogoutEndpointTest {
 
     @Test
-    public void serviceInit_indexHtmlRequestListenerIsAdded() {
+    public void subscribe_returnsTheExpectedFluxMessage() {
         var singleSignOnContext = mock(SingleSignOnContext.class);
         var message = new BackChannelLogoutSubscription.Message();
 

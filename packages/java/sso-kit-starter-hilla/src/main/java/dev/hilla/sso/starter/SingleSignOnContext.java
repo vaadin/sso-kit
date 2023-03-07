@@ -23,7 +23,6 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.util.UrlUtils;
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -35,7 +34,6 @@ import reactor.core.publisher.Flux;
 /**
  * Contains utility methods and information related to single sign-on.
  */
-@Component
 public class SingleSignOnContext {
 
     private static final String ROLE_PREFIX = "ROLE_";
