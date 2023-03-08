@@ -1,6 +1,6 @@
 {
   "name": "@sso-kit/sso-kit-client-react",
-  "version": "2.1-SNAPSHOT",
+  "version": "2.0-SNAPSHOT",
   "description": "SSO Kit Client React",
   "main": "index.js",
   "module": "index.js",

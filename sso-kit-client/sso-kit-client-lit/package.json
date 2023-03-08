@@ -1,6 +1,6 @@
 {
   "name": "@sso-kit/sso-kit-client-lit",
-  "version": "2.1-SNAPSHOT",
+  "version": "2.0-SNAPSHOT",
   "description": "SSO Kit Client Lit",
   "main": "index.js",
   "module": "index.js",

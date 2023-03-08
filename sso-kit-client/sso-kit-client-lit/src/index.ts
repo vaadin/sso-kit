@@ -6,5 +6,5 @@ $wnd.Vaadin = $wnd.Vaadin || {};
 $wnd.Vaadin.registrations = $wnd.Vaadin.registrations || [];
 $wnd.Vaadin.registrations.push({
     is: '@sso-kit/sso-kit-client-lit',
-    version: /* updated-by-script */ '2.1-SNAPSHOT',
+    version: /* updated-by-script */ '2.0-SNAPSHOT',
 });

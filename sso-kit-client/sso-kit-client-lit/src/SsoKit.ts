@@ -20,6 +20,10 @@ type AccessProps = {
     requiresLogin?: boolean;
 }
 
+export function loginUrl(provider: string) {
+    return `/oauth2/authorization/${provider}`;
+}
+
 /**
  * A store for authentication information
  */
@@ -74,6 +78,11 @@ class SsoKit {
         this.logoutUrl = authInfo.logoutLink;
         this.backChannelLogoutEnabled = authInfo.backChannelLogoutEnabled;
 
+        // @ts-ignore: the imported file might not exist, but in that case registeredProviders will be empty
+        import("Frontend/generated/SingleSignOnEndpoint").then((endpoint) => {
+            this.registeredProviders = endpoint.getRegisteredProviders();
+        });
+
         if (this.authenticated && this.backChannelLogoutEnabled) {
             // @ts-ignore: the imported file might not exist, but in that case backChannelLogoutEnabled will be false
             import("Frontend/generated/BackChannelLogoutEndpoint").then((endpoint) => {
@@ -97,6 +106,14 @@ class SsoKit {
         if (this.logoutSubscription) {
             this.logoutSubscription = undefined;
         }
+    }
+
+    /**
+     * Returns the authentication providers' login URLs.
+     */
+    get loginUrls() {
+        // create a map of providers as keys and login URLs as values
+        return this.registeredProviders.map((provider) => ({ name: provider, link: loginUrl(provider) }));
     }
 
     /**
