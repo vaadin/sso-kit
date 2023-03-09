@@ -25,8 +25,8 @@
     ".": {
       "default": "./index.js"
     },
-    "./SsoKit.js": {
-      "default": "./SsoKit.js"
+    "./SingleSignOnContext.js": {
+      "default": "./SingleSignOnContext.js"
     }
   },
   "author": "Vaadin Ltd",
@@ -43,8 +43,6 @@
   },
   "dependencies": {
     "@hilla/frontend": "2.0.0-alpha9",
-    "@vaadin/router": "1.7.4",
-    "buffer": "^5.5.0",
     "mobx": "6.3.3"
   },
   "peerDependencies": {
