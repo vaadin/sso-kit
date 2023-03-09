@@ -15,7 +15,8 @@ import com.vaadin.flow.internal.JsonUtils;
 import com.vaadin.flow.server.VaadinServiceInitListener;
 
 /**
- * This class is responsible for injecting the single sign-on data into the index.html
+ * This class is responsible for injecting the single sign-on data into the
+ * index.html
  */
 public class BootstrapDataServiceListener implements VaadinServiceInitListener {
 
