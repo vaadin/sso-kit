@@ -15,13 +15,13 @@ import com.vaadin.flow.internal.JsonUtils;
 import com.vaadin.flow.server.VaadinServiceInitListener;
 
 /**
- * This class is responsible for injecting the SSO data into the index.html
+ * This class is responsible for injecting the single sign-on data into the index.html
  */
 public class BootstrapDataServiceListener implements VaadinServiceInitListener {
 
     static final String SCRIPT_STRING = """
             window.Hilla = window.Hilla || {};
-            window.Hilla.SSO = JSON.parse("%s");
+            window.Hilla.SingleSignOnData = "%s";
             """;
 
     private final SingleSignOnContext singleSignOnContext;
