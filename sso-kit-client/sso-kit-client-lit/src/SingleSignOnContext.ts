@@ -1,3 +1,12 @@
+/*-
+ * Copyright (C) 2022 Vaadin Ltd
+ *
+ * This program is available under Vaadin Commercial License and Service Terms.
+ *
+ *
+ * See <https://vaadin.com/commercial-license-and-service-terms> for the full
+ * license.
+ */
 import {logout, Subscription} from "@hilla/frontend";
 import {makeAutoObservable} from "mobx";
 
@@ -22,25 +31,12 @@ type SingleSignOnData = {
 }
 
 /**
- * Type definition for the authenticated user information.
+ * Type definition for the back-channel logout endpoint subscribe method return type.
  */
-export type User = {
-    birthdate?: string;
-    email?: string;
-    familyName?: string;
-    fullName?: string;
-    gender?: string;
-    givenName?: string;
-    locale?: string;
-    middleName?: string;
-    nickName?: string;
-    phoneNumber?: string;
-    picture?: string;
-    preferredUsername?: string;
-}
+type Message = {}
 
 /**
- * Type definition which can be added to the view routes to indicate that
+ * Type definition for the view routes that can be used to indicate that
  * authentication is needed to access that route.
  */
 export type AccessProps = {
@@ -51,11 +47,6 @@ export type AccessProps = {
  * A store for authentication information.
  */
 class SingleSignOnContext {
-
-    /**
-     * Contains the information about the authenticated user.
-     */
-    user?: User;
 
     /**
      * If true, the user has been authenticated.
@@ -95,11 +86,8 @@ class SingleSignOnContext {
     /**
      * The subscription to the back-channel logout event.
      */
-    private logoutSubscription?: Subscription<any>;
+    private logoutSubscription?: Subscription<Message> = undefined;
 
-    /**
-     * Constructor for the SingleSignOnContext.
-     */
     constructor() {
         makeAutoObservable(this);
 
@@ -110,22 +98,17 @@ class SingleSignOnContext {
         this.logoutUrl = singleSignOnData.logoutLink;
         this.backChannelLogoutEnabled = singleSignOnData.backChannelLogoutEnabled;
 
-        // @ts-ignore: the imported file might not exist, in that case the user will be empty
-        import("Frontend/generated/UserEndpoint").then((endpoint) => {
-            endpoint.getAuthenticatedUser().then(
-                (user: User) => {
-                    this.user = user;
-                },
-                (reason: any) => {
-                    console.error(reason);
-                }
-            );
-        });
-
-        // @ts-ignore: the imported file might not exist, in that case the registeredProviders will be empty
-        import("Frontend/generated/SingleSignOnEndpoint").then(
-            (endpoint) => {
-                this.registeredProviders = endpoint.getRegisteredProviders();
+        // @ts-ignore: the imported file might not exist,
+        // in that case the registeredProviders will be empty
+        import("Frontend/generated/SingleSignOnEndpoint").then((endpoint) => {
+                endpoint.getRegisteredProviders().then(
+                    (registeredProviders: string[]) => {
+                        this.registeredProviders = registeredProviders;
+                    },
+                    (reason: any) => {
+                        console.error(reason);
+                    }
+                );
             },
             (reason: any) => {
                 console.error(reason);
@@ -133,9 +116,9 @@ class SingleSignOnContext {
         );
 
         if (this.authenticated && this.backChannelLogoutEnabled) {
-            // @ts-ignore: the imported file might not exist, in that case the backChannelLogoutEnabled will be false
-            import("Frontend/generated/BackChannelLogoutEndpoint").then(
-                (endpoint) => {
+            // @ts-ignore: the imported file might not exist,
+            // in that case the backChannelLogoutEnabled will be false
+            import("Frontend/generated/BackChannelLogoutEndpoint").then((endpoint) => {
                     this.logoutSubscription = endpoint.subscribe();
                     this.logoutSubscription!.onNext(() => {
                         this.backChannelLogoutHappened = true;
@@ -168,18 +151,18 @@ class SingleSignOnContext {
     }
 
     /**
-     * Logouts from the application and the authentication provider.
-     */
-    logout = async () => {
-        await logout();
-        this.logoutUrl && (location.href = this.logoutUrl);
-    }
-
-    /**
      * Redirects to the authentication provider's login page.
      */
     login = () => {
-        this.loginUrl && (location.href = this.loginUrl);
+        location.href = this.loginUrl!;
+    }
+
+    /**
+     * Logouts from the application and redirects the user to the authentication provider's login page.
+     */
+    loginAgain = async () => {
+        await logout();
+        location.href = this.loginUrl!;
     }
 
     /**
@@ -191,11 +174,11 @@ class SingleSignOnContext {
     }
 
     /**
-     * Logouts from the application and redirects the user to the authentication provider's login page.
+     * Logouts from the application and the authentication provider.
      */
-    loginAgain = async () => {
+    logout = async () => {
         await logout();
-        this.loginUrl && (location.href = this.loginUrl);
+        location.href = this.logoutUrl!;
     }
 
     /**
@@ -207,6 +190,7 @@ class SingleSignOnContext {
         this.logoutUrl = undefined;
         this.backChannelLogoutHappened = false;
         if (this.logoutSubscription) {
+            this.logoutSubscription.cancel();
             this.logoutSubscription = undefined;
         }
     }

@@ -11,7 +11,9 @@
     "directory": "sso-kit-client/sso-kit-client-lit"
   },
   "keywords": [
-    "SSO Kit Client Lit"
+    "SSO",
+    "Kit",
+    "Client"
   ],
   "scripts": {
     "build": "tsc --isolatedModules",
@@ -27,6 +29,9 @@
     },
     "./SingleSignOnContext.js": {
       "default": "./SingleSignOnContext.js"
+    },
+    "./AuthenticatedUser.js": {
+      "default": "./AuthenticatedUser.js"
     }
   },
   "author": "Vaadin Ltd",
@@ -42,11 +47,9 @@
     "access": "public"
   },
   "dependencies": {
-    "@hilla/frontend": "2.0.0-alpha9",
-    "mobx": "6.3.3"
-  },
-  "peerDependencies": {
-    "lit": "^2.3.0"
+    "@hilla/frontend": "2.0.0",
+    "mobx": "6.3.3",
+    "tslib": "^2.3.1"
   },
   "devDependencies": {
     "typescript": "^4.5.2"
