@@ -15,6 +15,6 @@ const $wnd = window as any;
 $wnd.Vaadin = $wnd.Vaadin || {};
 $wnd.Vaadin.registrations = $wnd.Vaadin.registrations || [];
 $wnd.Vaadin.registrations.push({
-    is: "@sso-kit/sso-kit-client-lit",
-    version: /* updated-by-script */ "2.1-SNAPSHOT"
+    is: "@hilla/sso-kit-client-lit",
+    version: /* updated-by-script */ "2.1.0"
 });

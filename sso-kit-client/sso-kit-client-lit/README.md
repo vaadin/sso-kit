@@ -9,15 +9,15 @@ Getting Started with Lit [documentation](https://hilla.dev/docs/lit/acceleration
 Install the client:
 
 ```sh
-npm i @sso-kit/sso-kit-client-lit@2.1.0
+npm i @hilla/sso-kit-client-lit@2.1.0
 ```
 
 Once installed, you can import the `SingleSignOnContext` and the `AuthenticatedUser` classes in your application:
 
 ```js
-import { singleSignOnContext } from '@sso-kit/sso-kit-client-lit/SingleSignOnContext.js';
+import { singleSignOnContext } from '@hilla/sso-kit-client-lit/SingleSignOnContext.js';
 
-import { authenticatedUser } from '@sso-kit/sso-kit-client-lit/AuthenticatedUser.js';
+import { authenticatedUser } from '@hilla/sso-kit-client-lit/AuthenticatedUser.js';
 ```
 
 ## Development
