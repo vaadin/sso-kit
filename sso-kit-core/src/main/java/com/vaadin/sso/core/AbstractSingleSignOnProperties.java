@@ -48,11 +48,6 @@ public abstract class AbstractSingleSignOnProperties {
     static final int DEFAULT_MAXIMUM_SESSIONS_PER_USER = -1;
 
     /**
-     * Enables (or disables) auto-configuration.
-     */
-    private boolean autoConfigure = true;
-
-    /**
      * The route to redirect unauthorized requests to.
      */
     private String loginRoute = DEFAULT_LOGIN_ROUTE;
@@ -78,26 +73,6 @@ public abstract class AbstractSingleSignOnProperties {
      * value is -1 which means any number of concurrent sessions is allowed.
      */
     private int maximumConcurrentSessions = DEFAULT_MAXIMUM_SESSIONS_PER_USER;
-
-    /**
-     * Checks is auto-configuration of SingleSignOnConfiguration is enabled.
-     *
-     * @return true, if auto-configuration is enabled
-     */
-    public boolean isAutoConfigure() {
-        return autoConfigure;
-    }
-
-    /**
-     * Enables or disables auto-configuration of SingleSignOnConfiguration.
-     *
-     * @param autoConfigure
-     *            {@code true} to enable auto-configuration, {@code false} to
-     *            disable
-     */
-    public void setAutoConfigure(boolean autoConfigure) {
-        this.autoConfigure = autoConfigure;
-    }
 
     /**
      * Gets the login-route property.
