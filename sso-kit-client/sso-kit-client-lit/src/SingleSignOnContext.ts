@@ -7,8 +7,9 @@
  * See <https://vaadin.com/commercial-license-and-service-terms> for the full
  * license.
  */
-import {logout, Subscription} from "@hilla/frontend";
-import {makeAutoObservable} from "mobx";
+import {logout} from '@hilla/frontend';
+import type {Subscription} from '@hilla/frontend';
+import {makeAutoObservable} from 'mobx';
 
 /**
  * Used to declare the Hilla.SingleSignOnData variable type.
