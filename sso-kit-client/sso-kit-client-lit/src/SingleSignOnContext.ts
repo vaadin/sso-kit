@@ -44,49 +44,99 @@ export type AccessProps = {
 }
 
 /**
+ * Type definition for the authenticated user information.
+ */
+export type User = {
+    /**
+     * The user's birthdate.
+     */
+    birthdate?: string;
+    /**
+     * The user's email.
+     */
+    email?: string;
+    /**
+     * The user's family name.
+     */
+    familyName?: string;
+    /**
+     * The user's full name.
+     */
+    fullName?: string;
+    /**
+     * The user's gender.
+     */
+    gender?: string;
+    /**
+     * The user's given name.
+     */
+    givenName?: string;
+    /**
+     * The user's locale.
+     */
+    locale?: string;
+    /**
+     * The user's middle name.
+     */
+    middleName?: string;
+    /**
+     * The user's nickname.
+     */
+    nickName?: string;
+    /**
+     * The user's phone number.
+     */
+    phoneNumber?: string;
+    /**
+     * The user's picture.
+     */
+    picture?: string;
+    /**
+     * The user's preferred username.
+     */
+    preferredUsername?: string;
+}
+
+/**
  * A store for authentication information.
  */
 class SingleSignOnContext {
-
+    /**
+     * The authenticated user.
+     */
+    user?: User;
     /**
      * If true, the user has been authenticated.
      */
     authenticated = false;
-
     /**
      * The user roles.
      */
     roles: string[] = [];
-
     /**
      * The URL which will be called to log in to the authentication provider.
      */
-    loginUrl?: string = undefined;
-
+    loginUrl?: string;
     /**
      * The URL which will be called to log out from the authentication provider.
      */
-    logoutUrl?: string = undefined;
-
+    logoutUrl?: string;
     /**
      * If true, the application will listen to the back-channel logout events.
      */
     backChannelLogoutEnabled = false;
-
     /**
      * If true, the user has been logged out from the authentication provider.
      */
     backChannelLogoutHappened = false;
-
     /**
      * A list of the authentication providers.
      */
     registeredProviders: string[] = [];
-
     /**
      * The subscription to the back-channel logout event.
      */
-    private logoutSubscription?: Subscription<Message> = undefined;
+    private logoutSubscription?: Subscription<Message>;
 
     constructor() {
         makeAutoObservable(this);
@@ -100,34 +150,36 @@ class SingleSignOnContext {
 
         // @ts-ignore: the imported file might not exist,
         // in that case the registeredProviders will be empty
-        import("Frontend/generated/SingleSignOnEndpoint").then((endpoint) => {
-                endpoint.getRegisteredProviders().then(
-                    (registeredProviders: string[]) => {
-                        this.registeredProviders = registeredProviders;
-                    },
-                    (reason: any) => {
-                        console.error(reason);
-                    }
-                );
-            },
-            (reason: any) => {
-                console.error(reason);
-            }
+        import("Frontend/generated/SingleSignOnEndpoint").then(
+            (endpoint) => endpoint.getRegisteredProviders().then(
+                (registeredProviders: string[]) => this.registeredProviders = registeredProviders,
+                (reason: any) => console.error(reason)
+            ),
+            (reason: any) => console.error(reason)
+        );
+
+        // @ts-ignore: the imported file might not exist,
+        // in that case the authenticated user will be undefined
+        import("Frontend/generated/UserEndpoint").then(
+            (endpoint) => endpoint.getAuthenticatedUser().then(
+                (user: User) => this.user = user,
+                (reason: any) => console.error(reason)
+            ),
+            (reason: any) => console.error(reason)
         );
 
         if (this.authenticated && this.backChannelLogoutEnabled) {
             // @ts-ignore: the imported file might not exist,
             // in that case the backChannelLogoutEnabled will be false
-            import("Frontend/generated/BackChannelLogoutEndpoint").then((endpoint) => {
+            import("Frontend/generated/BackChannelLogoutEndpoint").then(
+                (endpoint) => {
                     this.logoutSubscription = endpoint.subscribe();
                     this.logoutSubscription!.onNext(() => {
                         this.backChannelLogoutHappened = true;
                         this.logoutSubscription!.cancel();
                     });
                 },
-                (reason: any) => {
-                    console.error(reason);
-                }
+                (reason: any) => console.error(reason)
             );
         }
     }

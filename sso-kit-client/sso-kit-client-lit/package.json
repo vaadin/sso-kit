@@ -29,9 +29,6 @@
     },
     "./SingleSignOnContext.js": {
       "default": "./SingleSignOnContext.js"
-    },
-    "./AuthenticatedUser.js": {
-      "default": "./AuthenticatedUser.js"
     }
   },
   "author": "Vaadin Ltd",

@@ -8,7 +8,6 @@
  * license.
  */
 export * from './SingleSignOnContext.js';
-export * from './AuthenticatedUser.js';
 
 const $wnd = window as any;
 /* c8 ignore next 2 */
