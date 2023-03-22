@@ -44,15 +44,6 @@ export type AccessProps = {
 }
 
 /**
- * The error thrown when an endpoint import fails because of error or not found.
- */
-export class EndpointImportError extends Error {
-    public constructor(endpoint: string, reason: string) {
-        super(`${endpoint} endpoint import failed with error: ${reason}`);
-    }
-}
-
-/**
  * Type definition for the authenticated user information.
  */
 export type User = {
@@ -104,6 +95,15 @@ export type User = {
      * The user's preferred username.
      */
     preferredUsername?: string;
+}
+
+/**
+ * The error thrown when an endpoint import fails because of error or not found.
+ */
+export class EndpointImportError extends Error {
+    public constructor(endpoint: string, reason: string) {
+        super(`${endpoint} endpoint import failed with error: ${reason}`);
+    }
 }
 
 /**

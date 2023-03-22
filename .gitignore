@@ -1,8 +1,8 @@
 .classpath
+.factorypath
 *.project
 *.settings
 **/.sts4-cache/*
-.factorypath
 
 # Mac
 *.DS_Store
@@ -32,3 +32,4 @@ sso-kit-client/*/*.d.ts.map
 sso-kit-client/*/*.js
 sso-kit-client/*/*.js.map
 sso-kit-client/*/.coverage
+sso-kit-client/*/.vite
