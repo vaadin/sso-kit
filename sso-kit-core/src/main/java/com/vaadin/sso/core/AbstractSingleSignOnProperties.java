@@ -75,6 +75,33 @@ public abstract class AbstractSingleSignOnProperties {
     private int maximumConcurrentSessions = DEFAULT_MAXIMUM_SESSIONS_PER_USER;
 
     /**
+     * Checks is auto-configuration of SingleSignOnConfiguration is enabled.
+     *
+     * @return always true, see deprecation tag
+     * @deprecated to disable auto-configuration, use the
+     *             {@code spring.autoconfigure.exclude} property
+     * @see https://docs.spring.io/spring-boot/docs/current/reference/html/using.html#using.auto-configuration.disabling-specific
+     */
+    @Deprecated(since = "2.1.0", forRemoval = true)
+    public boolean isAutoConfigure() {
+        return true;
+    }
+
+    /**
+     * Enables or disables auto-configuration of SingleSignOnConfiguration.
+     *
+     * @param autoConfigure
+     *            has no effect, see deprecation tag
+     * @deprecated to disable auto-configuration, use the
+     *             {@code spring.autoconfigure.exclude} property
+     * @see https://docs.spring.io/spring-boot/docs/current/reference/html/using.html#using.auto-configuration.disabling-specific
+     */
+    @Deprecated(since = "2.1.0", forRemoval = true)
+    public void setAutoConfigure(boolean autoConfigure) {
+        // Deprecated
+    }
+
+    /**
      * Gets the login-route property.
      *
      * @return the login-route property
