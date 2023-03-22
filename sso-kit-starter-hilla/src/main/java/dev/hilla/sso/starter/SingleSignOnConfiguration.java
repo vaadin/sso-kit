@@ -10,7 +10,6 @@
 package dev.hilla.sso.starter;
 
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.security.oauth2.client.ClientsConfiguredCondition;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationEventPublisher;
@@ -26,10 +25,26 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 import com.vaadin.flow.spring.security.VaadinWebSecurity;
 import com.vaadin.sso.core.BackChannelLogoutFilter;
 
+/**
+ * This configuration bean is provided to auto-configure Hilla and Spring to
+ * allow single sign-on against external identity providers.
+ * <p>
+ * It enables OAuth2/OpenID login for the identity providers defined in the
+ * current application configuration and instructs the application to accept
+ * requests for the login route, which can be configured setting the
+ * {@code hilla.sso.login-route} property (defaults to {@code /login}).
+ * <p>
+ * If you need a customized security configuration, you can disable this
+ * auto-configuration class by adding its fully-qualified name to the
+ * {@code spring.autoconfigure.exclude} property and provide your own
+ * configuration class.
+ *
+ * @author Vaadin Ltd
+ * @since 2.0
+ */
 @AutoConfiguration
 @EnableWebSecurity
 @Conditional(ClientsConfiguredCondition.class)
-@ConditionalOnProperty(name = "auto-configure", prefix = SingleSignOnProperties.PREFIX, matchIfMissing = true)
 @EnableConfigurationProperties(SingleSignOnProperties.class)
 public class SingleSignOnConfiguration extends VaadinWebSecurity {
 

@@ -12,7 +12,6 @@ package com.vaadin.sso.starter;
 import java.util.Objects;
 
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.security.oauth2.client.ClientsConfiguredCondition;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationEventPublisher;
@@ -40,8 +39,9 @@ import com.vaadin.sso.core.BackChannelLogoutFilter;
  * {@code vaadin.sso.login-route} property (defaults to {@code /login}).
  * <p>
  * If you need a customized security configuration, you can disable this
- * auto-configuration class by setting the {@code vaadin.sso.auto-configure}
- * property to {@code false} and provide your own configuration class.
+ * auto-configuration class by adding its fully-qualified name to the
+ * {@code spring.autoconfigure.exclude} property and provide your own
+ * configuration class.
  *
  * @author Vaadin Ltd
  * @since 1.0
@@ -49,7 +49,6 @@ import com.vaadin.sso.core.BackChannelLogoutFilter;
 @AutoConfiguration
 @EnableWebSecurity
 @Conditional(ClientsConfiguredCondition.class)
-@ConditionalOnProperty(name = "auto-configure", prefix = SingleSignOnProperties.PREFIX, matchIfMissing = true)
 @EnableConfigurationProperties(SingleSignOnProperties.class)
 public class SingleSignOnConfiguration extends VaadinWebSecurity {
 
