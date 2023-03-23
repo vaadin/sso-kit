@@ -17,11 +17,14 @@
     "Hilla"
   ],
   "scripts": {
-    "build": "tsc --isolatedModules -p tsconfig.build.json",
+    "clean:build": "rimraf *.{d.ts.map,d.ts,js.map,js}",
+    "build": "concurrently npm:build:*",
+    "build:transpile": "tsc --isolatedModules -p tsconfig.build.json",
+    "build:copy": "cd src && copyfiles **/*.d.ts ..",
     "lint": "eslint src/**/*.ts test/**/*.ts",
-    "test": "karma start ../../../karma.config.cjs --port 9878",
-    "test:coverage": "npm run test -- --coverage",
-    "test:watch": "npm run test -- --watch",
+    "test": "mocha test/**/*.spec.ts --config ../../.mocharc.json",
+    "test:update": "npm run test -- --update",
+    "test:coverage": "c8 -c ../../.c8rc.json npm test",
     "typecheck": "tsc --noEmit"
   },
   "exports": {
@@ -50,11 +53,23 @@
   "dependencies": {
     "@hilla/frontend": "2.0.0",
     "mobx": "6.3.3",
-    "tslib": "^2.3.1"
+    "tslib": "^2.3.1",
+    "typescript": "^5.0.2"
   },
   "devDependencies": {
-    "@esm-bundle/chai": "^4.3.4-fix.0",
+    "@types/chai": "^4.2.22",
     "@types/mocha": "^9.0.0",
-    "typescript": "^5.0.2"
+    "@types/node": "^16.11.1",
+    "@types/sinon": "^10.0.6",
+    "@types/sinon-chai": "^3.2.5",
+    "c8": "^7.10.0",
+    "chai": "^4.3.4",
+    "concurrently": "^6.3.0",
+    "copyfiles": "^2.4.1",
+    "mocha": "^9.1.3",
+    "rimraf": "^3.0.2",
+    "sinon": "^11.1.2",
+    "sinon-chai": "^3.7.0",
+    "type-fest": "^2.5.1"
   }
 }
