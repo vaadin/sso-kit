@@ -48,11 +48,6 @@ public abstract class AbstractSingleSignOnProperties {
     static final int DEFAULT_MAXIMUM_SESSIONS_PER_USER = -1;
 
     /**
-     * Enables (or disables) auto-configuration.
-     */
-    private boolean autoConfigure = true;
-
-    /**
      * The route to redirect unauthorized requests to.
      */
     private String loginRoute = DEFAULT_LOGIN_ROUTE;
@@ -82,21 +77,28 @@ public abstract class AbstractSingleSignOnProperties {
     /**
      * Checks is auto-configuration of SingleSignOnConfiguration is enabled.
      *
-     * @return true, if auto-configuration is enabled
+     * @return always true, see deprecation tag
+     * @deprecated to disable auto-configuration, use the
+     *             {@code spring.autoconfigure.exclude} property
+     * @see https://docs.spring.io/spring-boot/docs/current/reference/html/using.html#using.auto-configuration.disabling-specific
      */
+    @Deprecated(since = "2.1.0", forRemoval = true)
     public boolean isAutoConfigure() {
-        return autoConfigure;
+        return true;
     }
 
     /**
      * Enables or disables auto-configuration of SingleSignOnConfiguration.
      *
      * @param autoConfigure
-     *            {@code true} to enable auto-configuration, {@code false} to
-     *            disable
+     *            has no effect, see deprecation tag
+     * @deprecated to disable auto-configuration, use the
+     *             {@code spring.autoconfigure.exclude} property
+     * @see https://docs.spring.io/spring-boot/docs/current/reference/html/using.html#using.auto-configuration.disabling-specific
      */
+    @Deprecated(since = "2.1.0", forRemoval = true)
     public void setAutoConfigure(boolean autoConfigure) {
-        this.autoConfigure = autoConfigure;
+        // Deprecated
     }
 
     /**

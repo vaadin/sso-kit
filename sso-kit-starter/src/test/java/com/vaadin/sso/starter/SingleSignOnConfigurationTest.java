@@ -53,19 +53,6 @@ public class SingleSignOnConfigurationTest {
     }
 
     @Test
-    public void autoConfigureProperty_notSet_configurationEnabled() {
-        contextRunner.run(ctx -> assertThat(ctx)
-                .hasSingleBean(SingleSignOnConfiguration.class));
-    }
-
-    @Test
-    public void autoConfigureProperty_isFalse_configurationDisabled() {
-        contextRunner.withPropertyValues("vaadin.sso.auto-configure=false")
-                .run(ctx -> assertThat(ctx)
-                        .doesNotHaveBean(SingleSignOnConfiguration.class));
-    }
-
-    @Test
     public void clientRepository_notAvailable_configurationDisabled() {
         final var runner = new WebApplicationContextRunner().withConfiguration(
                 AutoConfigurations.of(SpringBootAutoConfiguration.class,
