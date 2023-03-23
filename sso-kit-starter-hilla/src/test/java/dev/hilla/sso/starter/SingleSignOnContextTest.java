@@ -180,7 +180,8 @@ public class SingleSignOnContextTest {
         var securityContext = mock(SecurityContext.class);
         var authentication = mock(Authentication.class);
         var subscription = mock(BackChannelLogoutSubscription.class);
-        var message = new BackChannelLogoutSubscription.Message();
+        var message = new BackChannelLogoutSubscription.Message(
+                "User logged out");
 
         when(securityContext.getAuthentication()).thenReturn(authentication);
         when(authentication.getPrincipal()).thenReturn("user");
