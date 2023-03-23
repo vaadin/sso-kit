@@ -33,8 +33,16 @@
     "eslint": "^7.32.0",
     "eslint-config-vaadin": "^0.4.0",
     "eslint-plugin-chai-friendly": "^0.7.2",
+    "karma": "^6.4.1",
+    "karma-chrome-launcher": "^3.1.1",
+    "karma-coverage": "^2.2.0",
+    "karma-mocha": "^2.0.1",
+    "karma-spec-reporter": "^0.0.36",
     "karma-vite": "^1.0.4",
     "lerna": "^6.5.1",
+    "mocha": "^10.2.0",
+    "nx": "^15.8.6",
+    "tsx": "^3.12.5",
     "typescript": "^5.0.2"
   }
 }

@@ -13,15 +13,16 @@
   "keywords": [
     "SSO",
     "Kit",
-    "Client"
+    "Client",
+    "Hilla"
   ],
   "scripts": {
-    "build": "tsc --isolatedModules",
+    "build": "tsc --isolatedModules -p tsconfig.build.json",
     "lint": "eslint src/**/*.ts test/**/*.ts",
-    "test": "web-test-runner \"test/**/*.test.ts\" --config ../../../web-test-runner.config.js",
+    "test": "karma start ../../../karma.config.cjs --port 9878",
     "test:coverage": "npm run test -- --coverage",
     "test:watch": "npm run test -- --watch",
-    "typecheck": "tsc --noEmit --project test/tsconfig.json"
+    "typecheck": "tsc --noEmit"
   },
   "exports": {
     ".": {
@@ -29,6 +30,9 @@
     },
     "./SingleSignOnContext.js": {
       "default": "./SingleSignOnContext.js"
+    },
+    "./index.js": {
+      "default": "./index.js"
     }
   },
   "author": "Vaadin Ltd",

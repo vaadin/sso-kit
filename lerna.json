@@ -2,5 +2,6 @@
   "packages": ["sso-kit-client/*"],
   "npmClient": "npm",
   "useWorkspaces": true,
+  "useNx": true,
   "version": "2.1.0"
 }

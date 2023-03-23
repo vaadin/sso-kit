@@ -17,9 +17,5 @@
     "useDefineForClassFields": true,
     "useUnknownInCatchVariables": true
   },
-  "include": [
-    "sso-kit-client/**/*.{ts,js}", "scripts/**/*.{ts,js}", "*.{ts,js,cjs}"],
-  "exclude": [
-    "sso-kit-client/*/*.{js,d.ts}"
-  ]
+  "include": ["*.ts", "*.d.ts", "*.js", "*.cjs"]
 }
