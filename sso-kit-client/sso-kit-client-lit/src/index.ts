@@ -9,11 +9,20 @@
  */
 export * from './SingleSignOnContext.js';
 
-const $wnd = window as any;
-/* c8 ignore next 2 */
-$wnd.Vaadin = $wnd.Vaadin || {};
-$wnd.Vaadin.registrations = $wnd.Vaadin.registrations || [];
-$wnd.Vaadin.registrations.push({
-    is: "@hilla/sso-kit-client-lit",
-    version: /* updated-by-script */ "2.1.0"
+declare global {
+  interface Window {
+    Vaadin: {
+      registrations: {
+        is: string;
+        version: string;
+      }[];
+    }
+  }
+}
+
+window.Vaadin = window.Vaadin || {};
+window.Vaadin.registrations = window.Vaadin.registrations || [];
+window.Vaadin.registrations.push({
+  is: "@hilla/sso-kit-client-lit",
+  version: /* updated-by-script */ "2.1.0"
 });
