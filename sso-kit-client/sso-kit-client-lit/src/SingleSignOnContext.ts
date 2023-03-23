@@ -7,17 +7,22 @@
  * See <https://vaadin.com/commercial-license-and-service-terms> for the full
  * license.
  */
+import { makeAutoObservable } from 'mobx';
 import { logout } from '@hilla/frontend';
 import type { Subscription } from '@hilla/frontend';
-import { makeAutoObservable } from 'mobx';
+import type { AccessProps } from './AccessProps.js';
+import type { User } from './User.js';
+import EndpointImportError from './EndpointImportError.js';
 
 /**
  * Used to declare the Hilla.SingleSignOnData variable type.
  */
 declare global {
-  const Hilla: {
-    SingleSignOnData: string;
-  };
+  interface Window {
+    Hilla: {
+      SingleSignOnData: string;
+    };
+  }
 }
 
 /**
@@ -26,7 +31,7 @@ declare global {
 type SingleSignOnData = {
   authenticated: boolean;
   roles: string[];
-  loginLink?: string;
+  loginLink: string;
   logoutLink?: string;
   backChannelLogoutEnabled: boolean;
 }
@@ -34,77 +39,8 @@ type SingleSignOnData = {
 /**
  * Type definition for the back-channel logout endpoint subscribe method return type.
  */
-type Message = {}
-
-/**
- * Type definition for the view routes that can be used to indicate that
- * authentication is needed to access that route.
- */
-export type AccessProps = {
-  requiresLogin?: boolean;
-}
-
-/**
- * Type definition for the authenticated user information.
- */
-export type User = {
-  /**
-   * The user's birthdate.
-   */
-  birthdate?: string;
-  /**
-   * The user's email.
-   */
-  email?: string;
-  /**
-   * The user's family name.
-   */
-  familyName?: string;
-  /**
-   * The user's full name.
-   */
-  fullName?: string;
-  /**
-   * The user's gender.
-   */
-  gender?: string;
-  /**
-   * The user's given name.
-   */
-  givenName?: string;
-  /**
-   * The user's locale.
-   */
-  locale?: string;
-  /**
-   * The user's middle name.
-   */
-  middleName?: string;
-  /**
-   * The user's nickname.
-   */
-  nickName?: string;
-  /**
-   * The user's phone number.
-   */
-  phoneNumber?: string;
-  /**
-   * The user's picture.
-   */
-  picture?: string;
-  /**
-   * The user's preferred username.
-   */
-  preferredUsername?: string;
-}
-
-/**
- * The error thrown when an endpoint import fails because of error or not found.
- */
-export class EndpointImportError extends Error {
-  public constructor(endpoint: string, reason: string) {
-    super(`${endpoint} endpoint import failed with error: ${reason}`);
-  }
+type Message = {
+  message?: string;
 }
 
 /**
@@ -146,12 +82,12 @@ export class SingleSignOnContext {
   /**
    * The subscription to the back-channel logout event.
    */
-  private logoutSubscription?: Subscription<Message>;
+  #logoutSubscription?: Subscription<Message>;
 
   constructor() {
     makeAutoObservable(this);
 
-    const singleSignOnData = JSON.parse(Hilla.SingleSignOnData) as SingleSignOnData;
+    const singleSignOnData = JSON.parse(window.Hilla.SingleSignOnData) as SingleSignOnData;
     this.authenticated = singleSignOnData.authenticated;
     this.roles = singleSignOnData.roles;
     this.loginUrl = singleSignOnData.loginLink;
@@ -160,45 +96,50 @@ export class SingleSignOnContext {
 
     // @ts-ignore: the imported file might not exist,
     // in that case the registeredProviders will be empty
-    import("Frontend/generated/SingleSignOnEndpoint").then(
-      (endpoint) => endpoint.getRegisteredProviders().then(
-        (registeredProviders: string[]) => this.registeredProviders = registeredProviders,
-        (reason: string) => {
-          throw new Error(`Couldn't get registered providers: ${reason}`);
-        }
-      ),
+    import("Frontend/generated/SingleSignOnEndpoint.ts").then(
+      (endpoint) => endpoint.getRegisteredProviders(),
       (reason) => {
         throw new EndpointImportError('SingleSignOnEndpoint', reason);
+      }
+    ).then(
+      (registeredProviders: string[]) => this.registeredProviders = registeredProviders,
+      (reason: string) => {
+        throw new Error(`Couldn't get registered providers: ${reason}`);
       }
     );
 
     // @ts-ignore: the imported file might not exist,
     // in that case the authenticated user will be undefined
-    import("Frontend/generated/UserEndpoint").then(
-      (endpoint) => endpoint.getAuthenticatedUser().then(
-        (user: User) => this.user = user,
-        (reason: string) => {
-          throw new Error(`Couldn't get authenticated user: ${reason}`);
-        }
-      ),
+    import("Frontend/generated/UserEndpoint.ts").then(
+      (endpoint) => endpoint.getAuthenticatedUser(),
       (reason) => {
         throw new EndpointImportError('UserEndpoint', reason);
+      }
+    ).then(
+      (user: User) => this.user = user,
+      (reason: string) => {
+        throw new Error(`Couldn't get authenticated user: ${reason}`);
       }
     );
 
     if (this.authenticated && this.backChannelLogoutEnabled) {
       // @ts-ignore: the imported file might not exist,
       // in that case the backChannelLogoutEnabled will be false
-      import("Frontend/generated/BackChannelLogoutEndpoint").then(
-        (endpoint) => {
-          this.logoutSubscription = endpoint.subscribe();
-          this.logoutSubscription!.onNext(() => {
-            this.backChannelLogoutHappened = true;
-            this.logoutSubscription!.cancel();
-          });
-        },
+      import("Frontend/generated/BackChannelLogoutEndpoint.ts").then(
+        (endpoint) => endpoint.subscribe(),
         (reason) => {
           throw new EndpointImportError('BackChannelLogoutEndpoint', reason);
+        }
+      ).then(
+        (subscription: Subscription<Message>) => {
+          this.#logoutSubscription = subscription;
+          this.#logoutSubscription!.onNext(() => {
+            this.backChannelLogoutHappened = true;
+            this.#logoutSubscription!.cancel();
+          });
+        },
+        (reason: string) => {
+          throw new Error(`Couldn't subscribe to the back-channel logout events: ${reason}`);
         }
       );
     }
@@ -261,9 +202,9 @@ export class SingleSignOnContext {
     this.roles = [];
     this.logoutUrl = undefined;
     this.backChannelLogoutHappened = false;
-    if (this.logoutSubscription) {
-      this.logoutSubscription.cancel();
-      this.logoutSubscription = undefined;
+    if (this.#logoutSubscription) {
+      this.#logoutSubscription.cancel();
+      this.#logoutSubscription = undefined;
     }
   }
 }

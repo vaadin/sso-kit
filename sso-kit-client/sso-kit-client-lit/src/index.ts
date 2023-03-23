@@ -8,6 +8,9 @@
  * license.
  */
 export * from './SingleSignOnContext.js';
+export * from './User.js';
+export * from './AccessProps.js';
+export * from './EndpointImportError.js';
 
 declare global {
   interface Window {

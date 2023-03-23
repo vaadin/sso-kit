@@ -1,6 +1,6 @@
 {
   "name": "@hilla/sso-kit-client-lit",
-  "version": "2.1.0",
+  "version": "2.1.24",
   "description": "SSO Kit Client Lit",
   "main": "index.js",
   "module": "index.js",
@@ -22,9 +22,9 @@
     "build:transpile": "tsc --isolatedModules -p tsconfig.build.json",
     "build:copy": "cd src && copyfiles **/*.d.ts ..",
     "lint": "eslint src/**/*.ts test/**/*.ts",
-    "test": "mocha test/**/*.test.ts --config ../../.mocharc.json",
-    "test:update": "npm run test -- --update",
-    "test:coverage": "c8 -c ../../.c8rc.json npm test",
+    "test": "karma start ../../karma.config.cjs --port 9878",
+    "test:coverage": "npm run test -- --coverage",
+    "test:watch": "npm run test -- --watch",
     "typecheck": "tsc --noEmit"
   },
   "exports": {
@@ -33,6 +33,15 @@
     },
     "./SingleSignOnContext.js": {
       "default": "./SingleSignOnContext.js"
+    },
+    "./User.js": {
+      "default": "./User.js"
+    },
+    "./AccessProps.js": {
+      "default": "./AccessProps.js"
+    },
+    "./EndpointImportError.js": {
+      "default": "./EndpointImportError.js"
     },
     "./index.js": {
       "default": "./index.js"
@@ -53,23 +62,28 @@
   "dependencies": {
     "@hilla/frontend": "2.0.0",
     "mobx": "6.3.3",
-    "tslib": "^2.3.1",
-    "typescript": "^5.0.2"
+    "tslib": "^2.3.1"
   },
   "devDependencies": {
+    "@esm-bundle/chai": "^4.3.4-fix.0",
     "@types/chai": "^4.2.22",
-    "@types/mocha": "^9.0.0",
-    "@types/node": "^16.11.1",
-    "@types/sinon": "^10.0.6",
-    "@types/sinon-chai": "^3.2.5",
-    "c8": "^7.10.0",
+    "@types/chai-dom": "^1.11.0",
+    "@types/mocha": "^10.0.1",
+    "@types/sinon": "^10.0.13",
+    "@types/sinon-chai": "^3.2.9",
     "chai": "^4.3.4",
+    "chai-dom": "^1.11.0",
     "concurrently": "^6.3.0",
     "copyfiles": "^2.4.1",
-    "mocha": "^9.1.3",
+    "karma": "^6.4.1",
+    "karma-chrome-launcher": "^3.1.1",
+    "karma-coverage": "^2.2.0",
+    "karma-mocha": "^2.0.1",
+    "karma-spec-reporter": "^0.0.36",
+    "karma-vite": "^1.0.4",
+    "mocha": "^10.2.0",
     "rimraf": "^3.0.2",
-    "sinon": "^11.1.2",
-    "sinon-chai": "^3.7.0",
-    "type-fest": "^2.5.1"
+    "sinon": "^15.0.2",
+    "sinon-chai": "^3.7.0"
   }
 }
