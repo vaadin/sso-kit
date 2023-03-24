@@ -66,7 +66,7 @@ public class BootstrapDataServiceListenerTest {
         var indexHtmlResponse = new IndexHtmlResponse(vaadinRequest,
                 vaadinResponse, document);
         var singleSignOnData = createSingleSignOnData();
-        var expectedSingleSignOnData = "{\\\"authenticated\\\":true,\\\"roles\\\":[],\\\"loginLink\\\":\\\"login\\\",\\\"logoutLink\\\":\\\"logout\\\",\\\"backChannelLogoutEnabled\\\":true}";
+        var expectedSingleSignOnData = "{\"authenticated\":true,\"roles\":[],\"loginLink\":\"login\",\"logoutLink\":\"logout\",\"backChannelLogoutEnabled\":true}";
 
         when(singleSignOnContext.getSingleSignOnData())
                 .thenReturn(singleSignOnData);
