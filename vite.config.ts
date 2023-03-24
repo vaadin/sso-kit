@@ -27,9 +27,9 @@ export default defineConfig(async () => {
     },
     resolve: {
       alias: {
-        'Frontend/generated/SingleSignOnEndpoint.js': resolve(cwd, 'test/mocks/SingleSignOnEndpointMock.ts'),
-        'Frontend/generated/UserEndpoint.js': resolve(cwd, 'test/mocks/UserEndpointMock.ts'),
-        'Frontend/generated/BackChannelLogoutEndpoint.js': resolve(cwd, 'test/mocks/BackChannelLogoutEndpointMock.ts')
+        'Frontend/generated/SingleSignOnEndpoint.ts': resolve(cwd, 'test/mocks/SingleSignOnEndpointMock.ts'),
+        'Frontend/generated/UserEndpoint.ts': resolve(cwd, 'test/mocks/UserEndpointMock.ts'),
+        'Frontend/generated/BackChannelLogoutEndpoint.ts': resolve(cwd, 'test/mocks/BackChannelLogoutEndpointMock.ts')
       }
     }
   };
