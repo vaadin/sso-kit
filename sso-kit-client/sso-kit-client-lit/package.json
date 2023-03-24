@@ -1,6 +1,6 @@
 {
   "name": "@hilla/sso-kit-client-lit",
-  "version": "2.1.24",
+  "version": "2.1.0",
   "description": "SSO Kit Client Lit",
   "main": "index.js",
   "module": "index.js",
@@ -31,20 +31,23 @@
     ".": {
       "default": "./index.js"
     },
-    "./SingleSignOnContext.js": {
-      "default": "./SingleSignOnContext.js"
-    },
-    "./User.js": {
-      "default": "./User.js"
-    },
-    "./AccessProps.js": {
-      "default": "./AccessProps.js"
-    },
     "./EndpointImportError.js": {
       "default": "./EndpointImportError.js"
     },
+    "./SingleSignOnContext.js": {
+      "default": "./SingleSignOnContext.js"
+    },
     "./index.js": {
       "default": "./index.js"
+    },
+    "./AccessProps.js": {
+      "types": "./AccessProps.d.ts"
+    },
+    "./SingleSignOnData.js": {
+      "types": "./SingleSignOnData.d.ts"
+    },
+    "./User.js": {
+      "types": "./User.d.ts"
     }
   },
   "author": "Vaadin Ltd",

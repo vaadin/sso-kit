@@ -10,7 +10,7 @@
 /**
  * Type definition for the authenticated user information.
  */
-export type User = {
+export type User = Readonly<{
   /**
    * The user's birthdate.
    */
@@ -59,4 +59,4 @@ export type User = {
    * The user's preferred username.
    */
   preferredUsername?: string;
-}
+}>;

@@ -7,41 +7,20 @@
  * See <https://vaadin.com/commercial-license-and-service-terms> for the full
  * license.
  */
-import { makeAutoObservable } from 'mobx';
-import { logout } from '@hilla/frontend';
-import type { Subscription } from '@hilla/frontend';
-import type { AccessProps } from './AccessProps.js';
-import type { User } from './User.js';
-import EndpointImportError from './EndpointImportError.js';
-
-/**
- * Used to declare the Hilla.SingleSignOnData variable type.
- */
-declare global {
-  interface Window {
-    Hilla: {
-      SingleSignOnData: string;
-    };
-  }
-}
-
-/**
- * Type definition for the authentication information.
- */
-type SingleSignOnData = {
-  authenticated: boolean;
-  roles: string[];
-  loginLink: string;
-  logoutLink?: string;
-  backChannelLogoutEnabled: boolean;
-}
+import { makeAutoObservable } from "mobx";
+import { logout } from "@hilla/frontend";
+import EndpointImportError from "./EndpointImportError.js";
+import type { AccessProps } from "./AccessProps.js";
+import type { SingleSignOnData } from "./SingleSignOnData.js";
+import type { Subscription } from "@hilla/frontend";
+import type { User } from "./User.js";
 
 /**
  * Type definition for the back-channel logout endpoint subscribe method return type.
  */
 type Message = {
   message?: string;
-}
+};
 
 /**
  * A store for authentication information.
@@ -84,10 +63,9 @@ export class SingleSignOnContext {
    */
   #logoutSubscription?: Subscription<Message>;
 
-  constructor() {
+  constructor(singleSignOnData: SingleSignOnData) {
     makeAutoObservable(this);
 
-    const singleSignOnData = JSON.parse(window.Hilla.SingleSignOnData) as SingleSignOnData;
     this.authenticated = singleSignOnData.authenticated;
     this.roles = singleSignOnData.roles;
     this.loginUrl = singleSignOnData.loginLink;
@@ -96,52 +74,61 @@ export class SingleSignOnContext {
 
     // @ts-ignore: the imported file might not exist,
     // in that case the registeredProviders will be empty
-    import("Frontend/generated/SingleSignOnEndpoint.ts").then(
-      (endpoint) => endpoint.getRegisteredProviders(),
-      (reason) => {
-        throw new EndpointImportError('SingleSignOnEndpoint', reason);
-      }
-    ).then(
-      (registeredProviders: string[]) => this.registeredProviders = registeredProviders,
-      (reason: string) => {
-        throw new Error(`Couldn't get registered providers: ${reason}`);
-      }
-    );
+    import("Frontend/generated/SingleSignOnEndpoint.ts")
+      .then(
+        (endpoint) => endpoint.getRegisteredProviders(),
+        (reason) => {
+          throw new EndpointImportError("SingleSignOnEndpoint", reason);
+        }
+      )
+      .then(
+        (registeredProviders: string[]) =>
+          (this.registeredProviders = registeredProviders),
+        (reason: string) => {
+          throw new Error(`Couldn't get registered providers: ${reason}`);
+        }
+      );
 
     // @ts-ignore: the imported file might not exist,
     // in that case the authenticated user will be undefined
-    import("Frontend/generated/UserEndpoint.ts").then(
-      (endpoint) => endpoint.getAuthenticatedUser(),
-      (reason) => {
-        throw new EndpointImportError('UserEndpoint', reason);
-      }
-    ).then(
-      (user: User) => this.user = user,
-      (reason: string) => {
-        throw new Error(`Couldn't get authenticated user: ${reason}`);
-      }
-    );
+    import("Frontend/generated/UserEndpoint.ts")
+      .then(
+        (endpoint) => endpoint.getAuthenticatedUser(),
+        (reason) => {
+          throw new EndpointImportError("UserEndpoint", reason);
+        }
+      )
+      .then(
+        (user: User) => (this.user = user),
+        (reason: string) => {
+          throw new Error(`Couldn't get authenticated user: ${reason}`);
+        }
+      );
 
     if (this.authenticated && this.backChannelLogoutEnabled) {
       // @ts-ignore: the imported file might not exist,
       // in that case the backChannelLogoutEnabled will be false
-      import("Frontend/generated/BackChannelLogoutEndpoint.ts").then(
-        (endpoint) => endpoint.subscribe(),
-        (reason) => {
-          throw new EndpointImportError('BackChannelLogoutEndpoint', reason);
-        }
-      ).then(
-        (subscription: Subscription<Message>) => {
-          this.#logoutSubscription = subscription;
-          this.#logoutSubscription!.onNext(() => {
-            this.backChannelLogoutHappened = true;
-            this.#logoutSubscription!.cancel();
-          });
-        },
-        (reason: string) => {
-          throw new Error(`Couldn't subscribe to the back-channel logout events: ${reason}`);
-        }
-      );
+      import("Frontend/generated/BackChannelLogoutEndpoint.ts")
+        .then(
+          (endpoint) => endpoint.subscribe(),
+          (reason) => {
+            throw new EndpointImportError("BackChannelLogoutEndpoint", reason);
+          }
+        )
+        .then(
+          (subscription: Subscription<Message>) => {
+            this.#logoutSubscription = subscription;
+            this.#logoutSubscription!.onNext(() => {
+              this.backChannelLogoutHappened = true;
+              this.#logoutSubscription!.cancel();
+            });
+          },
+          (reason: string) => {
+            throw new Error(
+              `Couldn't subscribe to the back-channel logout events: ${reason}`
+            );
+          }
+        );
     }
   }
 
@@ -161,14 +148,14 @@ export class SingleSignOnContext {
    */
   isUserInRole = (role: string) => {
     return this.roles.includes(role);
-  }
+  };
 
   /**
    * Redirects to the authentication provider's login page.
    */
   login = () => {
     location.href = this.loginUrl!;
-  }
+  };
 
   /**
    * Logouts from the application and redirects the user to the authentication provider's login page.
@@ -176,7 +163,7 @@ export class SingleSignOnContext {
   loginAgain = async () => {
     await logout();
     location.href = this.loginUrl!;
-  }
+  };
 
   /**
    * Logouts from the application and clears the user's authentication information.
@@ -184,7 +171,7 @@ export class SingleSignOnContext {
   stayOnPage = async () => {
     await logout();
     this.clearSingleSignOnData();
-  }
+  };
 
   /**
    * Logouts from the application and the authentication provider.
@@ -192,7 +179,7 @@ export class SingleSignOnContext {
   logout = async () => {
     await logout();
     location.href = this.logoutUrl!;
-  }
+  };
 
   /**
    * Clears the authentication information.
@@ -206,7 +193,9 @@ export class SingleSignOnContext {
       this.#logoutSubscription.cancel();
       this.#logoutSubscription = undefined;
     }
-  }
+  };
 }
 
-export const singleSignOnContext = new SingleSignOnContext();
+export default function getSingleSignOnContext() {
+  return new SingleSignOnContext(window.Vaadin.SingleSignOnData!);
+}
