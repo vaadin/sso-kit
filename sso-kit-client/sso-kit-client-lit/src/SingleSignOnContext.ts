@@ -9,10 +9,10 @@
  */
 import { makeAutoObservable } from "mobx";
 import { logout } from "@hilla/frontend";
+import type { Subscription } from "@hilla/frontend";
 import EndpointImportError from "./EndpointImportError.js";
 import type { AccessProps } from "./AccessProps.js";
 import type { SingleSignOnData } from "./SingleSignOnData.js";
-import type { Subscription } from "@hilla/frontend";
 import type { User } from "./User.js";
 
 /**
@@ -82,8 +82,9 @@ export class SingleSignOnContext {
         }
       )
       .then(
-        (registeredProviders: string[]) =>
-          (this.registeredProviders = registeredProviders),
+        (registeredProviders: string[]) => {
+          this.registeredProviders = registeredProviders;
+        },
         (reason: string) => {
           throw new Error(`Couldn't get registered providers: ${reason}`);
         }
@@ -99,7 +100,9 @@ export class SingleSignOnContext {
         }
       )
       .then(
-        (user: User) => (this.user = user),
+        (user: User) => {
+          this.user = user;
+        },
         (reason: string) => {
           throw new Error(`Couldn't get authenticated user: ${reason}`);
         }
@@ -154,7 +157,7 @@ export class SingleSignOnContext {
    * Redirects to the authentication provider's login page.
    */
   login = () => {
-    location.href = this.loginUrl!;
+    window.location.href = this.loginUrl!;
   };
 
   /**
@@ -162,7 +165,7 @@ export class SingleSignOnContext {
    */
   loginAgain = async () => {
     await logout();
-    location.href = this.loginUrl!;
+    window.location.href = this.loginUrl!;
   };
 
   /**
@@ -178,7 +181,7 @@ export class SingleSignOnContext {
    */
   logout = async () => {
     await logout();
-    location.href = this.logoutUrl!;
+    window.location.href = this.logoutUrl!;
   };
 
   /**
@@ -196,6 +199,6 @@ export class SingleSignOnContext {
   };
 }
 
-export default function getSingleSignOnContext() {
+export default function singleSignOnContext() {
   return new SingleSignOnContext(window.Vaadin.SingleSignOnData!);
 }
