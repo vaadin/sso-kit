@@ -7,11 +7,10 @@
  * See <https://vaadin.com/commercial-license-and-service-terms> for the full
  * license.
  */
-import { expect } from "chai";
-import EndpointImportError from "../src/EndpointImportError.js";
+import { assert } from "@esm-bundle/chai";
 
-describe("@hilla/sso-kit-client-lit", () => {
-  describe("EndpointImportError", () => {
+describe("@hilla/sso-kit-client", () => {
+  describe("Index", () => {
     beforeEach(() => {
       window.Vaadin = {
         SingleSignOnData: {
@@ -22,20 +21,20 @@ describe("@hilla/sso-kit-client-lit", () => {
         },
         registrations: [
           {
-            is: "@hilla/sso-kit-client-lit",
+            is: "@hilla/sso-kit-client",
             version: "2.1.0",
           },
         ],
       };
     });
 
-    it("should be exported", async () => {
-      expect(EndpointImportError).to.be.ok;
-    });
-
-    it("should instantiate with arguments", async () => {
-      const endpointImportError = new EndpointImportError("endpoint", "reason");
-      expect(endpointImportError).to.be.instanceOf(EndpointImportError);
+    it("should add registration", async () => {
+      assert.isDefined(window.Vaadin);
+      assert.isArray(window.Vaadin.registrations);
+      const formRegistrations = window.Vaadin.registrations?.filter(
+        (r: any) => r.is === "@hilla/sso-kit-client"
+      );
+      assert.lengthOf(formRegistrations!, 1);
     });
   });
 });

@@ -29,6 +29,6 @@ declare global {
 window.Vaadin = window.Vaadin || {};
 window.Vaadin.registrations = window.Vaadin.registrations || [];
 window.Vaadin.registrations.push({
-  is: "@hilla/sso-kit-client-lit",
+  is: "@hilla/sso-kit-client",
   version: "2.1.0",
 });

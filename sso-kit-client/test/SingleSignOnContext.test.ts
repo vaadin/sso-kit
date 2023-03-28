@@ -7,10 +7,11 @@
  * See <https://vaadin.com/commercial-license-and-service-terms> for the full
  * license.
  */
-import { assert } from "@esm-bundle/chai";
+import { expect } from "chai";
+import { SingleSignOnContext } from "../src/index.js";
 
-describe("@hilla/sso-kit-client-lit", () => {
-  describe("Index", () => {
+describe("@hilla/sso-kit-client", () => {
+  describe("SingleSignOnContext", () => {
     beforeEach(() => {
       window.Vaadin = {
         SingleSignOnData: {
@@ -21,20 +22,22 @@ describe("@hilla/sso-kit-client-lit", () => {
         },
         registrations: [
           {
-            is: "@hilla/sso-kit-client-lit",
+            is: "@hilla/sso-kit-client",
             version: "2.1.0",
           },
         ],
       };
     });
 
-    it("should add registration", async () => {
-      assert.isDefined(window.Vaadin);
-      assert.isArray(window.Vaadin.registrations);
-      const formRegistrations = window.Vaadin.registrations?.filter(
-        (r: any) => r.is === "@hilla/sso-kit-client-lit"
+    it("should be exported", async () => {
+      expect(SingleSignOnContext).to.be.ok;
+    });
+
+    it("should instantiate with argument", async () => {
+      const singleSignOnContext = new SingleSignOnContext(
+        window.Vaadin.SingleSignOnData!
       );
-      assert.lengthOf(formRegistrations!, 1);
+      expect(singleSignOnContext).to.be.instanceOf(SingleSignOnContext);
     });
   });
 });
