@@ -1,21 +1,23 @@
-# @hilla/sso-kit-client-lit
+# @hilla/sso-kit-client
 
 The SSO Kit Client is the client side dependency for the SSO Kit for Hilla. It depends on the [sso-kit-starter-hilla](https://github.com/vaadin/sso-kit/tree/main/sso-kit-starter-hilla).
 
 Getting Started with the SSO Kit for Hilla using Lit [documentation](https://hilla.dev/docs/lit/acceleration-kits/sso-kit/getting-started/#frontend).
+
+Getting Started with the SSO Kit for Hilla using React [documentation](https://hilla.dev/docs/react/acceleration-kits/sso-kit/getting-started/#frontend).
 
 ## Installation
 
 Install the client:
 
 ```sh
-npm i @hilla/sso-kit-client-lit@2.1.0
+npm i @hilla/sso-kit-client@2.1.0
 ```
 
 Once installed, you can import the `SingleSignOnContext` class in your application:
 
 ```js
-import { singleSignOnContext as sso} from '@hilla/sso-kit-client-lit/SingleSignOnContext.js';
+import singleSignOnContext from "@hilla/sso-kit-client/SingleSignOnContext.js";
 ```
 
 ## Development

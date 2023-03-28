@@ -1,7 +1,7 @@
 {
   "extends": ["vaadin"],
   "plugins": ["chai-friendly"],
-  "ignorePatterns": ["sso-kit-client/*/*.js", "sso-kit-client/*/*.d.ts", "sso-kit-client/*/test/**/*.snap.ts"],
+  "ignorePatterns": ["sso-kit-client/*.js", "sso-kit-client/*.d.ts", "sso-kit-client/test/**/*.snap.ts"],
   "rules": {
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-non-null-assertion": "off",

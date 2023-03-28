@@ -1,5 +1,5 @@
 {
-  "packages": ["sso-kit-client/*"],
+  "packages": ["sso-kit-client"],
   "npmClient": "npm",
   "useWorkspaces": true,
   "useNx": true,
