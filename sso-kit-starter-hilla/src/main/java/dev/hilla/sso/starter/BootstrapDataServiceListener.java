@@ -9,22 +9,27 @@
  */
 package dev.hilla.sso.starter;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jsoup.nodes.DataNode;
 
-import com.vaadin.flow.internal.JsonUtils;
 import com.vaadin.flow.server.VaadinServiceInitListener;
 
 /**
- * This class is responsible for injecting the SSO data into the index.html
+ * This class is responsible for injecting the single sign-on data into the
+ * index.html
  */
 public class BootstrapDataServiceListener implements VaadinServiceInitListener {
 
     static final String SCRIPT_STRING = """
-            window.Hilla = window.Hilla || {};
-            window.Hilla.SSO = JSON.parse("%s");
+            window.Vaadin = window.Vaadin || {};
+            window.Vaadin.SingleSignOnData = %s;
             """;
 
     private final SingleSignOnContext singleSignOnContext;
+    private final ObjectMapper objectMapper = new ObjectMapper()
+            .setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
     public BootstrapDataServiceListener(
             SingleSignOnContext singleSignOnContext) {
@@ -35,7 +40,7 @@ public class BootstrapDataServiceListener implements VaadinServiceInitListener {
     public void serviceInit(com.vaadin.flow.server.ServiceInitEvent event) {
         event.addIndexHtmlRequestListener(indexHtmlResponse -> {
             var data = singleSignOnContext.getSingleSignOnData();
-            var script = SCRIPT_STRING.formatted(quotesEscaped(json(data)));
+            var script = SCRIPT_STRING.formatted(json(data));
 
             // Use DataNode() instead of text() to avoid escaping the script
             var scriptNode = indexHtmlResponse.getDocument()
@@ -45,13 +50,10 @@ public class BootstrapDataServiceListener implements VaadinServiceInitListener {
     }
 
     private String json(Object o) {
-        if (o == null) {
-            return "null";
+        try {
+            return objectMapper.writeValueAsString(o);
+        } catch (JsonProcessingException | NullPointerException e) {
+            return "undefined";
         }
-        return JsonUtils.beanToJson(o).toJson();
-    }
-
-    private String quotesEscaped(String s) {
-        return s.replace("\"", "\\\"");
     }
 }

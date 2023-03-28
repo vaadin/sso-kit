@@ -1,0 +1,42 @@
+{
+  "name": "@hilla/sso-kit",
+  "private": true,
+  "description": "SSO Kit Client",
+  "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": ">=16.19.0",
+    "npm": ">=9"
+  },
+  "workspaces": [
+    "sso-kit-client"
+  ],
+  "scripts": {
+    "check": "concurrently npm:lint npm:typecheck",
+    "bootstrap": "lerna bootstrap",
+    "build": "lerna run build --include-dependencies",
+    "lint": "lerna run lint --parallel",
+    "postinstall": "npm run bootstrap",
+    "test": "lerna run test --parallel",
+    "test:coverage": "lerna run test:coverage --parallel",
+    "typecheck": "lerna run typecheck --parallel"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/vaadin/sso-kit"
+  },
+  "author": "Vaadin Ltd",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@types/node": "^18.15.3",
+    "concurrently": "^7.6.0",
+    "eslint": "^7.32.0",
+    "eslint-config-vaadin": "^0.4.0",
+    "eslint-plugin-chai-friendly": "^0.7.2",
+    "lerna": "^6.5.1",
+    "nx": "^15.8.6",
+    "tsx": "^3.12.5",
+    "typescript": "^5.0.2",
+    "vite": "^4.2.0"
+  }
+}

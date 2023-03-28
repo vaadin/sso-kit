@@ -9,6 +9,9 @@
  */
 package dev.hilla.sso.starter;
 
+import dev.hilla.sso.starter.endpoint.BackChannelLogoutEndpoint;
+import dev.hilla.sso.starter.endpoint.SingleSignOnEndpoint;
+import dev.hilla.sso.starter.endpoint.UserEndpoint;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.security.oauth2.client.ClientsConfiguredCondition;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -60,6 +63,12 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
 
     private final BootstrapDataServiceListener bootstrapDataServiceListener;
 
+    private final BackChannelLogoutEndpoint backChannelLogoutEndpoint;
+
+    private final SingleSignOnEndpoint singleSignOnEndpoint;
+
+    private final UserEndpoint userEndpoint;
+
     /**
      * Creates an instance of this configuration bean.
      *
@@ -86,6 +95,11 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
                 backChannelLogoutSubscription);
         this.bootstrapDataServiceListener = new BootstrapDataServiceListener(
                 singleSignOnContext);
+        this.backChannelLogoutEndpoint = new BackChannelLogoutEndpoint(
+                singleSignOnContext);
+        this.singleSignOnEndpoint = new SingleSignOnEndpoint(
+                singleSignOnContext);
+        this.userEndpoint = new UserEndpoint();
     }
 
     @Bean
@@ -101,6 +115,21 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
     @Bean
     public BootstrapDataServiceListener bootstrapDataServiceListener() {
         return bootstrapDataServiceListener;
+    }
+
+    @Bean
+    public BackChannelLogoutEndpoint backChannelLogoutEndpoint() {
+        return backChannelLogoutEndpoint;
+    }
+
+    @Bean
+    public SingleSignOnEndpoint singleSignOnEndpoint() {
+        return singleSignOnEndpoint;
+    }
+
+    @Bean
+    public UserEndpoint userEndpoint() {
+        return userEndpoint;
     }
 
     @Bean(name = "VaadinSecurityFilterChainBean")

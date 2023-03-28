@@ -23,7 +23,8 @@ public class BackChannelLogoutEndpointTest {
     @Test
     public void subscribe_returnsTheExpectedFluxMessage() {
         var singleSignOnContext = mock(SingleSignOnContext.class);
-        var message = new BackChannelLogoutSubscription.Message();
+        var message = new BackChannelLogoutSubscription.Message(
+                "User logged out");
 
         when(singleSignOnContext.getBackChannelLogoutFlux())
                 .thenReturn(Flux.just(message));

@@ -13,11 +13,9 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.springframework.context.ApplicationListener;
-
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.vaadin.sso.core.UserLogoutEvent;
-
 import reactor.core.publisher.Flux;
+
+import com.vaadin.sso.core.UserLogoutEvent;
 
 /**
  * A subscription for broadcasting back-channel logout events to the subscribed
@@ -58,8 +56,7 @@ public class BackChannelLogoutSubscription
     public Flux<Message> getFluxForUser(Object principal) {
         Objects.requireNonNull(principal);
         return flux.filter(p -> Objects.equals(p, principal))
-                // TODO: can the returned message contain useful information?
-                .map(p -> new Message());
+                .map(p -> new Message("User logged out"));
     }
 
     /**
@@ -80,10 +77,6 @@ public class BackChannelLogoutSubscription
     /**
      * The message returned by the flux.
      */
-    // The class is annotated with @JsonSerialize to allow for serialization
-    // even if empty. This annotation can be removed if something is added to
-    // the class.
-    @JsonSerialize
-    public static class Message {
+    public record Message(String message) {
     }
 }

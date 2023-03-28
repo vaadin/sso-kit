@@ -9,6 +9,9 @@
  */
 package dev.hilla.sso.starter;
 
+import dev.hilla.sso.starter.endpoint.BackChannelLogoutEndpoint;
+import dev.hilla.sso.starter.endpoint.SingleSignOnEndpoint;
+import dev.hilla.sso.starter.endpoint.UserEndpoint;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -63,7 +66,10 @@ public class SingleSignOnConfigurationTest {
                 .doesNotHaveBean(SingleSignOnConfiguration.class)
                 .doesNotHaveBean(BackChannelLogoutSubscription.class)
                 .doesNotHaveBean(SingleSignOnContext.class)
-                .doesNotHaveBean(BootstrapDataServiceListener.class));
+                .doesNotHaveBean(BootstrapDataServiceListener.class)
+                .doesNotHaveBean(BackChannelLogoutEndpoint.class)
+                .doesNotHaveBean(SingleSignOnEndpoint.class)
+                .doesNotHaveBean(UserEndpoint.class));
     }
 
     @Test

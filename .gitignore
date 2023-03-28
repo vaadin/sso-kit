@@ -1,15 +1,35 @@
 .classpath
+.factorypath
 *.project
 *.settings
+**/.sts4-cache/*
 
+# Mac
+*.DS_Store
+
+# Intellij Idea files
+.idea
+*.iml
+
+# VS Code
+.vscode
+
+# Java files
+*pom.xml.versionsBackup
 **/target
 **/error-screenshots
 
-**/.sts4-cache/*
-.factorypath
+# NodeJS files
+**/dist
+node_modules
 
-*pom.xml.versionsBackup
+# Testing files
+.coverage
 
-*.DS_Store
-.idea/
-*.iml
+# Generated code
+sso-kit-client/*.d.ts
+sso-kit-client/*.d.ts.map
+sso-kit-client/*.js
+sso-kit-client/*.js.map
+sso-kit-client/.coverage
+sso-kit-client/.vite
