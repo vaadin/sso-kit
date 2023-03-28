@@ -7,7 +7,6 @@
  * See <https://vaadin.com/commercial-license-and-service-terms> for the full
  * license.
  */
-import { makeAutoObservable } from "mobx";
 import { logout } from "@hilla/frontend";
 import type { Subscription } from "@hilla/frontend";
 import EndpointImportError from "./EndpointImportError.js";
@@ -16,11 +15,16 @@ import type { SingleSignOnData } from "./SingleSignOnData.js";
 import type { User } from "./User.js";
 
 /**
- * Type definition for the back-channel logout endpoint subscribe method return type.
+ * Type definition for the back-channel logout endpoint subscribe message.
  */
 type Message = {
   message?: string;
 };
+
+/**
+ * Type definition for the back-channel logout callbacks.
+ */
+type LogoutCallback = () => void;
 
 /**
  * A store for authentication information.
@@ -50,10 +54,7 @@ export class SingleSignOnContext {
    * If true, the application will listen to the back-channel logout events.
    */
   backChannelLogoutEnabled = false;
-  /**
-   * If true, the user has been logged out from the authentication provider.
-   */
-  backChannelLogoutHappened = false;
+
   /**
    * A list of the authentication providers.
    */
@@ -63,9 +64,12 @@ export class SingleSignOnContext {
    */
   #logoutSubscription?: Subscription<Message>;
 
-  constructor(singleSignOnData: SingleSignOnData) {
-    makeAutoObservable(this);
+  /**
+   * The back-channel logout subscription callbacks.
+   */
+  #logoutSubscriptionCallbacks: LogoutCallback[] = [];
 
+  constructor(singleSignOnData: SingleSignOnData) {
     this.authenticated = singleSignOnData.authenticated;
     this.roles = singleSignOnData.roles;
     this.loginUrl = singleSignOnData.loginLink;
@@ -122,7 +126,9 @@ export class SingleSignOnContext {
           (subscription: Subscription<Message>) => {
             this.#logoutSubscription = subscription;
             this.#logoutSubscription!.onNext(() => {
-              this.backChannelLogoutHappened = true;
+              this.#logoutSubscriptionCallbacks.forEach((callback) =>
+                callback()
+              );
               this.#logoutSubscription!.cancel();
             });
           },
@@ -185,13 +191,20 @@ export class SingleSignOnContext {
   };
 
   /**
+   * Adds a callback to the back-channel logout subscription callbacks.
+   */
+  onBackChannelLogout(callback: LogoutCallback) {
+    this.#logoutSubscriptionCallbacks.push(callback);
+  }
+
+  /**
    * Clears the authentication information.
    */
   clearSingleSignOnData = () => {
     this.authenticated = false;
     this.roles = [];
     this.logoutUrl = undefined;
-    this.backChannelLogoutHappened = false;
+    this.#logoutSubscriptionCallbacks = [];
     if (this.#logoutSubscription) {
       this.#logoutSubscription.cancel();
       this.#logoutSubscription = undefined;
