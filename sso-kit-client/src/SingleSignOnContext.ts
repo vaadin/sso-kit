@@ -27,7 +27,9 @@ type Message = {
 type LogoutCallback = () => void;
 
 /**
- * A store for authentication information.
+ * The context of the single sign-on authentication process. It provides
+ * authentication information and functions to operate on the current
+ * state, such as logging in and out.
  */
 export class SingleSignOnContext {
 
@@ -200,7 +202,7 @@ export class SingleSignOnContext {
   }
 
   /**
-   * Clears the authentication informations.
+   * Clears the authentication information.
    */
   clearSingleSignOnData = () => {
     this.authenticated = false;
