@@ -72,9 +72,9 @@ export class SingleSignOnContext {
   #logoutSubscription?: Subscription<Message>;
 
   /**
-   * The back-channel logout subscription callbacks.
+   * The back-channel logout subscription callback.
    */
-  #logoutSubscriptionCallbacks: LogoutCallback[] = [];
+  #logoutSubscriptionCallback?: LogoutCallback;
 
   constructor(singleSignOnData: SingleSignOnData) {
     this.authenticated = singleSignOnData.authenticated;
@@ -132,10 +132,8 @@ export class SingleSignOnContext {
         .then(
           (subscription: Subscription<Message>) => {
             this.#logoutSubscription = subscription;
-            this.#logoutSubscription!.onNext(() => {
-              this.#logoutSubscriptionCallbacks.forEach((callback) =>
-                callback()
-              );
+            this.#logoutSubscription.onNext(() => {
+              this.#logoutSubscriptionCallback && this.#logoutSubscriptionCallback();
               this.#logoutSubscription!.cancel();
             });
           },
@@ -198,7 +196,7 @@ export class SingleSignOnContext {
    * @param callback a function executed when back-channel logout happens
    */
   onBackChannelLogout(callback: LogoutCallback) {
-    this.#logoutSubscriptionCallbacks.push(callback);
+    this.#logoutSubscriptionCallback = callback;
   }
 
   /**
@@ -208,7 +206,7 @@ export class SingleSignOnContext {
     this.authenticated = false;
     this.roles = [];
     this.logoutUrl = undefined;
-    this.#logoutSubscriptionCallbacks = [];
+    this.#logoutSubscriptionCallback = undefined;
     if (this.#logoutSubscription) {
       this.#logoutSubscription.cancel();
       this.#logoutSubscription = undefined;
