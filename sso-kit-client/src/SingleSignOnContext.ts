@@ -167,15 +167,7 @@ export class SingleSignOnContext {
   };
 
   /**
-   * Logouts from the application and redirects the user to the authentication provider's login page.
-   */
-  loginAgain = async () => {
-    await logout();
-    window.location.href = this.loginUrl!;
-  };
-
-  /**
-   * Logouts from the application and clears the user's authentication information.
+   * Logs out from the application and clears the user's authentication information.
    */
   stayOnPage = async () => {
     await logout();
@@ -183,11 +175,13 @@ export class SingleSignOnContext {
   };
 
   /**
-   * Logouts from the application and the authentication provider.
+   * Logs out from the application and the authentication provider.
+   *
+   * @param {string} [redirectUrl] the location to redirect the user to after logout (defaults to {@link #logoutUrl})
    */
-  logout = async () => {
+  logout = async (redirectUrl: string = this.logoutUrl!) => {
     await logout();
-    window.location.href = this.logoutUrl!;
+    window.location.href = redirectUrl!;
   };
 
   /**
