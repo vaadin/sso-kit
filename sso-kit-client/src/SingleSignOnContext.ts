@@ -175,21 +175,16 @@ export class SingleSignOnContext {
   };
 
   /**
-   * Logs out from the application and clears the user's authentication information.
-   */
-  stayOnPage = async () => {
-    await logout();
-    this.clearSingleSignOnData();
-  };
-
-  /**
    * Logs out from the application and the authentication provider.
    *
    * @param redirectUrl the location to redirect the user to after logout (defaults to {@link #logoutUrl})
    */
-  logout = async (redirectUrl: string = this.logoutUrl!) => {
+  logout = async (redirectUrl: string | undefined = this.logoutUrl) => {
     await logout();
-    window.location.href = redirectUrl!;
+    this.#clearSingleSignOnData();
+    if (redirectUrl) {
+      window.location.href = redirectUrl;
+    }
   };
 
   /**
@@ -204,7 +199,7 @@ export class SingleSignOnContext {
   /**
    * Clears the authentication information.
    */
-  clearSingleSignOnData = () => {
+  #clearSingleSignOnData = () => {
     this.authenticated = false;
     this.roles = [];
     this.logoutUrl = undefined;
