@@ -1,5 +1,5 @@
 /*-
- * Copyright (C) 2022 Vaadin Ltd
+ * Copyright (C) 2023 Vaadin Ltd
  *
  * This program is available under Vaadin Commercial License and Service Terms.
  *
@@ -15,14 +15,14 @@ import type { SingleSignOnData } from "./SingleSignOnData.js";
 import type { User } from "./User.js";
 
 /**
- * Type definition for the back-channel logout endpoint subscribe message.
+ * Definition of the back-channel logout endpoint subscription message.
  */
 type Message = {
   message?: string;
 };
 
 /**
- * Type definition for the back-channel logout callbacks.
+ * Definition of the back-channel logout callbacks.
  */
 type LogoutCallback = () => void;
 
@@ -30,26 +30,32 @@ type LogoutCallback = () => void;
  * A store for authentication information.
  */
 export class SingleSignOnContext {
+
   /**
    * The authenticated user.
    */
   user?: User;
+
   /**
    * If true, the user has been authenticated.
    */
   authenticated = false;
+
   /**
    * The user roles.
    */
   roles: string[] = [];
+
   /**
    * The URL which will be called to log in to the authentication provider.
    */
   loginUrl?: string;
+
   /**
    * The URL which will be called to log out from the authentication provider.
    */
   logoutUrl?: string;
+
   /**
    * If true, the application will listen to the back-channel logout events.
    */
@@ -59,6 +65,7 @@ export class SingleSignOnContext {
    * A list of the authentication providers.
    */
   registeredProviders: string[] = [];
+
   /**
    * The subscription to the back-channel logout event.
    */
@@ -143,6 +150,7 @@ export class SingleSignOnContext {
 
   /**
    * Checks if the user has access to the given route.
+   *
    * @param route the route to check
    * @returns true if the user has access to the given route, false otherwise
    */
@@ -177,7 +185,7 @@ export class SingleSignOnContext {
   /**
    * Logs out from the application and the authentication provider.
    *
-   * @param {string} [redirectUrl] the location to redirect the user to after logout (defaults to {@link #logoutUrl})
+   * @param redirectUrl the location to redirect the user to after logout (defaults to {@link #logoutUrl})
    */
   logout = async (redirectUrl: string = this.logoutUrl!) => {
     await logout();
@@ -186,13 +194,15 @@ export class SingleSignOnContext {
 
   /**
    * Adds a callback to the back-channel logout subscription callbacks.
+   *
+   * @param callback a function executed when back-channel logout happens
    */
   onBackChannelLogout(callback: LogoutCallback) {
     this.#logoutSubscriptionCallbacks.push(callback);
   }
 
   /**
-   * Clears the authentication information.
+   * Clears the authentication informations.
    */
   clearSingleSignOnData = () => {
     this.authenticated = false;
