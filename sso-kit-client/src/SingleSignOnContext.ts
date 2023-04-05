@@ -32,7 +32,6 @@ type LogoutCallback = () => void;
  * state, such as logging in and out.
  */
 export class SingleSignOnContext {
-
   /**
    * The authenticated user.
    */
@@ -135,7 +134,9 @@ export class SingleSignOnContext {
           (subscription: Subscription<Message>) => {
             this.#logoutSubscription = subscription;
             this.#logoutSubscription.onNext(() => {
-              this.#logoutSubscriptionCallback && this.#logoutSubscriptionCallback();
+              if (this.#logoutSubscriptionCallback) {
+                this.#logoutSubscriptionCallback();
+              }
               this.#logoutSubscription!.cancel();
             });
           },
