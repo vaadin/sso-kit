@@ -17,6 +17,7 @@ describe("@hilla/sso-kit-client", () => {
           authenticated: false,
           roles: [],
           loginLink: "/oauth2/authorization/keycloak",
+          logoutLink: "/logout",
           backChannelLogoutEnabled: false,
         },
         registrations: [
