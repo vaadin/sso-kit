@@ -1,5 +1,5 @@
 /*-
- * Copyright (C) 2022 Vaadin Ltd
+ * Copyright (C) 2023 Vaadin Ltd
  *
  * This program is available under Vaadin Commercial License and Service Terms.
  *
@@ -15,41 +15,48 @@ import type { SingleSignOnData } from "./SingleSignOnData.js";
 import type { User } from "./User.js";
 
 /**
- * Type definition for the back-channel logout endpoint subscribe message.
+ * Definition of the back-channel logout endpoint subscription message.
  */
 type Message = {
   message?: string;
 };
 
 /**
- * Type definition for the back-channel logout callbacks.
+ * Definition of the back-channel logout callbacks.
  */
 type LogoutCallback = () => void;
 
 /**
- * A store for authentication information.
+ * The context of the single sign-on authentication process. It provides
+ * authentication information and functions to operate on the current
+ * state, such as logging in and out.
  */
 export class SingleSignOnContext {
   /**
    * The authenticated user.
    */
   user?: User;
+
   /**
    * If true, the user has been authenticated.
    */
   authenticated = false;
+
   /**
    * The user roles.
    */
   roles: string[] = [];
+
   /**
    * The URL which will be called to log in to the authentication provider.
    */
-  loginUrl?: string;
+  loginUrl: string;
+
   /**
    * The URL which will be called to log out from the authentication provider.
    */
   logoutUrl?: string;
+
   /**
    * If true, the application will listen to the back-channel logout events.
    */
@@ -59,15 +66,16 @@ export class SingleSignOnContext {
    * A list of the authentication providers.
    */
   registeredProviders: string[] = [];
+
   /**
    * The subscription to the back-channel logout event.
    */
   #logoutSubscription?: Subscription<Message>;
 
   /**
-   * The back-channel logout subscription callbacks.
+   * The back-channel logout subscription callback.
    */
-  #logoutSubscriptionCallbacks: LogoutCallback[] = [];
+  #logoutSubscriptionCallback?: LogoutCallback;
 
   constructor(singleSignOnData: SingleSignOnData) {
     this.authenticated = singleSignOnData.authenticated;
@@ -125,10 +133,10 @@ export class SingleSignOnContext {
         .then(
           (subscription: Subscription<Message>) => {
             this.#logoutSubscription = subscription;
-            this.#logoutSubscription!.onNext(() => {
-              this.#logoutSubscriptionCallbacks.forEach((callback) =>
-                callback()
-              );
+            this.#logoutSubscription.onNext(() => {
+              if (this.#logoutSubscriptionCallback) {
+                this.#logoutSubscriptionCallback();
+              }
               this.#logoutSubscription!.cancel();
             });
           },
@@ -143,6 +151,7 @@ export class SingleSignOnContext {
 
   /**
    * Checks if the user has access to the given route.
+   *
    * @param route the route to check
    * @returns true if the user has access to the given route, false otherwise
    */
@@ -167,44 +176,30 @@ export class SingleSignOnContext {
   };
 
   /**
-   * Logouts from the application and redirects the user to the authentication provider's login page.
-   */
-  loginAgain = async () => {
-    await logout();
-    window.location.href = this.loginUrl!;
-  };
-
-  /**
-   * Logouts from the application and clears the user's authentication information.
-   */
-  stayOnPage = async () => {
-    await logout();
-    this.clearSingleSignOnData();
-  };
-
-  /**
-   * Logouts from the application and the authentication provider.
+   * Logs out from the application and the authentication provider.
    */
   logout = async () => {
     await logout();
+    this.#clearSingleSignOnData();
     window.location.href = this.logoutUrl!;
   };
 
   /**
    * Adds a callback to the back-channel logout subscription callbacks.
+   *
+   * @param callback a function executed when back-channel logout happens
    */
   onBackChannelLogout(callback: LogoutCallback) {
-    this.#logoutSubscriptionCallbacks.push(callback);
+    this.#logoutSubscriptionCallback = callback;
   }
 
   /**
    * Clears the authentication information.
    */
-  clearSingleSignOnData = () => {
+  #clearSingleSignOnData = () => {
     this.authenticated = false;
     this.roles = [];
-    this.logoutUrl = undefined;
-    this.#logoutSubscriptionCallbacks = [];
+    this.#logoutSubscriptionCallback = undefined;
     if (this.#logoutSubscription) {
       this.#logoutSubscription.cancel();
       this.#logoutSubscription = undefined;
