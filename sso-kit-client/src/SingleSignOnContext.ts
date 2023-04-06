@@ -55,7 +55,7 @@ export class SingleSignOnContext {
   /**
    * The URL which will be called to log out from the authentication provider.
    */
-  logoutUrl: string;
+  logoutUrl?: string;
 
   /**
    * If true, the application will listen to the back-channel logout events.
@@ -181,7 +181,7 @@ export class SingleSignOnContext {
   logout = async () => {
     await logout();
     this.#clearSingleSignOnData();
-    window.location.href = this.logoutUrl;
+    window.location.href = this.logoutUrl!;
   };
 
   /**
