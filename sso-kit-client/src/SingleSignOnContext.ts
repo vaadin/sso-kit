@@ -31,34 +31,35 @@ type LogoutCallback = () => void;
  */
 export class SingleSignOnContext {
   /**
-   * The authenticated user.
-   */
-  user?: User;
-  /**
-   * If true, the user has been authenticated.
+   * Indicates if the user has been authenticated.
    */
   authenticated = false;
-  /**
-   * The user roles.
-   */
-  roles: string[] = [];
-  /**
-   * The URL which will be called to log in to the authentication provider.
-   */
-  loginUrl?: string;
-  /**
-   * The URL which will be called to log out from the authentication provider.
-   */
-  logoutUrl?: string;
-  /**
-   * If true, the application will listen to the back-channel logout events.
-   */
-  backChannelLogoutEnabled = false;
 
   /**
-   * A list of the authentication providers.
+   * Contains the user's roles.
    */
-  registeredProviders: string[] = [];
+  roles: string[] = [];
+
+  /**
+   * The URL to call to log in to the authentication provider.
+   */
+  loginUrl?: string;
+
+  /**
+   * The URL to call to log out from the authentication provider.
+   */
+  logoutUrl?: string;
+
+  /**
+   * A list of the registered authentication providers' registration ids.
+   */
+  #registrationIds?: Promise<string[]>;
+
+  /**
+   * Contains information about the authenticated user.
+   */
+  #user?: Promise<User>;
+
   /**
    * The subscription to the back-channel logout event.
    */
@@ -74,47 +75,30 @@ export class SingleSignOnContext {
     this.roles = singleSignOnData.roles;
     this.loginUrl = singleSignOnData.loginLink;
     this.logoutUrl = singleSignOnData.logoutLink;
-    this.backChannelLogoutEnabled = singleSignOnData.backChannelLogoutEnabled;
 
-    // @ts-ignore: the imported file might not exist,
-    // in that case the registeredProviders will be empty
-    import("Frontend/generated/SingleSignOnEndpoint.ts")
-      .then(
-        (endpoint) => endpoint.getRegisteredProviders(),
-        (reason) => {
-          throw new EndpointImportError("SingleSignOnEndpoint", reason);
-        }
-      )
-      .then(
-        (registeredProviders: string[]) => {
-          this.registeredProviders = registeredProviders;
-        },
-        (reason: string) => {
-          throw new Error(`Couldn't get registered providers: ${reason}`);
-        }
-      );
+    this.#registrationIds = import(
+      // @ts-ignore: the imported file might not exist,
+      // in that case the registeredProviders will be empty
+      "Frontend/generated/SingleSignOnEndpoint.ts"
+    ).then(
+      (endpoint) => endpoint.getRegisteredProviders(),
+      (reason) => {
+        throw new EndpointImportError("SingleSignOnEndpoint", reason);
+      }
+    );
 
     // @ts-ignore: the imported file might not exist,
     // in that case the authenticated user will be undefined
-    import("Frontend/generated/UserEndpoint.ts")
-      .then(
-        (endpoint) => endpoint.getAuthenticatedUser(),
-        (reason) => {
-          throw new EndpointImportError("UserEndpoint", reason);
-        }
-      )
-      .then(
-        (user: User) => {
-          this.user = user;
-        },
-        (reason: string) => {
-          throw new Error(`Couldn't get authenticated user: ${reason}`);
-        }
-      );
+    this.#user = import("Frontend/generated/UserEndpoint.ts").then(
+      (endpoint) => endpoint.getAuthenticatedUser(),
+      (reason) => {
+        throw new EndpointImportError("UserEndpoint", reason);
+      }
+    );
 
-    if (this.authenticated && this.backChannelLogoutEnabled) {
+    if (this.authenticated && singleSignOnData.backChannelLogoutEnabled) {
       // @ts-ignore: the imported file might not exist,
-      // in that case the backChannelLogoutEnabled will be false
+      // in that case no subscription will happen to the back-channel logout event
       import("Frontend/generated/BackChannelLogoutEndpoint.ts")
         .then(
           (endpoint) => endpoint.subscribe(),
@@ -142,16 +126,36 @@ export class SingleSignOnContext {
   }
 
   /**
+   * Gets a list of the registered authentication providers' registration ids.
+   *
+   * @returns a Promise with a list of the registration ids
+   */
+  getRegistrationIds = (): Promise<string[]> | undefined => {
+    return this.#registrationIds;
+  };
+
+  /**
+   * Gets the authenticated user.
+   *
+   * @returns a Promise with the user object
+   */
+  getUser = (): Promise<User> | undefined => {
+    return this.#user;
+  };
+
+  /**
    * Checks if the user has access to the given route.
+   *
    * @param route the route to check
    * @returns true if the user has access to the given route, false otherwise
    */
-  hasUserAccess = (route: AccessProps) => {
+  hasAccess = (route: AccessProps) => {
     return !route.requiresLogin || this.authenticated;
   };
 
   /**
    * Checks if the user has the given role.
+   *
    * @param role the role to check
    * @returns true if the user has the given role, false otherwise
    */
@@ -204,6 +208,8 @@ export class SingleSignOnContext {
     this.authenticated = false;
     this.roles = [];
     this.logoutUrl = undefined;
+    this.#registrationIds = undefined;
+    this.#user = undefined;
     this.#logoutSubscriptionCallbacks = [];
     if (this.#logoutSubscription) {
       this.#logoutSubscription.cancel();
