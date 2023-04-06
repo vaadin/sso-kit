@@ -22,7 +22,7 @@ type Message = {
 };
 
 /**
- * Definition of the back-channel logout callbacks.
+ * Definition of the function that is executed when back-channel logout happens.
  */
 type LogoutCallback = () => void;
 
@@ -53,7 +53,7 @@ export class SingleSignOnContext {
   logoutUrl?: string;
 
   /**
-   * A list of the registered authentication providers' registration ids.
+   * A list of the registered authentication provider registration ids.
    */
   #registrationIds?: Promise<string[]>;
 
@@ -61,6 +61,12 @@ export class SingleSignOnContext {
    * Contains information about the authenticated user.
    */
   #user?: Promise<User>;
+
+  /**
+   * Indicates if the back-channel logout is enabled.
+   * If true, the application will listen to the back-channel logout events.
+   */
+  #backChannelLogoutEnabled = false;
 
   /**
    * The subscription to the back-channel logout event.
@@ -77,10 +83,10 @@ export class SingleSignOnContext {
     this.roles = singleSignOnData.roles;
     this.loginUrl = singleSignOnData.loginLink;
     this.logoutUrl = singleSignOnData.logoutLink;
+    this.#backChannelLogoutEnabled = singleSignOnData.backChannelLogoutEnabled;
 
     this.#registrationIds = import(
-      // @ts-ignore: the imported file might not exist,
-      // in that case the registeredProviders will be empty
+      // @ts-ignore
       "Frontend/generated/SingleSignOnEndpoint.ts"
     ).then(
       (endpoint) => endpoint.getRegisteredProviders(),
@@ -89,8 +95,7 @@ export class SingleSignOnContext {
       }
     );
 
-    // @ts-ignore: the imported file might not exist,
-    // in that case the authenticated user will be undefined
+    // @ts-ignore
     this.#user = import("Frontend/generated/UserEndpoint.ts").then(
       (endpoint) => endpoint.getAuthenticatedUser(),
       (reason) => {
@@ -98,9 +103,8 @@ export class SingleSignOnContext {
       }
     );
 
-    if (this.authenticated && singleSignOnData.backChannelLogoutEnabled) {
-      // @ts-ignore: the imported file might not exist,
-      // in that case no subscription will happen to the back-channel logout event
+    if (this.authenticated && this.#backChannelLogoutEnabled) {
+      // @ts-ignore
       import("Frontend/generated/BackChannelLogoutEndpoint.ts")
         .then(
           (endpoint) => endpoint.subscribe(),
@@ -126,6 +130,35 @@ export class SingleSignOnContext {
         );
     }
   }
+
+  /**
+   * Updates the single sign-on data in the context.
+   *
+   * @returns a Promise void
+   */
+  fetchSingleSignOnData = () => {
+    // @ts-ignore
+    return import("Frontend/generated/SingleSignOnEndpoint.ts")
+      .then(
+        (endpoint) => endpoint.fetchAll(),
+        (reason) => {
+          throw new EndpointImportError("SingleSignOnEndpoint", reason);
+        }
+      )
+      .then(
+        (singleSignOnData: SingleSignOnData) => {
+          this.authenticated = singleSignOnData.authenticated;
+          this.roles = singleSignOnData.roles;
+          this.loginUrl = singleSignOnData.loginLink;
+          this.logoutUrl = singleSignOnData.logoutLink;
+          this.#backChannelLogoutEnabled =
+            singleSignOnData.backChannelLogoutEnabled;
+        },
+        (reason: string) => {
+          throw new Error(`Couldn't fetch single sign-on data: ${reason}`);
+        }
+      );
+  };
 
   /**
    * Gets a list of the registered authentication providers' registration ids.
@@ -182,7 +215,7 @@ export class SingleSignOnContext {
   };
 
   /**
-   * Adds a callback to the back-channel logout subscription callbacks.
+   * Adds a function that is executed when the back-channel logout happens.
    *
    * @param callback a function executed when back-channel logout happens
    */
