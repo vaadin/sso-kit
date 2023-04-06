@@ -14,6 +14,6 @@ export type SingleSignOnData = Readonly<{
   authenticated: boolean;
   roles: string[];
   loginLink: string;
-  logoutLink?: string;
+  logoutLink: string;
   backChannelLogoutEnabled: boolean;
 }>;
