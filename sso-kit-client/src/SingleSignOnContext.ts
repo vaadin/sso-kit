@@ -210,7 +210,6 @@ export class SingleSignOnContext {
    */
   logout = async () => {
     await logout();
-    this.#clearSingleSignOnData();
     window.location.href = this.logoutUrl!;
   };
 
@@ -222,22 +221,6 @@ export class SingleSignOnContext {
   onBackChannelLogout(callback: LogoutCallback) {
     this.#logoutSubscriptionCallback = callback;
   }
-
-  /**
-   * Clears the authentication information.
-   */
-  #clearSingleSignOnData = () => {
-    this.authenticated = false;
-    this.roles = [];
-    this.logoutUrl = undefined;
-    this.#registrationIds = undefined;
-    this.#user = undefined;
-    this.#logoutSubscriptionCallback = undefined;
-    if (this.#logoutSubscription) {
-      this.#logoutSubscription.cancel();
-      this.#logoutSubscription = undefined;
-    }
-  };
 }
 
 export default function singleSignOnContext() {
