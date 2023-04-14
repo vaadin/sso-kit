@@ -1,5 +1,5 @@
 {
-  "name": "@hilla/sso-kit",
+  "name": "@hilla/sso-kit-client",
   "private": true,
   "description": "SSO Kit Client",
   "main": "index.js",
@@ -9,7 +9,8 @@
     "npm": ">=9"
   },
   "workspaces": [
-    "sso-kit-client"
+    "sso-kit-client/lit",
+    "sso-kit-client/react"
   ],
   "scripts": {
     "check": "concurrently npm:lint npm:typecheck",

@@ -1,5 +1,5 @@
 /*-
- * Copyright (C) 2022 Vaadin Ltd
+ * Copyright (C) 2023 Vaadin Ltd
  *
  * This program is available under Vaadin Commercial License and Service Terms.
  *
@@ -8,10 +8,10 @@
  * license.
  */
 import { expect } from "chai";
-import EndpointImportError from "../src/EndpointImportError.js";
+import { SingleSignOnContext } from "../src/index.js";
 
-describe("@hilla/sso-kit-client", () => {
-  describe("EndpointImportError", () => {
+describe("@hilla/sso-kit-client-lit", () => {
+  describe("SingleSignOnContext", () => {
     beforeEach(() => {
       window.Vaadin = {
         SingleSignOnData: {
@@ -22,7 +22,7 @@ describe("@hilla/sso-kit-client", () => {
         },
         registrations: [
           {
-            is: "@hilla/sso-kit-client",
+            is: "@hilla/sso-kit-client-lit",
             version: "2.1.0",
           },
         ],
@@ -30,12 +30,14 @@ describe("@hilla/sso-kit-client", () => {
     });
 
     it("should be exported", async () => {
-      expect(EndpointImportError).to.be.ok;
+      expect(SingleSignOnContext).to.be.ok;
     });
 
-    it("should instantiate with arguments", async () => {
-      const endpointImportError = new EndpointImportError("endpoint", "reason");
-      expect(endpointImportError).to.be.instanceOf(EndpointImportError);
+    it("should instantiate with argument", async () => {
+      const singleSignOnContext = new SingleSignOnContext(
+        window.Vaadin.SingleSignOnData!
+      );
+      expect(singleSignOnContext).to.be.instanceOf(SingleSignOnContext);
     });
   });
 });

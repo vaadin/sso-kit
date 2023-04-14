@@ -16,6 +16,5 @@
     "noImplicitOverride": true,
     "useDefineForClassFields": true,
     "useUnknownInCatchVariables": true
-  },
-  "include": ["*.ts", "*.d.ts", "*.js", "*.cjs"]
+  }
 }

@@ -1,26 +1,31 @@
 {
-  "name": "@hilla/sso-kit-client",
+  "name": "@hilla/sso-kit-client-react",
   "version": "2.1.0",
-  "description": "SSO Kit Client",
+  "description": "SSO Kit Client React",
   "main": "index.js",
   "module": "index.js",
   "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/vaadin/sso-kit.git",
-    "directory": "sso-kit-client"
+    "directory": "sso-kit-client/react"
   },
   "keywords": [
     "SSO",
     "Kit",
     "Client",
+    "React",
     "Hilla"
   ],
   "scripts": {
     "clean:build": "rimraf *.{d.ts.map,d.ts,js.map,js}",
-    "build": "concurrently npm:build:*",
-    "build:transpile": "tsc --isolatedModules -p tsconfig.build.json",
-    "build:copy": "cd src && copyfiles **/*.d.ts ..",
+    "build": "npm run build:transpile && npm run build:copyToRoot && npm run build:copyCoreToRoot && npm run build:copyDec && npm run build:copyCoreDec && npm run build:cleanLib",
+    "build:transpile": "tsc -b tsconfig.build.json",
+    "build:copyToRoot": "cd ./lib/react/src && copyfiles **/*.{d.ts.map,d.ts,js.map,js} ../../..",
+    "build:copyCoreToRoot": "cd ./lib/core/src && copyfiles **/*.{d.ts.map,d.ts,js.map,js} ../../..",
+    "build:copyDec": "cd ./src && copyfiles **/*.d.ts ..",
+    "build:copyCoreDec": "cd ../core/src && copyfiles **/*.d.ts ../../react/",
+    "build:cleanLib": "rimraf lib",
     "lint": "eslint src/**/*.ts test/**/*.ts",
     "test": "karma start ../karma.config.cjs --port 9878",
     "test:coverage": "npm run test -- --coverage",
@@ -33,6 +38,9 @@
     },
     "./EndpointImportError.js": {
       "default": "./EndpointImportError.js"
+    },
+    "./RequireAuth.js": {
+      "default": "./RequireAuth.js"
     },
     "./SingleSignOnContext.js": {
       "default": "./SingleSignOnContext.js"
@@ -57,7 +65,7 @@
   },
   "homepage": "https://hilla.dev",
   "files": [
-    "*.{d.ts.map,d.ts,js.map,js}"
+    "**/*.{d.ts.map,d.ts,js.map,js}"
   ],
   "publishConfig": {
     "access": "public"
@@ -71,6 +79,7 @@
     "@types/chai": "^4.2.22",
     "@types/chai-dom": "^1.11.0",
     "@types/mocha": "^10.0.1",
+    "@types/react": "^18.0.25",
     "@types/sinon": "^10.0.13",
     "@types/sinon-chai": "^3.2.9",
     "chai": "^4.3.4",
@@ -84,6 +93,7 @@
     "karma-spec-reporter": "^0.0.36",
     "karma-vite": "^1.0.4",
     "mocha": "^10.2.0",
+    "react-router-dom": "^6.10.0",
     "rimraf": "^3.0.2",
     "sinon": "^15.0.2",
     "sinon-chai": "^3.7.0"

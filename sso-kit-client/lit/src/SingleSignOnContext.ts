@@ -9,10 +9,10 @@
  */
 import { logout } from "@hilla/frontend";
 import type { Subscription } from "@hilla/frontend";
-import EndpointImportError from "./EndpointImportError.js";
-import type { AccessProps } from "./AccessProps.js";
-import type { SingleSignOnData } from "./SingleSignOnData.js";
-import type { User } from "./User.js";
+import EndpointImportError from "../../core/src/EndpointImportError.js";
+import type { AccessProps } from "../../core/src/AccessProps.js";
+import type { SingleSignOnData } from "../../core/src/SingleSignOnData.js";
+import type { User } from "../../core/src/User.js";
 
 /**
  * Definition of the back-channel logout endpoint subscription message.
