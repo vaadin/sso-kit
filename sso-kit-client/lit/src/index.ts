@@ -7,7 +7,8 @@
  * See <https://vaadin.com/commercial-license-and-service-terms> for the full
  * license.
  */
-import type { SingleSignOnData } from "../../core/src/SingleSignOnData.js";
+import type { SingleSignOnData } from "../../core/src/index.js";
+import { SingleSignOnContext } from "./SingleSignOnContext.js";
 
 export * from "./SingleSignOnContext.js";
 export { EndpointImportError } from "../../core/src/EndpointImportError.js";
@@ -32,3 +33,16 @@ window.Vaadin.registrations.push({
   is: "@hilla/sso-kit-client-lit",
   version: "2.1.0",
 });
+
+window.Vaadin.SingleSignOnData = window.Vaadin.SingleSignOnData || {
+  authenticated: false,
+  roles: [],
+  loginLink: "",
+  logoutLink: undefined,
+  backChannelLogoutEnabled: false,
+};
+
+const singleSignOnContext = new SingleSignOnContext(
+  window.Vaadin.SingleSignOnData
+);
+export default singleSignOnContext;

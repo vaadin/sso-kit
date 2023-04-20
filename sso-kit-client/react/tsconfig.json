@@ -5,7 +5,6 @@
     "rootDir": "src",
     "outDir": "./lib/react/src"
   },
-  "include": ["src"],
   "exclude": ["test/**/*.ts"],
   "references": [
     {

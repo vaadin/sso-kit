@@ -8,12 +8,12 @@
  * license.
  */
 import { expect } from "@esm-bundle/chai";
-import { SingleSignOnContext } from "../src/index.js";
+import { EndpointImportError } from "../src/index.js";
 
-describe("@hilla/sso-kit-client-lit", () => {
-  describe("SingleSignOnContext", () => {
-    it("should be exported", async () => {
-      expect(SingleSignOnContext).to.be.ok;
+describe("@hilla/sso-kit-client-core", () => {
+  describe("Index", () => {
+    it("should export EndpointImportError", async () => {
+      expect(EndpointImportError).to.be.ok;
     });
   });
 });

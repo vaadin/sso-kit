@@ -12,32 +12,8 @@ import { SingleSignOnContext } from "../src/index.js";
 
 describe("@hilla/sso-kit-client-react", () => {
   describe("SingleSignOnContext", () => {
-    beforeEach(() => {
-      window.Vaadin = {
-        SingleSignOnData: {
-          authenticated: false,
-          roles: [],
-          loginLink: "/oauth2/authorization/keycloak",
-          backChannelLogoutEnabled: false,
-        },
-        registrations: [
-          {
-            is: "@hilla/sso-kit-client-react",
-            version: "2.1.0",
-          },
-        ],
-      };
-    });
-
     it("should be exported", async () => {
       expect(SingleSignOnContext).to.be.ok;
-    });
-
-    it("should instantiate with argument", async () => {
-      const singleSignOnContext = new SingleSignOnContext(
-        window.Vaadin.SingleSignOnData!
-      );
-      expect(singleSignOnContext).to.be.instanceOf(SingleSignOnContext);
     });
   });
 });

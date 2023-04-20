@@ -7,27 +7,12 @@
  * See <https://vaadin.com/commercial-license-and-service-terms> for the full
  * license.
  */
-import { assert } from "@esm-bundle/chai";
+import { assert, expect } from "@esm-bundle/chai";
+import { SingleSignOnContext } from "../src/index.js";
+import singleSignOnContext from "../src/index.js";
 
 describe("@hilla/sso-kit-client-lit", () => {
   describe("Index", () => {
-    beforeEach(() => {
-      window.Vaadin = {
-        SingleSignOnData: {
-          authenticated: false,
-          roles: [],
-          loginLink: "/oauth2/authorization/keycloak",
-          backChannelLogoutEnabled: false,
-        },
-        registrations: [
-          {
-            is: "@hilla/sso-kit-client-lit",
-            version: "2.1.0",
-          },
-        ],
-      };
-    });
-
     it("should add registration", async () => {
       assert.isDefined(window.Vaadin);
       assert.isArray(window.Vaadin.registrations);
@@ -35,6 +20,12 @@ describe("@hilla/sso-kit-client-lit", () => {
         (r: any) => r.is === "@hilla/sso-kit-client-lit"
       );
       assert.lengthOf(formRegistrations!, 1);
+    });
+
+    it("should instantiate SingleSignOnContext with argument", async () => {
+      assert.isDefined(window.Vaadin);
+      assert.isObject(window.Vaadin.SingleSignOnData);
+      expect(singleSignOnContext).to.be.instanceOf(SingleSignOnContext);
     });
   });
 });

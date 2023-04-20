@@ -206,7 +206,3 @@ export class SingleSignOnContext {
     }
   };
 }
-
-export default function singleSignOnContext() {
-  return new SingleSignOnContext(window.Vaadin.SingleSignOnData!);
-}

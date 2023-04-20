@@ -4,7 +4,6 @@
     "rootDir": "src",
     "outDir": "./lib/lit/src"
   },
-  "include": ["src"],
   "exclude": ["test/**/*.ts"],
   "references": [
     {
