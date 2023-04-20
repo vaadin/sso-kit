@@ -58,7 +58,7 @@
     }
   },
   "author": "Vaadin Ltd",
-  "license": "Apache-2.0",
+  "license" : "See license in LICENSE file",
   "bugs": {
     "url": "https://github.com/vaadin/sso-kit/issues"
   },
