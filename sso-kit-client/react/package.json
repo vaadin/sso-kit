@@ -33,28 +33,16 @@
   },
   "exports": {
     ".": {
-      "default": "./index.js"
-    },
-    "./EndpointImportError.js": {
-      "default": "./EndpointImportError.js"
+      "default": "./lib/react/src/index.js"
     },
     "./RequireAuth.js": {
-      "default": "./RequireAuth.js"
+      "default": "./lib/react/src/RequireAuth.js"
     },
     "./SingleSignOnContext.js": {
-      "default": "./SingleSignOnContext.js"
+      "default": "./lib/react/src/SingleSignOnContext.js"
     },
     "./index.js": {
-      "default": "./index.js"
-    },
-    "./AccessProps.js": {
-      "types": "./AccessProps.d.ts"
-    },
-    "./SingleSignOnData.js": {
-      "types": "./SingleSignOnData.d.ts"
-    },
-    "./User.js": {
-      "types": "./User.d.ts"
+      "default": "./lib/react/src/index.js"
     }
   },
   "author": "Vaadin Ltd",

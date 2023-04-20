@@ -33,25 +33,13 @@
   },
   "exports": {
     ".": {
-      "default": "./index.js"
-    },
-    "./EndpointImportError.js": {
-      "default": "./EndpointImportError.js"
+      "default": "./lib/lit/src/index.js"
     },
     "./SingleSignOnContext.js": {
-      "default": "./SingleSignOnContext.js"
+      "default": "./lib/lit/src/SingleSignOnContext.js"
     },
     "./index.js": {
-      "default": "./index.js"
-    },
-    "./AccessProps.js": {
-      "types": "./AccessProps.d.ts"
-    },
-    "./SingleSignOnData.js": {
-      "types": "./SingleSignOnData.d.ts"
-    },
-    "./User.js": {
-      "types": "./User.d.ts"
+      "default": "./lib/lit/src/index.js"
     }
   },
   "author": "Vaadin Ltd",
