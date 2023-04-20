@@ -8,8 +8,7 @@
  * license.
  */
 import { assert, expect } from "@esm-bundle/chai";
-import { SingleSignOnContext } from "../src/index.js";
-import singleSignOnContext from "../src/index.js";
+import singleSignOnContext, { SingleSignOnContext } from "../src/index.js";
 
 describe("@hilla/sso-kit-client-react", () => {
   describe("Index", () => {
