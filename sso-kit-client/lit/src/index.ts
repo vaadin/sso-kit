@@ -42,7 +42,7 @@ window.Vaadin.SingleSignOnData = window.Vaadin.SingleSignOnData || {
   backChannelLogoutEnabled: false,
 };
 
-const singleSignOnContext = new SingleSignOnContext(
+const ssoContext = new SingleSignOnContext(
   window.Vaadin.SingleSignOnData
 );
-export default singleSignOnContext;
+export default ssoContext;

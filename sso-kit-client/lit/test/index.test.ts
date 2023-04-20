@@ -8,7 +8,7 @@
  * license.
  */
 import { assert, expect } from "@esm-bundle/chai";
-import singleSignOnContext, { SingleSignOnContext } from "../src/index.js";
+import ssoContext, { SingleSignOnContext } from "../src/index.js";
 
 describe("@hilla/sso-kit-client-lit", () => {
   describe("Index", () => {
@@ -24,7 +24,7 @@ describe("@hilla/sso-kit-client-lit", () => {
     it("should instantiate SingleSignOnContext with argument", async () => {
       assert.isDefined(window.Vaadin);
       assert.isObject(window.Vaadin.SingleSignOnData);
-      expect(singleSignOnContext).to.be.instanceOf(SingleSignOnContext);
+      expect(ssoContext).to.be.instanceOf(SingleSignOnContext);
     });
   });
 });
