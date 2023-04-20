@@ -9,8 +9,9 @@
     "npm": ">=9"
   },
   "workspaces": [
-    "sso-kit-client/lit",
-    "sso-kit-client/react"
+    "core",
+    "lit",
+    "react"
   ],
   "scripts": {
     "check": "concurrently npm:lint npm:typecheck",

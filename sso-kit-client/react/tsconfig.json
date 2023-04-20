@@ -1,10 +1,12 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "rootDir": "src",
+    "outDir": "./lib/react/src"
   },
-  "include": ["src", "test"],
-  "exclude": ["test/**/*.snap.ts"],
+  "include": ["src"],
+  "exclude": ["test/**/*.ts"],
   "references": [
     {
       "path": "../core"

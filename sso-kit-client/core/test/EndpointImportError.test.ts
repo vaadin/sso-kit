@@ -7,8 +7,8 @@
  * See <https://vaadin.com/commercial-license-and-service-terms> for the full
  * license.
  */
-import { expect } from "chai";
-import EndpointImportError from "../src/EndpointImportError.js";
+import { expect } from "@esm-bundle/chai";
+import { EndpointImportError } from "../src/index.js";
 
 describe("@hilla/sso-kit-client-core", () => {
   describe("EndpointImportError", () => {

@@ -2,7 +2,7 @@
   "name": "@hilla/sso-kit-client-react",
   "version": "2.1.0",
   "description": "SSO Kit Client React",
-  "main": "index.js",
+  "main": "lib/react/src/index.js",
   "module": "index.js",
   "type": "module",
   "repository": {
@@ -18,15 +18,14 @@
     "Hilla"
   ],
   "scripts": {
-    "clean:build": "rimraf *.{d.ts.map,d.ts,js.map,js}",
-    "build": "npm run build:transpile && npm run build:copyToRoot && npm run build:copyCoreToRoot && npm run build:copyDec && npm run build:copyCoreDec && npm run build:cleanLib",
-    "build:transpile": "tsc -b tsconfig.build.json",
-    "build:copyToRoot": "cd ./lib/react/src && copyfiles **/*.{d.ts.map,d.ts,js.map,js} ../../..",
-    "build:copyCoreToRoot": "cd ./lib/core/src && copyfiles **/*.{d.ts.map,d.ts,js.map,js} ../../..",
-    "build:copyDec": "cd ./src && copyfiles **/*.d.ts ..",
-    "build:copyCoreDec": "cd ../core/src && copyfiles **/*.d.ts ../../react/",
-    "build:cleanLib": "rimraf lib",
-    "lint": "eslint src/**/*.ts test/**/*.ts",
+    "clean:build": "rimraf lib",
+    "clean:copyCore": "rimraf lib/core",
+    "build": "npm run clean:build && npm run build:transpile && npm run build:copyCore",
+    "build:transpile": "tsc -b",
+    "build:copyCore": "cd ../core/src && copyfiles **/*.{d.ts.map,d.ts,js.map,js} ../../react/lib/core/src",
+    "prepack": "npm run build",
+    "postpack": "npm run clean:build",
+    "lint": "eslint **/*.ts",
     "test": "karma start ../karma.config.cjs --port 9878",
     "test:coverage": "npm run test -- --coverage",
     "test:watch": "npm run test -- --watch",
@@ -72,6 +71,7 @@
   },
   "dependencies": {
     "@hilla/frontend": "2.0.0",
+    "react-router-dom": "^6.10.0",
     "tslib": "^2.3.1"
   },
   "devDependencies": {
@@ -84,7 +84,6 @@
     "@types/sinon-chai": "^3.2.9",
     "chai": "^4.3.4",
     "chai-dom": "^1.11.0",
-    "concurrently": "^6.3.0",
     "copyfiles": "^2.4.1",
     "karma": "^6.4.1",
     "karma-chrome-launcher": "^3.1.1",
@@ -92,8 +91,8 @@
     "karma-mocha": "^2.0.1",
     "karma-spec-reporter": "^0.0.36",
     "karma-vite": "^1.0.4",
+    "lerna": "^6.5.1",
     "mocha": "^10.2.0",
-    "react-router-dom": "^6.10.0",
     "rimraf": "^3.0.2",
     "sinon": "^15.0.2",
     "sinon-chai": "^3.7.0"

@@ -10,7 +10,7 @@
 /**
  * The error thrown when an endpoint import fails because of error or not found.
  */
-export default class EndpointImportError extends Error {
+export class EndpointImportError extends Error {
   public constructor(endpoint: string, reason: string) {
     super(`${endpoint} endpoint import failed with error: ${reason}`);
   }

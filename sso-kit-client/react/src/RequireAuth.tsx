@@ -7,17 +7,14 @@
  * See <https://vaadin.com/commercial-license-and-service-terms> for the full
  * license.
  */
-import { Navigate, useLocation } from 'react-router-dom';
-import type { ReactElement } from 'react';
-import singleSignOnContext from "./SingleSignOnContext.js";
-
-const ssoContext = singleSignOnContext();
+import { Navigate, useLocation } from "react-router-dom";
+import type { ReactElement } from "react";
 
 export function RequireAuth({ children }: { children: ReactElement }) {
-  if (!ssoContext.authenticated) {
+  if (!window.Vaadin.SingleSignOnData?.authenticated) {
     // window.location.href = ssoContext.loginUrl!;
     const location = useLocation();
-    return <Navigate to='/' state={{ from: location }} replace />;
+    return <Navigate to="/" state={{ from: location }} replace />;
   }
   return children;
 }

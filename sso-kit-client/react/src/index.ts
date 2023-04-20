@@ -11,16 +11,18 @@ import type { SingleSignOnData } from "../../core/src/SingleSignOnData.js";
 
 export * from "./SingleSignOnContext.js";
 export * from "./RequireAuth.js";
-export * from "../../core/src/EndpointImportError.js";
-export type * from "../../core/src/AccessProps.js";
-export type * from "../../core/src/User.js";
+export { EndpointImportError } from "../../core/src/EndpointImportError.js";
+export type { AccessProps } from "../../core/src/AccessProps.js";
+export type { User } from "../../core/src/User.js";
 
 declare global {
   interface Window {
     Vaadin: {
       SingleSignOnData?: SingleSignOnData;
-      registrations?: Array<{ is: string; version: string }>;
-
+      registrations?: {
+        is: string;
+        version: string;
+      }[];
     };
   }
 }

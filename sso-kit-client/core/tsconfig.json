@@ -1,9 +1,10 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "composite": true,
-    "outDir": "../lit"
+    "rootDir": "src",
+    "outDir": "src"
   },
   "include": ["src"],
-  "references": [{ "prepend": true }]
+  "exclude": ["test/**/*.ts"]
 }

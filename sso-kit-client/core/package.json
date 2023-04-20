@@ -1,30 +1,27 @@
 {
-  "name": "@hilla/sso-kit-client-lit",
+  "name": "@hilla/sso-kit-client-core",
+  "private": true,
   "version": "2.1.0",
-  "description": "SSO Kit Client Lit",
-  "main": "lib/lit/src/index.js",
+  "description": "SSO Kit Client Core",
+  "main": "lib/index.js",
   "module": "index.js",
   "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/vaadin/sso-kit.git",
-    "directory": "sso-kit-client/lit"
+    "directory": "sso-kit-client/core"
   },
   "keywords": [
     "SSO",
     "Kit",
     "Client",
-    "Lit",
+    "Core",
     "Hilla"
   ],
   "scripts": {
-    "clean:build": "rimraf lib",
-    "clean:copyCore": "rimraf lib/core",
-    "build": "npm run clean:build && npm run build:transpile && npm run build:copyCore",
+    "clean:build": "rimraf src/*.{d.ts.map,js.map,js} src/index.d.ts src/EndpointImportError.d.ts tsconfig.tsbuildinfo",
+    "build": "npm run build:transpile",
     "build:transpile": "tsc -b",
-    "build:copyCore": "cd ../core/src && copyfiles **/*.{d.ts.map,d.ts,js.map,js} ../../lit/lib/core/src",
-    "prepack": "npm run build",
-    "postpack": "npm run clean:build",
     "lint": "eslint **/*.ts",
     "test": "karma start ../karma.config.cjs --port 9878",
     "test:coverage": "npm run test -- --coverage",
@@ -37,9 +34,6 @@
     },
     "./EndpointImportError.js": {
       "default": "./EndpointImportError.js"
-    },
-    "./SingleSignOnContext.js": {
-      "default": "./SingleSignOnContext.js"
     },
     "./index.js": {
       "default": "./index.js"
@@ -67,11 +61,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@hilla/frontend": "2.0.0",
     "tslib": "^2.3.1"
-  },
-  "peerDependencies": {
-    "lit": "^2.3.0"
   },
   "devDependencies": {
     "@esm-bundle/chai": "^4.3.4-fix.0",
