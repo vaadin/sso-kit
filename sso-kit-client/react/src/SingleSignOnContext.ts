@@ -88,7 +88,7 @@ export class SingleSignOnContext {
     this.#registrationIds = import(
       // @ts-ignore
       "Frontend/generated/SingleSignOnEndpoint.ts"
-      ).then(
+    ).then(
       (endpoint) => endpoint.getRegisteredProviders(),
       (reason) => {
         throw new EndpointImportError("SingleSignOnEndpoint", reason);
