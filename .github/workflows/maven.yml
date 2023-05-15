@@ -57,13 +57,18 @@ jobs:
       if: ${{ steps.cache-node_modules.outputs.cache-hit != 'true' }}
       shell: bash
       run: npm ci
+      working-directory: sso-kit-client
     - name: Build TypeScript
       run: npm run build
+      working-directory: sso-kit-client
     - name: Lint TypeScript
       run: npm run check
+      working-directory: sso-kit-client
     - name: Install Chrome
       uses: browser-actions/setup-chrome@v1
+      working-directory: sso-kit-client
     - name: Run TypeScript tests
       run: npm run test
+      working-directory: sso-kit-client
       env:
         CI: true
