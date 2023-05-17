@@ -7,12 +7,24 @@
  * See <https://vaadin.com/commercial-license-and-service-terms> for the full
  * license.
  */
-import { logout } from "@hilla/frontend";
 import type { Subscription } from "@hilla/frontend";
+import { logout } from "@hilla/frontend";
+import type { ActionFn, ActionResult, Route } from "@vaadin/router";
 import type { AccessProps } from "../../core/src/AccessProps.js";
 import type { SingleSignOnData } from "../../core/src/SingleSignOnData.js";
 import type { User } from "../../core/src/User.js";
 import { EndpointImportError } from "../../core/src/EndpointImportError.js";
+
+/**
+ * Definition of the route extended with {@link AccessProps} used to define a
+ * view route.
+ */
+type ViewRoute = Route &
+  AccessProps & {
+    title?: string;
+    icon?: string;
+    children?: ViewRoute[];
+  };
 
 /**
  * Definition of the back-channel logout endpoint subscription message.
@@ -185,7 +197,7 @@ export class SingleSignOnContext {
    * @returns true if the user has access to the given route, false otherwise
    */
   hasAccess = (route: AccessProps) => {
-    return !route.requiresLogin || this.authenticated;
+    return !route.protectedRoute || this.authenticated;
   };
 
   /**
@@ -221,4 +233,54 @@ export class SingleSignOnContext {
   onBackChannelLogout(callback: LogoutCallback) {
     this.#logoutSubscriptionCallback = callback;
   }
+
+  /**
+   * Adds protection to view routes which are marked as protected with the
+   * {@link AccessProps#protectedRoute} property.
+   *
+   * @param routes the routes to check if they need to be protected
+   * @returns the {@param routes} with the protected routes, if any
+   */
+  protectRoutes = (routes: ViewRoute[]): ViewRoute[] => {
+    const allRoutes: ViewRoute[] = this.collectRoutes(routes);
+    allRoutes.forEach((route) => {
+      if (route.protectedRoute) {
+        this.protectRoute(route);
+      }
+    });
+
+    routes.push({
+      path: "ssologin",
+      component: "ssologin",
+      action: async (_context, _commands) => {
+        window.location.href = this.loginUrl;
+        return undefined;
+      },
+    });
+    return routes;
+  };
+
+  private protectRoute = (route: ViewRoute): void => {
+    const routeAction: ActionFn | undefined = route.action;
+    route.action = (
+      _context,
+      _commands
+    ): ActionResult | Promise<ActionResult> => {
+      if (!this.hasAccess(route)) {
+        return _commands.redirect("ssologin");
+      }
+      return routeAction?.apply(null, [_context, _commands]);
+    };
+  };
+
+  private collectRoutes = (routes: ViewRoute[]): ViewRoute[] => {
+    const allRoutes: ViewRoute[] = [];
+    routes.forEach((route) => {
+      allRoutes.push(route);
+      if (route.children !== undefined) {
+        allRoutes.push(...this.collectRoutes(route.children));
+      }
+    });
+    return allRoutes;
+  };
 }
