@@ -276,7 +276,10 @@ export class SingleSignOnContext {
       _commands: Commands
     ): ActionResult | Promise<ActionResult> => {
       if (!this.hasAccess(route)) {
-        return _commands.redirect(redirectPath ? redirectPath : 'ssologin');
+        if (redirectPath === undefined) {
+          redirectPath = "ssologin";
+        }
+        return _commands.redirect(redirectPath);
       }
       return routeAction?.apply(null, [_context, _commands]);
     };
