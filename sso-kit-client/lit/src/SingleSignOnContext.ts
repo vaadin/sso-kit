@@ -9,7 +9,13 @@
  */
 import type { Subscription } from "@hilla/frontend";
 import { logout } from "@hilla/frontend";
-import type { ActionFn, ActionResult, Route } from "@vaadin/router";
+import type {
+  ActionFn,
+  ActionResult,
+  Commands,
+  Context,
+  Route,
+} from "@vaadin/router";
 import type { AccessProps } from "../../core/src/AccessProps.js";
 import type { SingleSignOnData } from "../../core/src/SingleSignOnData.js";
 import type { User } from "../../core/src/User.js";
@@ -252,7 +258,7 @@ export class SingleSignOnContext {
     routes.push({
       path: "ssologin",
       component: "ssologin",
-      action: async (_context, _commands) => {
+      action: async (_context: Context, _commands: Commands) => {
         window.location.href = this.loginUrl;
         return undefined;
       },
@@ -263,8 +269,8 @@ export class SingleSignOnContext {
   private protectRoute = (route: ViewRoute): void => {
     const routeAction: ActionFn | undefined = route.action;
     route.action = (
-      _context,
-      _commands
+      _context: Context,
+      _commands: Commands
     ): ActionResult | Promise<ActionResult> => {
       if (!this.hasAccess(route)) {
         return _commands.redirect("ssologin");
