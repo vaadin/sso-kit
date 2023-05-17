@@ -52,6 +52,7 @@ jobs:
       id: cache-node_modules
       with:
         path: sso-kit-client/node_modules
+        cache-dependency-path: sso-kit-client/package-lock.json
         key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}
     - name: Install npm dependencies
       if: ${{ steps.cache-node_modules.outputs.cache-hit != 'true' }}

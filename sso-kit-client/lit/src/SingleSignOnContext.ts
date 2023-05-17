@@ -245,13 +245,16 @@ export class SingleSignOnContext {
    * {@link AccessProps#protectedRoute} property.
    *
    * @param routes the routes to check if they need to be protected
+   * @param redirectPath the path to redirect to when the user is not
+   *                     authenticated, the default value is the 'ssologin' path
+   *                     which redirects the user to the provider's login page
    * @returns the {@param routes} with the protected routes, if any
    */
-  protectRoutes = (routes: ViewRoute[]): ViewRoute[] => {
+  protectRoutes = (routes: ViewRoute[], redirectPath?: string): ViewRoute[] => {
     const allRoutes: ViewRoute[] = this.collectRoutes(routes);
     allRoutes.forEach((route) => {
       if (route.protectedRoute) {
-        this.protectRoute(route);
+        this.protectRoute(route, redirectPath);
       }
     });
 
@@ -266,14 +269,14 @@ export class SingleSignOnContext {
     return routes;
   };
 
-  private protectRoute = (route: ViewRoute): void => {
+  private protectRoute = (route: ViewRoute, redirectPath?: string): void => {
     const routeAction: ActionFn | undefined = route.action;
     route.action = (
       _context: Context,
       _commands: Commands
     ): ActionResult | Promise<ActionResult> => {
       if (!this.hasAccess(route)) {
-        return _commands.redirect("ssologin");
+        return _commands.redirect(redirectPath ? redirectPath : 'ssologin');
       }
       return routeAction?.apply(null, [_context, _commands]);
     };
