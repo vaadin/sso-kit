@@ -46,25 +46,28 @@ jobs:
         node-version: 16.x
         registry-url: 'https://registry.npmjs.org'
         cache: npm
+        cache-dependency-path: sso-kit-client/package-lock.json
     - name: Cache node_modules
       uses: actions/cache@v3
       id: cache-node_modules
       with:
-        path: |
-          node_modules
-          sso-kit-client/node_modules
+        path: sso-kit-client/node_modules
         key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}
     - name: Install npm dependencies
       if: ${{ steps.cache-node_modules.outputs.cache-hit != 'true' }}
       shell: bash
       run: npm ci
+      working-directory: sso-kit-client
     - name: Build TypeScript
       run: npm run build
+      working-directory: sso-kit-client
     - name: Lint TypeScript
       run: npm run check
+      working-directory: sso-kit-client
     - name: Install Chrome
       uses: browser-actions/setup-chrome@v1
     - name: Run TypeScript tests
       run: npm run test
+      working-directory: sso-kit-client
       env:
         CI: true

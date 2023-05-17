@@ -9,10 +9,10 @@
  */
 import { logout } from "@hilla/frontend";
 import type { Subscription } from "@hilla/frontend";
-import EndpointImportError from "./EndpointImportError.js";
-import type { AccessProps } from "./AccessProps.js";
-import type { SingleSignOnData } from "./SingleSignOnData.js";
-import type { User } from "./User.js";
+import type { AccessProps } from "../../core/src/AccessProps.js";
+import type { SingleSignOnData } from "../../core/src/SingleSignOnData.js";
+import type { User } from "../../core/src/User.js";
+import { EndpointImportError } from "../../core/src/EndpointImportError.js";
 
 /**
  * Definition of the back-channel logout endpoint subscription message.
@@ -221,8 +221,4 @@ export class SingleSignOnContext {
   onBackChannelLogout(callback: LogoutCallback) {
     this.#logoutSubscriptionCallback = callback;
   }
-}
-
-export default function singleSignOnContext() {
-  return new SingleSignOnContext(window.Vaadin.SingleSignOnData!);
 }
