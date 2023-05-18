@@ -12,5 +12,5 @@
  * authentication is needed to access that route.
  */
 export type AccessProps = Readonly<{
-  protectedRoute?: boolean;
+  requireAuthentication?: boolean;
 }>;

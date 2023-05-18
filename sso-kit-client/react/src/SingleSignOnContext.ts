@@ -185,7 +185,7 @@ export class SingleSignOnContext {
    * @returns true if the user has access to the given route, false otherwise
    */
   hasAccess = (route: AccessProps) => {
-    return !route.protectedRoute || this.authenticated;
+    return !route.requireAuthentication || this.authenticated;
   };
 
   /**

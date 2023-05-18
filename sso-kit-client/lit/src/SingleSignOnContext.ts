@@ -203,7 +203,7 @@ export class SingleSignOnContext {
    * @returns true if the user has access to the given route, false otherwise
    */
   hasAccess = (route: AccessProps) => {
-    return !route.protectedRoute || this.authenticated;
+    return !route.requireAuthentication || this.authenticated;
   };
 
   /**
@@ -241,8 +241,8 @@ export class SingleSignOnContext {
   }
 
   /**
-   * Adds protection to view routes which are marked as protected with the
-   * {@link AccessProps#protectedRoute} property.
+   * Adds protection to view routes which require authentication by using the
+   * {@link AccessProps#requireAuthentication} property.
    *
    * @param routes the routes to check if they need to be protected
    * @param redirectPath the path to redirect to when the user is not
@@ -253,7 +253,7 @@ export class SingleSignOnContext {
   protectRoutes = (routes: ViewRoute[], redirectPath?: string): ViewRoute[] => {
     const allRoutes: ViewRoute[] = this.collectRoutes(routes);
     allRoutes.forEach((route) => {
-      if (route.protectedRoute) {
+      if (route.requireAuthentication) {
         this.protectRoute(route, redirectPath);
       }
     });
