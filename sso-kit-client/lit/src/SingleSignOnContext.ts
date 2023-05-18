@@ -22,14 +22,12 @@ import type { User } from "../../core/src/User.js";
 import { EndpointImportError } from "../../core/src/EndpointImportError.js";
 
 /**
- * Definition of the route extended with {@link AccessProps} used to define a
- * view route.
+ * Definition of the Route extended with {@link AccessProps} and
+ * children routes property, used to define a protected route.
  */
-type ViewRoute = Route &
+export type ProtectedRoute = Route &
   AccessProps & {
-    title?: string;
-    icon?: string;
-    children?: ViewRoute[];
+    children?: ProtectedRoute[];
   };
 
 /**
@@ -250,8 +248,11 @@ export class SingleSignOnContext {
    *                     which redirects the user to the provider's login page
    * @returns the {@param routes} with the protected routes, if any
    */
-  protectRoutes = (routes: ViewRoute[], redirectPath?: string): ViewRoute[] => {
-    const allRoutes: ViewRoute[] = this.collectRoutes(routes);
+  protectRoutes = (
+    routes: ProtectedRoute[],
+    redirectPath?: string
+  ): Route[] => {
+    const allRoutes: ProtectedRoute[] = this.collectRoutes(routes);
     allRoutes.forEach((route) => {
       if (route.requireAuthentication) {
         this.protectRoute(route, redirectPath);
@@ -269,7 +270,10 @@ export class SingleSignOnContext {
     return routes;
   };
 
-  private protectRoute = (route: ViewRoute, redirectPath?: string): void => {
+  private protectRoute = (
+    route: ProtectedRoute,
+    redirectPath?: string
+  ): void => {
     const routeAction: ActionFn | undefined = route.action;
     route.action = (
       _context: Context,
@@ -285,8 +289,8 @@ export class SingleSignOnContext {
     };
   };
 
-  private collectRoutes = (routes: ViewRoute[]): ViewRoute[] => {
-    const allRoutes: ViewRoute[] = [];
+  private collectRoutes = (routes: ProtectedRoute[]): ProtectedRoute[] => {
+    const allRoutes: ProtectedRoute[] = [];
     routes.forEach((route) => {
       allRoutes.push(route);
       if (route.children !== undefined) {
