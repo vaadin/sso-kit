@@ -22,13 +22,10 @@ import type { User } from "../../core/src/User.js";
 import { EndpointImportError } from "../../core/src/EndpointImportError.js";
 
 /**
- * Definition of the Route extended with {@link AccessProps} and
- * children routes property, used to define a protected route.
+ * Definition of the Route extended with {@link AccessProps},
+ * used to define a protected route.
  */
-export type ProtectedRoute = Route &
-  AccessProps & {
-    children?: ProtectedRoute[];
-  };
+export type ProtectedRoute = Route & AccessProps;
 
 /**
  * Definition of the back-channel logout endpoint subscription message.
@@ -294,7 +291,9 @@ export class SingleSignOnContext {
     routes.forEach((route) => {
       allRoutes.push(route);
       if (route.children !== undefined) {
-        allRoutes.push(...this.collectRoutes(route.children));
+        allRoutes.push(
+          ...this.collectRoutes(route.children as ProtectedRoute[])
+        );
       }
     });
     return allRoutes;
