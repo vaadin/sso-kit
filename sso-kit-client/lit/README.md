@@ -9,7 +9,7 @@ Getting Started with the **SSO Kit for Hilla** using Lit [documentation](https:/
 Install the library for Hilla using Lit:
 
 ```sh
-npm i @hilla/sso-kit-client-lit@2.1.0
+npm i @hilla/sso-kit-client-lit
 ```
 
 Once installed, you can import the `SingleSignOnContext` class in your application:
