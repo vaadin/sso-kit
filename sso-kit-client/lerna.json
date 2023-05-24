@@ -1,7 +1,11 @@
 {
-  "packages": ["core", "lit", "react"],
+  "packages": [
+    "core",
+    "lit",
+    "react"
+  ],
   "npmClient": "npm",
   "useWorkspaces": true,
   "useNx": true,
-  "version": "2.1.0"
+  "version": "2.1.0-alpha2"
 }
