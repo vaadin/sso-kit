@@ -1,6 +1,6 @@
 {
   "name": "@hilla/sso-kit-client-lit",
-  "version": "2.1.0",
+  "version": "2.1.0-alpha1",
   "description": "SSO Kit Client Lit",
   "main": "lib/lit/src/index.js",
   "module": "index.js",
@@ -43,7 +43,7 @@
     }
   },
   "author": "Vaadin Ltd",
-  "license" : "See license in LICENSE file",
+  "license": "See license in LICENSE file",
   "bugs": {
     "url": "https://github.com/vaadin/sso-kit/issues"
   },

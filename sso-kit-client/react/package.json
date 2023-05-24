@@ -1,6 +1,6 @@
 {
   "name": "@hilla/sso-kit-client-react",
-  "version": "2.1.0",
+  "version": "2.1.0-alpha1",
   "description": "SSO Kit Client React",
   "main": "lib/react/src/index.js",
   "module": "index.js",
@@ -46,7 +46,7 @@
     }
   },
   "author": "Vaadin Ltd",
-  "license" : "See license in LICENSE file",
+  "license": "See license in LICENSE file",
   "bugs": {
     "url": "https://github.com/vaadin/sso-kit/issues"
   },
