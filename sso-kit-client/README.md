@@ -13,10 +13,10 @@ The library consists three packages. The **[SSO Kit Client Lit](lit)**, **[SSO K
 Install one of the libraries for Hilla using Lit or Hilla using React:
 
 ```sh
-npm i @hilla/sso-kit-client-lit@2.1.0
+npm i @hilla/sso-kit-client-lit
 ```
 ```sh
-npm i @hilla/sso-kit-client-react@2.1.0
+npm i @hilla/sso-kit-client-react
 ```
 
 Once installed, you can import the `SingleSignOnContext` class in your application:

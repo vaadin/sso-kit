@@ -9,7 +9,7 @@ Getting Started with the **SSO Kit for Hilla** using React [documentation](https
 Install the library for Hilla using React:
 
 ```sh
-npm i @hilla/sso-kit-client-react@2.1.0
+npm i @hilla/sso-kit-client-react
 ```
 
 Once installed, you can import the `SingleSignOnContext` class in your application:
