@@ -7,12 +7,25 @@
  * See <https://vaadin.com/commercial-license-and-service-terms> for the full
  * license.
  */
-import { logout } from "@hilla/frontend";
 import type { Subscription } from "@hilla/frontend";
+import { logout } from "@hilla/frontend";
+import type {
+  ActionFn,
+  ActionResult,
+  Commands,
+  Context,
+  Route,
+} from "@vaadin/router";
 import type { AccessProps } from "../../core/src/AccessProps.js";
 import type { SingleSignOnData } from "../../core/src/SingleSignOnData.js";
 import type { User } from "../../core/src/User.js";
 import { EndpointImportError } from "../../core/src/EndpointImportError.js";
+
+/**
+ * Definition of the Route extended with {@link AccessProps},
+ * used to define a protected route.
+ */
+export type ProtectedRoute = Route & AccessProps;
 
 /**
  * Definition of the back-channel logout endpoint subscription message.
@@ -185,7 +198,7 @@ export class SingleSignOnContext {
    * @returns true if the user has access to the given route, false otherwise
    */
   hasAccess = (route: AccessProps) => {
-    return !route.requiresLogin || this.authenticated;
+    return !route.requireAuthentication || this.authenticated;
   };
 
   /**
@@ -221,4 +234,68 @@ export class SingleSignOnContext {
   onBackChannelLogout(callback: LogoutCallback) {
     this.#logoutSubscriptionCallback = callback;
   }
+
+  /**
+   * Adds protection to view routes which require authentication by using the
+   * {@link AccessProps#requireAuthentication} property.
+   *
+   * @param routes the routes to check if they need to be protected
+   * @param redirectPath the path to redirect to when the user is not
+   *                     authenticated, the default value is the 'ssologin' path
+   *                     which redirects the user to the provider's login page
+   * @returns the {@param routes} with the protected routes, if any
+   */
+  protectRoutes = (
+    routes: ProtectedRoute[],
+    redirectPath?: string
+  ): Route[] => {
+    const allRoutes: ProtectedRoute[] = this.collectRoutes(routes);
+    allRoutes.forEach((route) => {
+      if (route.requireAuthentication) {
+        this.protectRoute(route, redirectPath);
+      }
+    });
+
+    routes.push({
+      path: "ssologin",
+      component: "ssologin",
+      action: async (_context: Context, _commands: Commands) => {
+        window.location.href = this.loginUrl;
+        return undefined;
+      },
+    });
+    return routes;
+  };
+
+  private protectRoute = (
+    route: ProtectedRoute,
+    redirectPath?: string
+  ): void => {
+    const routeAction: ActionFn | undefined = route.action;
+    route.action = (
+      _context: Context,
+      _commands: Commands
+    ): ActionResult | Promise<ActionResult> => {
+      if (!this.hasAccess(route)) {
+        if (redirectPath === undefined) {
+          redirectPath = "ssologin";
+        }
+        return _commands.redirect(redirectPath);
+      }
+      return routeAction?.apply(null, [_context, _commands]);
+    };
+  };
+
+  private collectRoutes = (routes: ProtectedRoute[]): ProtectedRoute[] => {
+    const allRoutes: ProtectedRoute[] = [];
+    routes.forEach((route) => {
+      allRoutes.push(route);
+      if (route.children !== undefined) {
+        allRoutes.push(
+          ...this.collectRoutes(route.children as ProtectedRoute[])
+        );
+      }
+    });
+    return allRoutes;
+  };
 }

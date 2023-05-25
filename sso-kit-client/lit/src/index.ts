@@ -13,6 +13,7 @@ import { SingleSignOnContext } from "./SingleSignOnContext.js";
 export * from "./SingleSignOnContext.js";
 export { EndpointImportError } from "../../core/src/EndpointImportError.js";
 export type { AccessProps } from "../../core/src/AccessProps.js";
+export type { ProtectedRoute } from "./SingleSignOnContext.js";
 export type { User } from "../../core/src/User.js";
 
 declare global {
