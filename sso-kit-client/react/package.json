@@ -25,7 +25,7 @@
     "build:copyCore": "cd ../core/src && copyfiles **/*.{d.ts.map,d.ts,js.map,js} ../../react/lib/core/src",
     "prepack": "npm run build",
     "postpack": "npm run clean:build && rimraf ../core/src/*.{d.ts.map,js.map,js} ../core/src/index.d.ts ../core/src/EndpointImportError.d.ts ../core/tsconfig.tsbuildinfo",
-    "lint": "eslint **/*.ts",
+    "lint": "eslint **/*.{ts,tsx}",
     "test": "karma start ../karma.config.cjs --port 9878",
     "test:coverage": "npm run test -- --coverage",
     "test:watch": "npm run test -- --watch",
@@ -35,11 +35,11 @@
     ".": {
       "default": "./lib/react/src/index.js"
     },
-    "./RequireAuth.js": {
-      "default": "./lib/react/src/RequireAuth.js"
+    "./ProtectedRoute.js": {
+      "default": "./lib/react/src/ProtectedRoute.js"
     },
-    "./SingleSignOnContext.js": {
-      "default": "./lib/react/src/SingleSignOnContext.js"
+    "./useSsoContext.js": {
+      "default": "./lib/react/src/useSsoContext.js"
     },
     "./index.js": {
       "default": "./lib/react/src/index.js"
@@ -59,6 +59,7 @@
   },
   "dependencies": {
     "@hilla/frontend": "2.0.0",
+    "react": "^18.2.0",
     "react-router-dom": "^6.10.0",
     "tslib": "^2.3.1"
   },
@@ -73,6 +74,8 @@
     "chai": "^4.3.4",
     "chai-dom": "^1.11.0",
     "copyfiles": "^2.4.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "karma": "^6.4.1",
     "karma-chrome-launcher": "^3.1.1",
     "karma-coverage": "^2.2.0",

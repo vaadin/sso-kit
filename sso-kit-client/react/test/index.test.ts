@@ -8,10 +8,14 @@
  * license.
  */
 import { assert, expect } from "@esm-bundle/chai";
-import ssoContext, { SingleSignOnContext } from "../src/index.js";
+import { EndpointImportError } from "../src/index.js";
 
 describe("@hilla/sso-kit-client-react", () => {
   describe("Index", () => {
+    it("should export EndpointImportError", async () => {
+      expect(EndpointImportError).to.be.ok;
+    });
+
     it("should add registration", async () => {
       assert.isDefined(window.Vaadin);
       assert.isArray(window.Vaadin.registrations);
@@ -19,12 +23,6 @@ describe("@hilla/sso-kit-client-react", () => {
         (r: any) => r.is === "@hilla/sso-kit-client-react"
       );
       assert.lengthOf(formRegistrations!, 1);
-    });
-
-    it("should instantiate SingleSignOnContext with argument", async () => {
-      assert.isDefined(window.Vaadin);
-      assert.isObject(window.Vaadin.SingleSignOnData);
-      expect(ssoContext).to.be.instanceOf(SingleSignOnContext);
     });
   });
 });

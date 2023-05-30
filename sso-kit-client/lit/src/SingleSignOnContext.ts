@@ -8,7 +8,7 @@
  * license.
  */
 import type { Subscription } from "@hilla/frontend";
-import { logout } from "@hilla/frontend";
+import { logout as serverLogout } from "@hilla/frontend";
 import type {
   ActionFn,
   ActionResult,
@@ -82,11 +82,6 @@ export class SingleSignOnContext {
   #backChannelLogoutEnabled = false;
 
   /**
-   * The subscription to the back-channel logout event.
-   */
-  #logoutSubscription?: Subscription<Message>;
-
-  /**
    * The back-channel logout subscription callback.
    */
   #logoutSubscriptionCallback?: LogoutCallback;
@@ -127,12 +122,11 @@ export class SingleSignOnContext {
         )
         .then(
           (subscription: Subscription<Message>) => {
-            this.#logoutSubscription = subscription;
-            this.#logoutSubscription.onNext(() => {
+            subscription.onNext(() => {
               if (this.#logoutSubscriptionCallback) {
                 this.#logoutSubscriptionCallback();
               }
-              this.#logoutSubscription!.cancel();
+              subscription.cancel();
             });
           },
           (reason: string) => {
@@ -222,7 +216,7 @@ export class SingleSignOnContext {
    * Logs out from the application and the authentication provider.
    */
   logout = async () => {
-    await logout();
+    await serverLogout();
     window.location.href = this.logoutUrl!;
   };
 
@@ -231,9 +225,9 @@ export class SingleSignOnContext {
    *
    * @param callback a function executed when back-channel logout happens
    */
-  onBackChannelLogout(callback: LogoutCallback) {
+  onBackChannelLogout = (callback: LogoutCallback) => {
     this.#logoutSubscriptionCallback = callback;
-  }
+  };
 
   /**
    * Adds protection to view routes which require authentication by using the
