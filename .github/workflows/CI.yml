@@ -10,7 +10,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  testing:
+  test-typescript-and-java:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout project code
