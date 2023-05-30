@@ -1,0 +1,85 @@
+{
+  "name": "@hilla/sso-kit-client-lit",
+  "version": "2.1.0-beta3",
+  "description": "SSO Kit Client Lit",
+  "main": "lib/lit/src/index.js",
+  "module": "index.js",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vaadin/sso-kit.git",
+    "directory": "sso-kit-client/lit"
+  },
+  "keywords": [
+    "SSO",
+    "Kit",
+    "Client",
+    "Lit",
+    "Hilla"
+  ],
+  "scripts": {
+    "clean": "git clean -Xf .",
+    "build": "npm run build:transpile && npm run build:copy",
+    "build:transpile": "tsc -p tsconfig.build.json",
+    "build:copy": "cd src && copyfiles **/*.d.ts ..",
+    "prepack": "npm run build",
+    "lint": "eslint src/**/* test/**/*",
+    "test": "karma start ../karma.config.cjs --port 9877",
+    "test:coverage": "npm run test -- --coverage",
+    "test:watch": "npm run test -- --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "exports": {
+    ".": {
+      "default": "./lib/lit/src/index.js"
+    },
+    "./SingleSignOnContext.js": {
+      "default": "./lib/lit/src/SingleSignOnContext.js"
+    },
+    "./index.js": {
+      "default": "./lib/lit/src/index.js"
+    }
+  },
+  "author": "Vaadin Ltd",
+  "license": "See license in LICENSE file",
+  "bugs": {
+    "url": "https://github.com/vaadin/sso-kit/issues"
+  },
+  "homepage": "https://hilla.dev",
+  "files": [
+    "**/*.{d.ts.map,d.ts,js.map,js}"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@hilla/frontend": "2.0.5",
+    "@hilla/sso-kit-client-core": "^2.1.0-beta3",
+    "@vaadin/router": "1.7.5",
+    "tslib": "^2.3.1"
+  },
+  "peerDependencies": {
+    "lit": "^2.3.0"
+  },
+  "devDependencies": {
+    "@esm-bundle/chai": "^4.3.4-fix.0",
+    "@types/chai-dom": "^1.11.0",
+    "@types/mocha": "^10.0.1",
+    "@types/sinon": "^10.0.13",
+    "@types/sinon-chai": "^3.2.9",
+    "chai": "^4.3.4",
+    "chai-dom": "^1.11.0",
+    "copyfiles": "^2.4.1",
+    "karma": "^6.4.1",
+    "karma-chrome-launcher": "^3.1.1",
+    "karma-coverage": "^2.2.0",
+    "karma-mocha": "^2.0.1",
+    "karma-spec-reporter": "^0.0.36",
+    "karma-vite": "^1.0.4",
+    "lerna": "^6.5.1",
+    "mocha": "^10.2.0",
+    "rimraf": "^3.0.2",
+    "sinon": "^15.0.2",
+    "sinon-chai": "^3.7.0"
+  }
+}

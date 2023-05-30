@@ -22,9 +22,9 @@
     </licenses>
 
     <modules>
-        <module>sso-kit-core</module>
-        <module>sso-kit-starter</module>
-        <module>sso-kit-keycloak</module>
+        <module>packages/java/sso-kit-core</module>
+        <module>packages/java/sso-kit-starter</module>
+        <module>packages/java/sso-kit-keycloak</module>
     </modules>
 
     <properties>
@@ -148,7 +148,7 @@
                 </property>
             </activation>
             <modules>
-                <module>sso-kit-demo</module>
+                <module>packages/java/sso-kit-demo</module>
             </modules>
         </profile>
         <profile>
@@ -159,7 +159,7 @@
                 </property>
             </activation>
             <modules>
-                <module>sso-kit-starter-hilla</module>
+                <module>packages/java/sso-kit-starter-hilla</module>
             </modules>
         </profile>
     </profiles>

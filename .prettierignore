@@ -1,0 +1,6 @@
+# Add files here to ignore them from prettier formatting
+/ts/*/.coverage
+/ts/*/*.d.ts.map
+/ts/*/*.d.ts
+/ts/*/*.js.map
+/ts/*/*.js

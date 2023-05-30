@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "jsx": "react-jsx",
+    "inlineSources": true,
+    "module": "esNext",
+    "target": "es2020",
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "experimentalDecorators": true,
+    "useDefineForClassFields": false,
+    "baseUrl": "observability-kit-demo-hilla/frontend",
+    "paths": {
+      "@hilla/ob-kit-test": ["ts/ob-kit-test/src/index.ts"],
+      "@hilla/observability-kit": ["ts/observability-kit/src/index.ts"],
+      "@vaadin/flow-frontend": ["generated/jar-resources"],
+      "@vaadin/flow-frontend/*": ["generated/jar-resources/*"],
+      "Frontend/*": ["*"]
+    }
+  },
+  "exclude": ["**/node_modules/**/*"]
+}

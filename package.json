@@ -1,0 +1,41 @@
+{
+  "name": "@hilla/sso-kit-client",
+  "private": true,
+  "description": "SSO Kit Client",
+  "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": ">=16.19.0",
+    "npm": ">=9"
+  },
+  "workspaces": [
+    "packages/ts/*"
+  ],
+  "scripts": {
+    "check": "nx run-many -t lint,typecheck --all",
+    "build": "nx run-many -t build --all",
+    "lint": "nx run-many -t lint --all",
+    "test": "nx run-many -t test --all",
+    "test:coverage": "nx run-many -t test:coverage --all",
+    "typecheck": "nx run-many -t typecheck --all"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/vaadin/sso-kit"
+  },
+  "author": "Vaadin Ltd",
+  "license": "See license in LICENSE file",
+  "devDependencies": {
+    "@types/node": "^18.15.3",
+    "eslint": "^7.32.0",
+    "eslint-config-vaadin": "^0.4.0",
+    "eslint-plugin-chai-friendly": "^0.7.2",
+    "lint-staged": "^13.2.2",
+    "nx": "^15.9.4",
+    "prettier": "^2.8.8",
+    "simple-git-hooks": "^2.8.1",
+    "tsx": "^3.12.5",
+    "typescript": "^5.0.2",
+    "vite": "^4.2.0"
+  }
+}

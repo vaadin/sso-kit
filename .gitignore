@@ -28,10 +28,7 @@ sso-kit-client/node_modules
 .coverage
 
 # Generated code
-sso-kit-client/**/*.d.ts
-sso-kit-client/**/*.d.ts.map
-sso-kit-client/**/*.js
-sso-kit-client/**/*.js.map
-sso-kit-client/**/.coverage
-sso-kit-client/**/.vite
-sso-kit-client/**/lib
+/packages/ts/*/*.d.ts.map
+/packages/ts/*/*.d.ts
+/packages/ts/*/*.js.map
+/packages/ts/*/*.js
