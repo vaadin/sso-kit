@@ -13,6 +13,8 @@ jobs:
   test-typescript-and-java:
     runs-on: ubuntu-latest
     steps:
+    - name: Install Chrome
+      uses: browser-actions/setup-chrome@v1
     - name: Checkout project code
       uses: actions/checkout@v3
     - name: Set up JDK 17
@@ -21,6 +23,11 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
+        registry-url: 'https://registry.npmjs.org'
     - name: Set TB License
       run: |
         TB_LICENSE=${{secrets.TB_LICENSE}}
@@ -30,13 +37,6 @@ jobs:
       run: mvn -B formatter:validate
     - name: Run Java tests
       run: mvn -B verify
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 16.x
-        registry-url: 'https://registry.npmjs.org'
-        cache: npm
-        cache-dependency-path: package-lock.json
     - name: Cache node_modules
       uses: actions/cache@v3
       id: cache-node_modules
@@ -47,17 +47,11 @@ jobs:
       if: ${{ steps.cache-node_modules.outputs.cache-hit != 'true' }}
       shell: bash
       run: npm ci
-      working-directory: sso-kit-client
     - name: Build TypeScript
       run: npm run build
-      working-directory: sso-kit-client
     - name: Lint TypeScript
       run: npm run check
-      working-directory: sso-kit-client
-    - name: Install Chrome
-      uses: browser-actions/setup-chrome@v1
     - name: Run TypeScript tests
       run: npm run test
-      working-directory: sso-kit-client
       env:
         CI: true
