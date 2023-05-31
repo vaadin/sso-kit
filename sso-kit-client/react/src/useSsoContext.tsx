@@ -36,7 +36,7 @@ type LogoutCallback = () => void;
 
 function useSsoContextHook() {
   /**
-   * Indicates if getting the single sing-on context has been initialized.
+   * Indicates if the single sing-on context has been initialized.
    */
   const [ssoContextInitialized, setSsoContextInitialized] =
     useState<boolean>(false);
@@ -203,7 +203,6 @@ function useSsoContextHook() {
               }
               subscription.cancel();
             });
-            return subscription;
           },
           (reason: string) => {
             throw new Error(
