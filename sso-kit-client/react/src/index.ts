@@ -8,10 +8,9 @@
  * license.
  */
 import type { SingleSignOnData } from "../../core/src/index.js";
-import { SingleSignOnContext } from "./SingleSignOnContext.js";
 
-export * from "./SingleSignOnContext.js";
-export * from "./RequireAuth.js";
+export * from "./ProtectedRoute.js";
+export * from "./useSsoContext.js";
 export { EndpointImportError } from "../../core/src/EndpointImportError.js";
 export type { AccessProps } from "../../core/src/AccessProps.js";
 export type { User } from "../../core/src/User.js";
@@ -32,16 +31,5 @@ window.Vaadin = window.Vaadin || {};
 window.Vaadin.registrations = window.Vaadin.registrations || [];
 window.Vaadin.registrations.push({
   is: "@hilla/sso-kit-client-react",
-  version: "2.1.0",
+  version: /* updated-by-script */ "2.1.0",
 });
-
-window.Vaadin.SingleSignOnData = window.Vaadin.SingleSignOnData || {
-  authenticated: false,
-  roles: [],
-  loginLink: "",
-  logoutLink: undefined,
-  backChannelLogoutEnabled: false,
-};
-
-const ssoContext = new SingleSignOnContext(window.Vaadin.SingleSignOnData);
-export default ssoContext;

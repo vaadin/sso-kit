@@ -1,12 +1,21 @@
 {
-  "extends": ["vaadin"],
-  "plugins": ["chai-friendly"],
+  "extends": [
+    "vaadin",
+    "plugin:react/recommended"
+  ],
+  "plugins": [
+    "react",
+    "react-hooks",
+    "chai-friendly"
+  ],
   "ignorePatterns": [
     "core/src/**/*.js", "core/test/**/*.snap.ts", "index.d.ts", "EndpointImportError.d.ts",
-    "lit/src/**/*.js", "lit/test/**/*.snap.ts",
-    "react/src/**/*.js", "react/test/**/*.snap.ts"
+    "lit/src/**/*.js", "lit/test/**/*.snap.ts", "/lit/lib/**/*.d.ts",
+    "react/src/**/*.js", "react/test/**/*.snap.ts", "/react/lib/**/*.d.ts"
   ],
   "rules": {
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-explicit-any": "off",
