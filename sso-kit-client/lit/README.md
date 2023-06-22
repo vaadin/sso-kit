@@ -2,11 +2,11 @@
 
 The **SSO Kit Client Lit** is the client side library for the **[SSO Kit for Hilla](https://github.com/vaadin/sso-kit/tree/main/sso-kit-starter-hilla)** and depends on it.
 
-Getting Started with the **SSO Kit for Hilla** using Lit [documentation](https://hilla.dev/docs/lit/acceleration-kits/sso-kit/getting-started/#frontend).
+Getting Started with the **SSO Kit for Hilla** with Lit [documentation](https://hilla.dev/docs/lit/acceleration-kits/sso-kit/getting-started/#frontend).
 
 ## Installation
 
-Install the library for Hilla using Lit:
+Install the library for Hilla with Lit:
 
 ```sh
 npm i @hilla/sso-kit-client-lit

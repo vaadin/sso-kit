@@ -2,9 +2,9 @@
 
 The **SSO Kit Client** is the client side library for the **[SSO Kit for Hilla](https://github.com/vaadin/sso-kit/tree/main/sso-kit-starter-hilla)** and depends on it.
 
-Getting Started with the **SSO Kit for Hilla** using Lit [documentation](https://hilla.dev/docs/lit/acceleration-kits/sso-kit/getting-started/#frontend).
+Getting Started with the **SSO Kit for Hilla** with Lit [documentation](https://hilla.dev/docs/lit/acceleration-kits/sso-kit/getting-started/#frontend).
 
-Getting Started with the **SSO Kit for Hilla** using React [documentation](https://hilla.dev/docs/react/acceleration-kits/sso-kit/getting-started/#frontend).
+Getting Started with the **SSO Kit for Hilla** with React [documentation](https://hilla.dev/docs/react/acceleration-kits/sso-kit/getting-started/#frontend).
 
 The library consists three packages. The **[SSO Kit Client Lit](lit)**, **[SSO Kit Client React](react)** and **[SSO Kit Client Core](core)** which is private, so it is not published into public registry. However, its sources are included into other two libraries during building, packaging and publishing.
 
