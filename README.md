@@ -16,4 +16,4 @@ SSO Kit is compatible with [Hilla](https://hilla.dev/) starting from version [2.
 
 ## Getting Started
 
-Getting started documentations are available for [Vaadin Flow](https://vaadin.com/docs/latest/tools/sso/getting-started), for [Hilla with Lit](https://hilla.dev/docs/lit/acceleration-kits/sso-kit/getting-started) and for [Hilla with React](https://hilla.dev/docs/react/acceleration-kits/sso-kit/getting-started).
+Getting started tutorials are available for [Vaadin Flow](https://vaadin.com/docs/latest/tools/sso/getting-started), for [Hilla with Lit](https://hilla.dev/docs/lit/acceleration-kits/sso-kit/getting-started) and for [Hilla with React](https://hilla.dev/docs/react/acceleration-kits/sso-kit/getting-started).
