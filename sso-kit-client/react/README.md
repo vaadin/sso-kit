@@ -12,10 +12,10 @@ Install the library for Hilla using React:
 npm i @hilla/sso-kit-client-react
 ```
 
-Once installed, you can import the `SingleSignOnContext` class in your application:
+Once installed, you can import the `useSsoContext` hook in your application:
 
 ```js
-import singleSignOnContext from "@hilla/sso-kit-client-react/SingleSignOnContext.js";
+import { useSsoContext } from "@hilla/sso-kit-client-react";
 ```
 
 ## Development

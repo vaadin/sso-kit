@@ -10,19 +10,28 @@ The library consists three packages. The **[SSO Kit Client Lit](lit)**, **[SSO K
 
 ## Installation
 
-Install one of the libraries for Hilla using Lit or Hilla using React:
+### Install the library for Hilla with Lit:
 
 ```sh
 npm i @hilla/sso-kit-client-lit
-```
-```sh
-npm i @hilla/sso-kit-client-react
 ```
 
 Once installed, you can import the `SingleSignOnContext` class in your application:
 
 ```js
-import singleSignOnContext from "@hilla/sso-kit-client/SingleSignOnContext.js";
+import ssoContext from "@hilla/sso-kit-client-lit";
+```
+
+### Install the library for Hilla with React:
+
+```sh
+npm i @hilla/sso-kit-client-react
+```
+
+Once installed, you can import the `useSsoContext` hook in your application:
+
+```js
+import { useSsoContext } from "@hilla/sso-kit-client-react";
 ```
 
 ## Development

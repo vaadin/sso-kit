@@ -15,7 +15,7 @@ npm i @hilla/sso-kit-client-lit
 Once installed, you can import the `SingleSignOnContext` class in your application:
 
 ```js
-import singleSignOnContext from "@hilla/sso-kit-client-lit/SingleSignOnContext.js";
+import ssoContext from "@hilla/sso-kit-client-lit";
 ```
 
 ## Development
