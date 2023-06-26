@@ -26,7 +26,7 @@
     "prepack": "npm run build",
     "postpack": "npm run clean:build && rimraf ../core/src/*.{d.ts.map,js.map,js} ../core/src/index.d.ts ../core/src/EndpointImportError.d.ts ../core/tsconfig.tsbuildinfo",
     "lint": "eslint **/*.ts",
-    "test": "karma start ../karma.config.cjs --port 9878",
+    "test": "karma start ../karma.config.cjs --port 9877",
     "test:coverage": "npm run test -- --coverage",
     "test:watch": "npm run test -- --watch",
     "typecheck": "tsc --noEmit"
