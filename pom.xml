@@ -34,7 +34,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <flow.version>24.0-SNAPSHOT</flow.version>
         <hilla.version>2.0-SNAPSHOT</hilla.version>
-        <spring.boot.version>3.0.7</spring.boot.version>
+        <spring.boot.version>3.0.8</spring.boot.version>
         <maven.jar.version>3.3.0</maven.jar.version>
         <maven.source.version>3.2.1</maven.source.version>
         <maven.javadoc.version>3.4.1</maven.javadoc.version>
