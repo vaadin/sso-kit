@@ -23,7 +23,7 @@
     "build": "npm run build:transpile",
     "build:transpile": "tsc -b",
     "lint": "eslint **/*.ts",
-    "test": "karma start ../karma.config.cjs --port 9878",
+    "test": "karma start ../karma.config.cjs --port 9876",
     "test:coverage": "npm run test -- --coverage",
     "test:watch": "npm run test -- --watch",
     "typecheck": "tsc --noEmit"
