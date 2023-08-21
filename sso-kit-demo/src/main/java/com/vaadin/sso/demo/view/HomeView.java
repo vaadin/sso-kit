@@ -1,5 +1,7 @@
 package com.vaadin.sso.demo.view;
 
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -19,5 +21,8 @@ public class HomeView extends VerticalLayout {
         getStyle().set("text-align", "center");
 
         add(new H2("This page does not require authentication"));
+
+        add(new Button("Navigate to the secured Profile page",
+                e -> UI.getCurrent().navigate("profile")));
     }
 }
