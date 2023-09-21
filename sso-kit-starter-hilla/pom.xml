@@ -30,6 +30,7 @@
         <dependency>
             <groupId>dev.hilla</groupId>
             <artifactId>endpoint</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
