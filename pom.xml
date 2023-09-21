@@ -34,6 +34,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <flow.version>24.1-SNAPSHOT</flow.version>
         <hilla.version>2.1-SNAPSHOT</hilla.version>
+        <vaadin.license.checker.version>1.12.3<vaadin.license.checker.version>
         <spring.boot.version>3.1.2</spring.boot.version>
         <maven.jar.version>3.3.0</maven.jar.version>
         <maven.source.version>3.2.1</maven.source.version>
@@ -78,7 +79,7 @@
             <dependency>
                 <groupId>com.vaadin</groupId>
                 <artifactId>license-checker</artifactId>
-                <version>1.12.3</version>
+                <version>${vaadin.license.checker.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
