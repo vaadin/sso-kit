@@ -21,7 +21,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Validate formatting
-      run: mvn -B formatter:validate
+      run: mvn -ntp -B formatter:validate
   unit-test:
     runs-on: ubuntu-latest
     steps:
@@ -39,7 +39,7 @@ jobs:
         mkdir -p ~/.vaadin/
         echo '{"username":"'`echo $TB_LICENSE | cut -d / -f1`'","proKey":"'`echo $TB_LICENSE | cut -d / -f2`'"}' > ~/.vaadin/proKey
     - name: Run Java tests
-      run: mvn -B verify
+      run: mvn -ntp -B verify
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
