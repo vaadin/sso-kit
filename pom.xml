@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.vaadin</groupId>
         <artifactId>vaadin-parent</artifactId>
-        <version>2.2.0</version>
+        <version>2.2.1</version>
     </parent>
 
     <name>SSO Kit</name>
@@ -30,13 +30,13 @@
     <properties>
         <flow.version>24.2-SNAPSHOT</flow.version>
         <hilla.version>2.2-SNAPSHOT</hilla.version>
-        <vaadin.license.checker.version>1.12.3<vaadin.license.checker.version>
+        <vaadin.license.checker.version>1.12.3</vaadin.license.checker.version>
 
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <spring.boot.version>3.1.2</spring.boot.version>
+        <spring.boot.version>3.1.4</spring.boot.version>
         <maven.jar.version>3.3.0</maven.jar.version>
         <maven.source.version>3.2.1</maven.source.version>
         <maven.javadoc.version>3.4.1</maven.javadoc.version>
