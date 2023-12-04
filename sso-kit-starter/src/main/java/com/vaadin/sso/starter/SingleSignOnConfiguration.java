@@ -119,7 +119,7 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
 
             // Sets the login route as endpoint for redirection when
             // trying to access a protected view without authorization.
-            getViewAccessChecker().setLoginView(loginRoute);
+            getNavigationAccessControl().setLoginView(loginRoute);
         }).logout(logout -> {
             // Configures a logout success handler that takes care of closing
             // both the local user session and the OIDC provider remote session,

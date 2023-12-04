@@ -32,7 +32,7 @@ window.Vaadin = window.Vaadin || {};
 window.Vaadin.registrations = window.Vaadin.registrations || [];
 window.Vaadin.registrations.push({
   is: "@hilla/sso-kit-client-lit",
-  version: "2.2.0",
+  version: "2.3.0",
 });
 
 window.Vaadin.SingleSignOnData = window.Vaadin.SingleSignOnData || {

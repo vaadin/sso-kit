@@ -11,7 +11,7 @@
     <name>SSO Kit</name>
 
     <artifactId>sso-kit</artifactId>
-    <version>2.2-SNAPSHOT</version>
+    <version>2.3-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <licenses>
@@ -28,15 +28,15 @@
     </modules>
 
     <properties>
-        <flow.version>24.2-SNAPSHOT</flow.version>
-        <hilla.version>2.2-SNAPSHOT</hilla.version>
+        <flow.version>24.3-SNAPSHOT</flow.version>
+        <hilla.version>2.5-SNAPSHOT</hilla.version>
         <vaadin.license.checker.version>1.12.3</vaadin.license.checker.version>
 
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <spring.boot.version>3.1.4</spring.boot.version>
+        <spring.boot.version>3.2.0</spring.boot.version>
         <maven.jar.version>3.3.0</maven.jar.version>
         <maven.source.version>3.2.1</maven.source.version>
         <maven.javadoc.version>3.4.1</maven.javadoc.version>
