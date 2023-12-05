@@ -1,6 +1,6 @@
 {
   "name": "@hilla/sso-kit-client-react",
-  "version": "2.3.0",
+  "version": "2.3.0-rc1",
   "description": "SSO Kit Client React",
   "main": "lib/react/src/index.js",
   "module": "index.js",
