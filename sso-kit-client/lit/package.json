@@ -1,6 +1,6 @@
 {
   "name": "@hilla/sso-kit-client-lit",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "SSO Kit Client Lit",
   "main": "lib/lit/src/index.js",
   "module": "index.js",
