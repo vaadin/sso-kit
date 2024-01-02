@@ -1,5 +1,5 @@
 /*-
- * Copyright (C) 2022 Vaadin Ltd
+ * Copyright (C) 2024 Vaadin Ltd
  *
  * This program is available under Vaadin Commercial License and Service Terms.
  *
@@ -7,12 +7,12 @@
  * See <https://vaadin.com/commercial-license-and-service-terms> for the full
  * license.
  */
-package dev.hilla.sso.starter.endpoint;
+package com.vaadin.hilla.sso.starter.endpoint;
 
-import dev.hilla.Endpoint;
-import dev.hilla.Nonnull;
-import dev.hilla.sso.starter.BackChannelLogoutSubscription;
-import dev.hilla.sso.starter.SingleSignOnContext;
+import com.vaadin.hilla.Endpoint;
+import com.vaadin.hilla.Nonnull;
+import com.vaadin.hilla.sso.starter.BackChannelLogoutSubscription;
+import com.vaadin.hilla.sso.starter.SingleSignOnContext;
 import jakarta.annotation.security.PermitAll;
 import reactor.core.publisher.Flux;
 

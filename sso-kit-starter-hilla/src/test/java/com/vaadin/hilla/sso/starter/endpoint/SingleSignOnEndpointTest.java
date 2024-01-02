@@ -1,9 +1,18 @@
-package dev.hilla.sso.starter.endpoint;
+/*-
+ * Copyright (C) 2024 Vaadin Ltd
+ *
+ * This program is available under Vaadin Commercial License and Service Terms.
+ *
+ *
+ * See <https://vaadin.com/commercial-license-and-service-terms> for the full
+ * license.
+ */
+package com.vaadin.hilla.sso.starter.endpoint;
 
 import java.util.List;
 
-import dev.hilla.sso.starter.SingleSignOnContext;
-import dev.hilla.sso.starter.SingleSignOnData;
+import com.vaadin.hilla.sso.starter.SingleSignOnContext;
+import com.vaadin.hilla.sso.starter.SingleSignOnData;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -1,2 +1,2 @@
-dev.hilla.sso.starter.SingleSignOnDefaultBeans
-dev.hilla.sso.starter.SingleSignOnConfiguration
+com.vaadin.hilla.sso.starter.SingleSignOnDefaultBeans
+com.vaadin.hilla.sso.starter.SingleSignOnConfiguration
