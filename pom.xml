@@ -28,7 +28,7 @@
     </modules>
 
     <properties>
-        <flow.version>24.3-SNAPSHOT</flow.version>
+        <flow.version>24.4-SNAPSHOT</flow.version>
         <hilla.version>24.4-SNAPSHOT</hilla.version>
         <vaadin.license.checker.version>1.12.3</vaadin.license.checker.version>
 
