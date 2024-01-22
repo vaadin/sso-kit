@@ -1,5 +1,5 @@
 /*-
- * Copyright (C) 2022 Vaadin Ltd
+ * Copyright (C) 2024 Vaadin Ltd
  *
  * This program is available under Vaadin Commercial License and Service Terms.
  *
@@ -7,7 +7,7 @@
  * See <https://vaadin.com/commercial-license-and-service-terms> for the full
  * license.
  */
-package dev.hilla.sso.starter;
+package com.vaadin.hilla.sso.starter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import dev.hilla.Nonnull;
+import com.vaadin.hilla.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 import reactor.core.publisher.Flux;
 

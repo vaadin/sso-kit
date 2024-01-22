@@ -1,5 +1,5 @@
 /*-
- * Copyright (C) 2022 Vaadin Ltd
+ * Copyright (C) 2024 Vaadin Ltd
  *
  * This program is available under Vaadin Commercial License and Service Terms.
  *
@@ -7,11 +7,11 @@
  * See <https://vaadin.com/commercial-license-and-service-terms> for the full
  * license.
  */
-package dev.hilla.sso.starter;
+package com.vaadin.hilla.sso.starter;
 
 import java.util.List;
 
-import dev.hilla.Nonnull;
+import com.vaadin.hilla.Nonnull;
 
 /**
  * A convenience class that contains all the information about the current SSO

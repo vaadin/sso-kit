@@ -28,8 +28,8 @@
     </modules>
 
     <properties>
-        <flow.version>24.3-SNAPSHOT</flow.version>
-        <hilla.version>2.5-SNAPSHOT</hilla.version>
+        <flow.version>24.4-SNAPSHOT</flow.version>
+        <hilla.version>24.4-SNAPSHOT</hilla.version>
         <vaadin.license.checker.version>1.12.3</vaadin.license.checker.version>
 
         <maven.compiler.source>17</maven.compiler.source>
@@ -73,7 +73,7 @@
                 <version>${flow.version}</version>
             </dependency>
             <dependency>
-                <groupId>dev.hilla</groupId>
+                <groupId>com.vaadin.hilla</groupId>
                 <artifactId>endpoint</artifactId>
                 <version>${hilla.version}</version>
             </dependency>
