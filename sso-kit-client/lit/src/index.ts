@@ -31,8 +31,8 @@ declare global {
 window.Vaadin = window.Vaadin || {};
 window.Vaadin.registrations = window.Vaadin.registrations || [];
 window.Vaadin.registrations.push({
-  is: "@hilla/sso-kit-client-lit",
-  version: "2.3.0",
+  is: "@vaadin/sso-kit-client-lit",
+  version: "3.0.0",
 });
 
 window.Vaadin.SingleSignOnData = window.Vaadin.SingleSignOnData || {

@@ -30,6 +30,6 @@ declare global {
 window.Vaadin = window.Vaadin || {};
 window.Vaadin.registrations = window.Vaadin.registrations || [];
 window.Vaadin.registrations.push({
-  is: "@hilla/sso-kit-client-react",
-  version: "2.3.0",
+  is: "@vaadin/sso-kit-client-react",
+  version: "3.0.0",
 });

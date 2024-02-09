@@ -10,7 +10,7 @@
 import { expect } from "@esm-bundle/chai";
 import { EndpointImportError } from "../src/index.js";
 
-describe("@hilla/sso-kit-client-core", () => {
+describe("@vaadin/sso-kit-client-core", () => {
   describe("EndpointImportError", () => {
     it("should be exported", async () => {
       expect(EndpointImportError).to.be.ok;

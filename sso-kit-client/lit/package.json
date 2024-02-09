@@ -1,6 +1,6 @@
 {
-  "name": "@hilla/sso-kit-client-lit",
-  "version": "2.3.0",
+  "name": "@vaadin/sso-kit-client-lit",
+  "version": "3.0.0",
   "description": "SSO Kit Client Lit",
   "main": "lib/lit/src/index.js",
   "module": "index.js",
@@ -55,7 +55,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@hilla/frontend": "2.0.5",
+    "@vaadin/hilla-core": "24.4.0-alpha1",
     "@vaadin/router": "1.7.5",
     "tslib": "^2.3.1"
   },

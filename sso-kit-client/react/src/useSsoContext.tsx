@@ -15,8 +15,8 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import type { Subscription } from "@hilla/frontend";
-import { logout as serverLogout } from "@hilla/frontend";
+import type { Subscription } from "@vaadin/hilla-core";
+import { logout as serverLogout } from "@vaadin/hilla-core";
 import type { AccessProps } from "../../core/src/AccessProps.js";
 import type { SingleSignOnData } from "../../core/src/SingleSignOnData.js";
 import type { User } from "../../core/src/User.js";
