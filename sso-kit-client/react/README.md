@@ -1,4 +1,4 @@
-# @hilla/sso-kit-client-react
+# @vaadin/sso-kit-client-react
 
 The **SSO Kit Client React** is the client side library for the **[SSO Kit for Hilla](https://github.com/vaadin/sso-kit/tree/main/sso-kit-starter-hilla)** and depends on it.
 
@@ -9,13 +9,13 @@ Getting Started with the **SSO Kit for Hilla** with React [documentation](https:
 Install the library for Hilla with React:
 
 ```sh
-npm i @hilla/sso-kit-client-react
+npm i @vaadin/sso-kit-client-react
 ```
 
 Once installed, you can import the `useSsoContext` hook in your application:
 
 ```js
-import { useSsoContext } from "@hilla/sso-kit-client-react";
+import { useSsoContext } from "@vaadin/sso-kit-client-react";
 ```
 
 ## Development

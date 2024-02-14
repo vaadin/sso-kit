@@ -1,4 +1,4 @@
-# @hilla/sso-kit-client-core
+# @vaadin/sso-kit-client-core
 
 The **SSO Kit Client Core** is a common library of the **[SSO Kit Client Lit](../lit)** and **[SSO Kit Client React](../react)** client side libraries.
 

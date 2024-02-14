@@ -1,5 +1,5 @@
 {
-  "name": "@hilla/sso-kit-client",
+  "name": "@vaadin/sso-kit-client",
   "private": true,
   "description": "SSO Kit Client",
   "main": "index.js",
