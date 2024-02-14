@@ -1,6 +1,6 @@
 {
-  "name": "@hilla/sso-kit-client-lit",
-  "version": "2.3.0",
+  "name": "@vaadin/sso-kit-client-lit",
+  "version": "3.0.0",
   "description": "SSO Kit Client Lit",
   "main": "lib/lit/src/index.js",
   "module": "index.js",
@@ -55,12 +55,12 @@
     "access": "public"
   },
   "dependencies": {
-    "@hilla/frontend": "2.0.5",
+    "@vaadin/hilla-frontend": "24.4.0-alpha4",
     "@vaadin/router": "1.7.5",
     "tslib": "^2.3.1"
   },
   "peerDependencies": {
-    "lit": "^2.3.0"
+    "lit": "^3.1.2"
   },
   "devDependencies": {
     "@esm-bundle/chai": "^4.3.4-fix.0",

@@ -10,7 +10,7 @@
 import { assert, expect } from "@esm-bundle/chai";
 import { EndpointImportError } from "../src/index.js";
 
-describe("@hilla/sso-kit-client-lit", () => {
+describe("@vaadin/sso-kit-client-lit", () => {
   describe("Index", () => {
     it("should export EndpointImportError", async () => {
       expect(EndpointImportError).to.be.ok;
@@ -20,7 +20,7 @@ describe("@hilla/sso-kit-client-lit", () => {
       assert.isDefined(window.Vaadin);
       assert.isArray(window.Vaadin.registrations);
       const formRegistrations = window.Vaadin.registrations?.filter(
-        (r: any) => r.is === "@hilla/sso-kit-client-lit"
+        (r: any) => r.is === "@vaadin/sso-kit-client-lit"
       );
       assert.lengthOf(formRegistrations!, 1);
     });

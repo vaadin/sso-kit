@@ -10,7 +10,7 @@
 import { expect } from "@esm-bundle/chai";
 import { SingleSignOnContext } from "../src/index.js";
 
-describe("@hilla/sso-kit-client-lit", () => {
+describe("@vaadin/sso-kit-client-lit", () => {
   describe("SingleSignOnContext", () => {
     it("should be exported", async () => {
       expect(SingleSignOnContext).to.be.ok;

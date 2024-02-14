@@ -7,8 +7,8 @@
  * See <https://vaadin.com/commercial-license-and-service-terms> for the full
  * license.
  */
-import type { Subscription } from "@hilla/frontend";
-import { logout as serverLogout } from "@hilla/frontend";
+import type { Subscription } from "@vaadin/hilla-frontend";
+import { logout as serverLogout } from "@vaadin/hilla-frontend";
 import type {
   ActionFn,
   ActionResult,

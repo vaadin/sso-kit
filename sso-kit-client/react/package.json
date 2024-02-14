@@ -1,6 +1,6 @@
 {
-  "name": "@hilla/sso-kit-client-react",
-  "version": "2.3.0",
+  "name": "@vaadin/sso-kit-client-react",
+  "version": "3.0.0",
   "description": "SSO Kit Client React",
   "main": "lib/react/src/index.js",
   "module": "index.js",
@@ -58,7 +58,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@hilla/frontend": "2.0.0",
+    "@vaadin/hilla-frontend": "24.4.0-alpha4",
     "react": "^18.2.0",
     "react-router-dom": "^6.10.0",
     "tslib": "^2.3.1"
