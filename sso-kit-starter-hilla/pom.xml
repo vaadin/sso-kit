@@ -7,12 +7,10 @@
         <artifactId>sso-kit</artifactId>
         <version>3.0-SNAPSHOT</version>
     </parent>
-    <version>3.0-SNAPSHOT</version>
 
     <name>SSO Kit Starter for Hilla</name>
 
-    <groupId>com.vaadin.hilla</groupId>
-    <artifactId>sso-kit-starter</artifactId>
+    <artifactId>sso-kit-starter-hilla</artifactId>
 
     <properties>
         <cvdl.name>hilla-sso-kit</cvdl.name>
@@ -28,14 +26,14 @@
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-spring</artifactId>
             <scope>provided</scope>
-        </dependency>        
+        </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>license-checker</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.vaadin.hilla</groupId>
-            <artifactId>endpoint</artifactId>
+            <groupId>com.vaadin</groupId>
+            <artifactId>hilla-endpoint</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
