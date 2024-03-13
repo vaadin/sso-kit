@@ -1,7 +1,7 @@
 {
   "name": "@hilla/sso-kit-client-core",
   "private": true,
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "SSO Kit Client Core",
   "main": "lib/index.js",
   "module": "index.js",
