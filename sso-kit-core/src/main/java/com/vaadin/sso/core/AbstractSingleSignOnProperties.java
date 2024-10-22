@@ -37,7 +37,10 @@ public abstract class AbstractSingleSignOnProperties {
      * client registration-id: {@code registrationId}.
      *
      * @see https://openid.net/specs/openid-connect-backchannel-1_0.html
+     * @deprecated Use built-in Spring Security support for OpenID Connect
+     *             Back-Channel Logout
      */
+    @Deprecated(since = "3.1", forRemoval = true)
     public static final String DEFAULT_BACKCHANNEL_LOGOUT_ROUTE = "/logout/back-channel/{"
             + BackChannelLogoutFilter.REGISTRATION_ID_URI_VARIABLE_NAME + "}";
 
