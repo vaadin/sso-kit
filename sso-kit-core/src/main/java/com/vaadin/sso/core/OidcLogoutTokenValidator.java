@@ -35,7 +35,10 @@ import org.springframework.util.CollectionUtils;
  * @author Vaadin Ltd
  * @since 1.0
  * @see https://openid.net/specs/openid-connect-backchannel-1_0.html#Validation
+ * @deprecated Use built-in Spring Security support for OpenID Connect
+ *             Back-Channel Logout
  */
+@Deprecated(since = "3.1", forRemoval = true)
 public final class OidcLogoutTokenValidator
         implements OAuth2TokenValidator<Jwt> {
 
