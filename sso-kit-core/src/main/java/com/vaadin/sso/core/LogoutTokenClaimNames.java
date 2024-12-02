@@ -17,7 +17,10 @@ package com.vaadin.sso.core;
  * @author Vaadin Ltd
  * @since 1.0
  * @see https://openid.net/specs/openid-connect-backchannel-1_0.html#LogoutToken
+ * @deprecated Use built-in Spring Security support for OpenID Connect
+ *             Back-Channel Logout
  */
+@Deprecated(since = "3.1", forRemoval = true)
 public interface LogoutTokenClaimNames {
 
     /**

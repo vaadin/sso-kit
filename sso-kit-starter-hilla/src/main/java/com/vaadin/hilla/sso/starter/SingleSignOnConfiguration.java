@@ -18,6 +18,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.session.SessionRegistry;
@@ -162,6 +163,8 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
             // Disable CSRF for Back-Channel logout requests
             final var matcher = backChannelLogoutFilter.getRequestMatcher();
             http.csrf().ignoringRequestMatchers(matcher);
+        } else {
+            http.oidcLogout().backChannel(Customizer.withDefaults());
         }
 
         return http.build();

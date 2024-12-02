@@ -39,7 +39,10 @@ import org.springframework.web.filter.GenericFilterBean;
  * @author Vaadin Ltd
  * @since 1.0
  * @see https://openid.net/specs/openid-connect-backchannel-1_0.html
+ * @deprecated Use built-in Spring Security support for OpenID Connect
+ *             Back-Channel Logout
  */
+@Deprecated(since = "3.1", forRemoval = true)
 public class BackChannelLogoutFilter extends GenericFilterBean {
 
     /* Value defined by the specification */
