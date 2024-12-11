@@ -1,6 +1,6 @@
 {
   "name": "@vaadin/sso-kit-client-lit",
-  "version": "3.1.0",
+  "version": "3.1.0-rc1",
   "description": "SSO Kit Client Lit",
   "main": "lib/lit/src/index.js",
   "module": "index.js",
