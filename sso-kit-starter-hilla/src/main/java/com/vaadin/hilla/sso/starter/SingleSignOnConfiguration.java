@@ -9,10 +9,12 @@
  */
 package com.vaadin.hilla.sso.starter;
 
+import com.vaadin.flow.spring.SpringSecurityAutoConfiguration;
 import com.vaadin.hilla.sso.starter.endpoint.BackChannelLogoutEndpoint;
 import com.vaadin.hilla.sso.starter.endpoint.SingleSignOnEndpoint;
 import com.vaadin.hilla.sso.starter.endpoint.UserEndpoint;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.security.oauth2.client.ClientsConfiguredCondition;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationEventPublisher;
@@ -47,6 +49,7 @@ import com.vaadin.sso.core.BackChannelLogoutFilter;
  * @since 2.0
  */
 @AutoConfiguration
+@AutoConfigureBefore(SpringSecurityAutoConfiguration.class)
 @EnableWebSecurity
 @Conditional(ClientsConfiguredCondition.class)
 @EnableConfigurationProperties(SingleSignOnProperties.class)
