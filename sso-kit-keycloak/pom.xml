@@ -10,6 +10,7 @@
 
     <artifactId>sso-kit-keycloak</artifactId>
     <packaging>pom</packaging>
+    <name>SSO Kit Keycloak</name>
 
     <modules>
         <module>sso-kit-keycloak-lumo</module>
