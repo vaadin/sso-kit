@@ -28,15 +28,15 @@
     </modules>
 
     <properties>
-        <flow.version>24.6-SNAPSHOT</flow.version>
-        <hilla.version>24.6-SNAPSHOT</hilla.version>
+        <flow.version>24.9-SNAPSHOT</flow.version>
+        <hilla.version>24.9-SNAPSHOT</hilla.version>
         <vaadin.license.checker.version>1.13.4</vaadin.license.checker.version>
 
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <spring.boot.version>3.4.5</spring.boot.version>
+        <spring.boot.version>3.5.3</spring.boot.version>
         <maven.jar.version>3.3.0</maven.jar.version>
         <maven.source.version>3.2.1</maven.source.version>
         <maven.javadoc.version>3.4.1</maven.javadoc.version>
