@@ -15,11 +15,10 @@ import com.vaadin.hilla.sso.starter.endpoint.SingleSignOnEndpoint;
 import com.vaadin.hilla.sso.starter.endpoint.UserEndpoint;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
-import org.springframework.boot.autoconfigure.security.oauth2.client.ClientsConfiguredCondition;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.security.oauth2.client.autoconfigure.ConditionalOnOAuth2ClientRegistrationProperties;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Conditional;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -51,7 +50,7 @@ import com.vaadin.sso.core.BackChannelLogoutFilter;
 @AutoConfiguration
 @AutoConfigureBefore(SpringSecurityAutoConfiguration.class)
 @EnableWebSecurity
-@Conditional(ClientsConfiguredCondition.class)
+@ConditionalOnOAuth2ClientRegistrationProperties
 @EnableConfigurationProperties(SingleSignOnProperties.class)
 public class SingleSignOnConfiguration extends VaadinWebSecurity {
 
@@ -139,23 +138,25 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
     @Bean(name = "VaadinSecurityFilterChainBean")
     @Override
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.oauth2Login()
-                // Set the default login route
-                .loginPage(properties.getLoginRoute())
-                // Set a default logout success route, as it is required,
-                // although it is not used
-                .and().logout().logoutSuccessUrl("/")
-                // Setup session management
-                .and().sessionManagement().sessionConcurrency(concurrency -> {
-                    // Sets the maximum number of concurrent sessions per user.
-                    // The default is -1 which means no limit on the number of
-                    // concurrent sessions per user.
-                    concurrency.maximumSessions(
-                            properties.getMaximumConcurrentSessions());
-                    // Sets the session-registry which is used for Back-Channel
-                    concurrency.sessionRegistry(sessionRegistry);
-                });
-
+        http.oauth2Login(login -> {
+            // Set the default login route
+            login.loginPage(properties.getLoginRoute());
+        });
+        // Set a default logout success route, as it is required,
+        // although it is not used
+        http.logout(logout -> logout.logoutSuccessUrl("/"));
+        // Setup session management
+        http.sessionManagement(sessionManagement -> {
+            sessionManagement.sessionConcurrency(concurrency -> {
+                // Sets the maximum number of concurrent sessions per user.
+                // The default is -1 which means no limit on the number of
+                // concurrent sessions per user.
+                concurrency.maximumSessions(
+                        properties.getMaximumConcurrentSessions());
+                // Sets the session-registry which is used for Back-Channel
+                concurrency.sessionRegistry(sessionRegistry);
+            });
+        });
         if (properties.isBackChannelLogout()) {
             backChannelLogoutFilter.setBackChannelLogoutRoute(
                     properties.getBackChannelLogoutRoute());
@@ -165,7 +166,7 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
 
             // Disable CSRF for Back-Channel logout requests
             final var matcher = backChannelLogoutFilter.getRequestMatcher();
-            http.csrf().ignoringRequestMatchers(matcher);
+            http.csrf(csrf -> csrf.ignoringRequestMatchers(matcher));
         } else {
             http.oidcLogout().backChannel(Customizer.withDefaults());
         }

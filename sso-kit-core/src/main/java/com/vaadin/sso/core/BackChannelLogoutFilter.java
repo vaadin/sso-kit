@@ -21,6 +21,7 @@ import java.util.Objects;
 
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.log.LogMessage;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -29,7 +30,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.jwt.JwtDecoderFactory;
 import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.security.oauth2.jwt.JwtValidationException;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.filter.GenericFilterBean;
 
@@ -58,8 +59,9 @@ public class BackChannelLogoutFilter extends GenericFilterBean {
 
     private final JwtDecoderFactory<ClientRegistration> decoderFactory;
 
-    private RequestMatcher requestMatcher = new AntPathRequestMatcher(
-            AbstractSingleSignOnProperties.DEFAULT_BACKCHANNEL_LOGOUT_ROUTE);
+    private RequestMatcher requestMatcher = PathPatternRequestMatcher
+            .withDefaults().matcher(
+                    AbstractSingleSignOnProperties.DEFAULT_BACKCHANNEL_LOGOUT_ROUTE);
 
     private final ApplicationEventPublisher eventPublisher;
 
@@ -224,7 +226,7 @@ public class BackChannelLogoutFilter extends GenericFilterBean {
      */
     public void setBackChannelLogoutRoute(String backChannelLogoutRoute) {
         Objects.requireNonNull(backChannelLogoutRoute);
-        setRequestMatcher(
-                new AntPathRequestMatcher(backChannelLogoutRoute, "POST"));
+        setRequestMatcher(PathPatternRequestMatcher.withDefaults()
+                .matcher(HttpMethod.POST, backChannelLogoutRoute));
     }
 }
