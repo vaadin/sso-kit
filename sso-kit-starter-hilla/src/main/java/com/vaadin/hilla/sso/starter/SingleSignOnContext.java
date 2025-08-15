@@ -209,7 +209,8 @@ public class SingleSignOnContext {
         if (logoutRedirectRoute.contains("{baseUrl}")) {
             logoutUri = getCurrentHttpRequest()
                     .map(request -> UriComponentsBuilder
-                            .fromHttpUrl(UrlUtils.buildFullRequestUrl(request))
+                            .fromUriString(
+                                    UrlUtils.buildFullRequestUrl(request))
                             .replacePath(request.getContextPath())
                             .replaceQuery(null).fragment(null).build()
                             .toUriString())
