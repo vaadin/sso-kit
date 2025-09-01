@@ -42,8 +42,9 @@ public class LicenseCheckerServiceInitListener
     }
 
     /**
-     * Initialises a license checking mechanism for SSO Kit using it's product name and current version.
-     */        
+     * Initialises a license checking mechanism for SSO Kit using it's product
+     * name and current version.
+     */
     public LicenseCheckerServiceInitListener() {
         super(PRODUCT_NAME, PRODUCT_VERSION);
     }
