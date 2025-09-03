@@ -42,7 +42,7 @@ public class LicenseCheckerServiceInitListener
     }
 
     /**
-     * Initialises a license checking mechanism for SSO Kit using it's product
+     * Initializes a license-checking mechanism for SSO Kit using its product
      * name and current version.
      */
     public LicenseCheckerServiceInitListener() {
