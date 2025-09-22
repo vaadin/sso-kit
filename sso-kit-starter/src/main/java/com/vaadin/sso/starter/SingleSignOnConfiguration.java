@@ -11,25 +11,29 @@ package com.vaadin.sso.starter;
 
 import java.util.Objects;
 
+import com.vaadin.flow.spring.security.VaadinAwareSecurityContextHolderStrategyConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.security.oauth2.client.autoconfigure.ConditionalOnOAuth2ClientRegistrationProperties;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
-import org.springframework.security.web.savedrequest.RequestCache;
 
 import com.vaadin.flow.spring.SpringSecurityAutoConfiguration;
 import com.vaadin.flow.spring.security.VaadinSavedRequestAwareAuthenticationSuccessHandler;
-import com.vaadin.flow.spring.security.VaadinWebSecurity;
 import com.vaadin.sso.core.BackChannelLogoutFilter;
+
+import static com.vaadin.flow.spring.security.VaadinSecurityConfigurer.vaadin;
 
 /**
  * This configuration bean is provided to auto-configure Vaadin and Spring to
@@ -53,13 +57,12 @@ import com.vaadin.sso.core.BackChannelLogoutFilter;
 @EnableWebSecurity
 @ConditionalOnOAuth2ClientRegistrationProperties
 @EnableConfigurationProperties(SingleSignOnProperties.class)
-public class SingleSignOnConfiguration extends VaadinWebSecurity {
+@Import(VaadinAwareSecurityContextHolderStrategyConfiguration.class)
+public class SingleSignOnConfiguration {
 
     private final SingleSignOnProperties properties;
 
     private final OidcClientInitiatedLogoutSuccessHandler logoutSuccessHandler;
-
-    private final VaadinSavedRequestAwareAuthenticationSuccessHandler loginSuccessHandler;
 
     private final SessionRegistry sessionRegistry;
 
@@ -83,7 +86,6 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
             ApplicationEventPublisher eventPublisher) {
         this.properties = properties;
         this.sessionRegistry = sessionRegistry;
-        this.loginSuccessHandler = new VaadinSavedRequestAwareAuthenticationSuccessHandler();
         this.logoutSuccessHandler = new OidcClientInitiatedLogoutSuccessHandler(
                 clientRegistrationRepository);
         this.logoutSuccessHandler
@@ -92,10 +94,8 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
                 sessionRegistry, clientRegistrationRepository, eventPublisher);
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        super.configure(http);
-
+    @Bean(name = "VaadinSecurityFilterChainBean")
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         final var loginRoute = Objects.requireNonNullElse(
                 properties.getLoginRoute(),
                 SingleSignOnProperties.DEFAULT_LOGIN_ROUTE);
@@ -106,31 +106,14 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
                 properties.getBackChannelLogoutRoute(),
                 SingleSignOnProperties.DEFAULT_BACKCHANNEL_LOGOUT_ROUTE);
         final var maximumSessions = properties.getMaximumConcurrentSessions();
+        logoutSuccessHandler.setPostLogoutRedirectUri(logoutRedirectRoute);
 
-        http.oauth2Login(oauth2Login -> {
-            // Sets Vaadin's login success handler that makes login redirects
-            // compatible with Hilla endpoints. This is otherwise done
-            // VaadinWebSecurity::setLoginView which is not used for OIDC.
-            var requestCache = http.getSharedObject(RequestCache.class);
-            if (requestCache != null) {
-                loginSuccessHandler.setRequestCache(requestCache);
-            }
-            oauth2Login.successHandler(loginSuccessHandler);
-
-            // Permit all requests to the login route.
-            oauth2Login.loginPage(loginRoute).permitAll();
-
-            // Sets the login route as endpoint for redirection when
-            // trying to access a protected view without authorization.
-            getNavigationAccessControl().setLoginView(loginRoute);
-        }).logout(logout -> {
-            // Configures a logout success handler that takes care of closing
-            // both the local user session and the OIDC provider remote session,
-            // redirecting the web browser to the configured logout redirect
-            // route when the process is completed.
-            logoutSuccessHandler.setPostLogoutRedirectUri(logoutRedirectRoute);
-            logout.logoutSuccessHandler(logoutSuccessHandler);
-        }).exceptionHandling(exceptionHandling -> {
+        http.with(vaadin(),
+                vaadin -> vaadin
+                        .oauth2LoginPage(loginRoute, logoutRedirectRoute)
+                        .logoutSuccessHandler(logoutSuccessHandler)
+                        .enableExceptionHandlingConfiguration(false));
+        http.exceptionHandling(exceptionHandling -> {
             // Sets the configured login route as the entry point to redirect
             // the web browser when an authentication exception is thrown.
             var entryPoint = new LoginUrlAuthenticationEntryPoint(loginRoute);
@@ -164,5 +147,6 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
         } else {
             http.oidcLogout().backChannel(Customizer.withDefaults());
         }
+        return http.build();
     }
 }

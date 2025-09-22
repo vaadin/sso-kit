@@ -10,6 +10,8 @@
 package com.vaadin.hilla.sso.starter;
 
 import com.vaadin.flow.spring.SpringSecurityAutoConfiguration;
+import com.vaadin.flow.spring.security.VaadinAwareSecurityContextHolderStrategyConfiguration;
+import com.vaadin.flow.spring.security.VaadinSecurityConfigurer;
 import com.vaadin.hilla.sso.starter.endpoint.BackChannelLogoutEndpoint;
 import com.vaadin.hilla.sso.starter.endpoint.SingleSignOnEndpoint;
 import com.vaadin.hilla.sso.starter.endpoint.UserEndpoint;
@@ -19,6 +21,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.security.oauth2.client.autoconfigure.ConditionalOnOAuth2ClientRegistrationProperties;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,6 +32,10 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 import com.vaadin.flow.spring.security.VaadinWebSecurity;
 import com.vaadin.sso.core.BackChannelLogoutFilter;
+
+import java.util.Objects;
+
+import static com.vaadin.flow.spring.security.VaadinSecurityConfigurer.vaadin;
 
 /**
  * This configuration bean is provided to auto-configure Hilla and Spring to
@@ -52,7 +59,8 @@ import com.vaadin.sso.core.BackChannelLogoutFilter;
 @EnableWebSecurity
 @ConditionalOnOAuth2ClientRegistrationProperties
 @EnableConfigurationProperties(SingleSignOnProperties.class)
-public class SingleSignOnConfiguration extends VaadinWebSecurity {
+@Import(VaadinAwareSecurityContextHolderStrategyConfiguration.class)
+public class SingleSignOnConfiguration {
 
     private final SingleSignOnProperties properties;
 
@@ -136,15 +144,16 @@ public class SingleSignOnConfiguration extends VaadinWebSecurity {
     }
 
     @Bean(name = "VaadinSecurityFilterChainBean")
-    @Override
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.oauth2Login(login -> {
-            // Set the default login route
-            login.loginPage(properties.getLoginRoute());
-        });
-        // Set a default logout success route, as it is required,
-        // although it is not used
-        http.logout(logout -> logout.logoutSuccessUrl("/"));
+        final var loginRoute = Objects.requireNonNullElse(
+                properties.getLoginRoute(),
+                SingleSignOnProperties.DEFAULT_LOGIN_ROUTE);
+        final var logoutRedirectRoute = Objects.requireNonNullElse(
+                properties.getLogoutRedirectRoute(),
+                SingleSignOnProperties.DEFAULT_LOGOUT_REDIRECT_ROUTE);
+
+        http.with(vaadin(), vaadin -> vaadin.oauth2LoginPage(loginRoute,
+                logoutRedirectRoute));
         // Setup session management
         http.sessionManagement(sessionManagement -> {
             sessionManagement.sessionConcurrency(concurrency -> {
