@@ -41,9 +41,11 @@ public class ProfileView extends VerticalLayout {
             emailField.setReadOnly(true);
 
             avatar.setName(fullName);
-            avatar.setImage(picture);
             nameField.setValue(fullName);
             emailField.setValue(email);
+            if (picture != null) {
+                avatar.setImage(picture);
+            }
 
             add(avatar, nameField, emailField);
         });

@@ -10,13 +10,17 @@ import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Header;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.sidenav.SideNav;
+import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.router.PageTitle;
-import com.vaadin.sso.demo.components.nav.Nav;
-import com.vaadin.sso.demo.components.nav.NavItem;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
+import jakarta.annotation.security.PermitAll;
 
 /**
  * The main layout used by other application views.
  */
+@AnonymousAllowed
 public class MainLayout extends AppLayout {
 
     private final H2 viewTitle = new H2();
@@ -49,12 +53,14 @@ public class MainLayout extends AppLayout {
         return section;
     }
 
-    private Nav createNavigation() {
-        Nav nav = new Nav();
+    private SideNav createNavigation() {
+        SideNav nav = new SideNav();
         nav.addClassNames("app-nav");
 
-        nav.addItem(new NavItem("Home", HomeView.class, "la la-home"));
-        nav.addItem(new NavItem("Profile", ProfileView.class, "la la-user"));
+        nav.addItem(new SideNavItem("Home", HomeView.class,
+                VaadinIcon.HOME.create()));
+        nav.addItem(new SideNavItem("Profile", ProfileView.class,
+                VaadinIcon.USER.create()));
 
         return nav;
     }
