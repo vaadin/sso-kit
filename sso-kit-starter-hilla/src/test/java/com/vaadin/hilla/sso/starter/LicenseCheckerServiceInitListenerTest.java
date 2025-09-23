@@ -9,11 +9,10 @@
  */
 package com.vaadin.hilla.sso.starter;
 
-import com.vaadin.flow.server.ServiceInitEvent;
-import com.vaadin.flow.server.VaadinService;
-import com.vaadin.pro.licensechecker.BuildType;
-import com.vaadin.pro.licensechecker.Capability;
-import com.vaadin.pro.licensechecker.LicenseChecker;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,9 +24,11 @@ import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
+import com.vaadin.flow.server.ServiceInitEvent;
+import com.vaadin.flow.server.VaadinService;
+import com.vaadin.pro.licensechecker.BuildType;
+import com.vaadin.pro.licensechecker.Capability;
+import com.vaadin.pro.licensechecker.LicenseChecker;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.text.MatchesPattern.matchesPattern;
