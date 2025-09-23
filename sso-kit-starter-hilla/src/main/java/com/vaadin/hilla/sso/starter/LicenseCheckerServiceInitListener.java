@@ -9,10 +9,10 @@
  */
 package com.vaadin.hilla.sso.starter;
 
-import com.vaadin.flow.server.startup.BaseLicenseCheckerServiceInitListener;
-
 import java.io.IOException;
 import java.util.Properties;
+
+import com.vaadin.flow.server.startup.BaseLicenseCheckerServiceInitListener;
 
 /**
  * Service initialization listener to verify the license.
@@ -48,5 +48,4 @@ public class LicenseCheckerServiceInitListener
     public LicenseCheckerServiceInitListener() {
         super(PRODUCT_NAME, PRODUCT_VERSION);
     }
-
 }
