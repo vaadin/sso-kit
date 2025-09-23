@@ -96,7 +96,7 @@ public class BackChannelLogoutFilterTest {
                 clientRegistrationRepository, eventPublisher,
                 this::createJwtDecoder);
 
-        when(request.getServletPath()).thenReturn("/");
+        when(request.getHttpServletMapping()).thenCallRealMethod();
         when(clientRegistrationRepository.findByRegistrationId("test"))
                 .thenReturn(clientRegistration);
         when(clientRegistrationRepository.findByRegistrationId(not(eq("test"))))
@@ -111,7 +111,7 @@ public class BackChannelLogoutFilterTest {
     @Test
     public void nonMatchingRequest_doesNotPerformLogout()
             throws IOException, ServletException {
-        when(request.getPathInfo()).thenReturn("/foo");
+        when(request.getRequestURI()).thenReturn("/foo");
 
         filter.doFilter(request, response, chain);
 
@@ -121,7 +121,7 @@ public class BackChannelLogoutFilterTest {
     @Test
     public void invalidRegistrationId_badRequest()
             throws IOException, ServletException {
-        when(request.getPathInfo()).thenReturn("/logout/back-channel/foo");
+        when(request.getRequestURI()).thenReturn("/logout/back-channel/foo");
 
         filter.doFilter(request, response, chain);
 
@@ -131,7 +131,7 @@ public class BackChannelLogoutFilterTest {
     @Test
     public void missingTokenParameter_badRequest()
             throws IOException, ServletException {
-        when(request.getPathInfo()).thenReturn("/logout/back-channel/test");
+        when(request.getRequestURI()).thenReturn("/logout/back-channel/test");
 
         filter.doFilter(request, response, chain);
 
@@ -141,7 +141,7 @@ public class BackChannelLogoutFilterTest {
     @Test
     public void withSidClaim_onlyMatchingSessionsSetToExpire()
             throws IOException, ServletException {
-        when(request.getPathInfo()).thenReturn("/logout/back-channel/test");
+        when(request.getRequestURI()).thenReturn("/logout/back-channel/test");
         when(request.getParameter(BackChannelLogoutFilter.TOKEN_PARAM_NAME))
                 .thenReturn("token");
 
@@ -175,7 +175,7 @@ public class BackChannelLogoutFilterTest {
     @Test
     public void withSubClaim_onlyMatchingSessionsSetToExpire()
             throws IOException, ServletException {
-        when(request.getPathInfo()).thenReturn("/logout/back-channel/test");
+        when(request.getRequestURI()).thenReturn("/logout/back-channel/test");
         when(request.getParameter(BackChannelLogoutFilter.TOKEN_PARAM_NAME))
                 .thenReturn("token");
 
