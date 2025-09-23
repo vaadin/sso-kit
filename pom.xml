@@ -30,7 +30,7 @@
     <properties>
         <flow.version>24.9-SNAPSHOT</flow.version>
         <hilla.version>24.9-SNAPSHOT</hilla.version>
-        <vaadin.license.checker.version>2.0.0-beta2</vaadin.license.checker.version>
+        <vaadin.license.checker.version>2.0.0</vaadin.license.checker.version>
 
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
