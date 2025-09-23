@@ -10,14 +10,9 @@
 package com.vaadin.hilla.sso.starter;
 
 import java.io.IOException;
+import java.util.Properties;
 
-import com.vaadin.flow.internal.UsageStatistics;
-import com.vaadin.flow.server.ServiceInitEvent;
-import com.vaadin.flow.server.VaadinServiceInitListener;
-import com.vaadin.pro.licensechecker.BuildType;
-import com.vaadin.pro.licensechecker.LicenseChecker;
-
-import static org.springframework.core.io.support.PropertiesLoaderUtils.loadAllProperties;
+import com.vaadin.flow.server.startup.BaseLicenseCheckerServiceInitListener;
 
 /**
  * Service initialization listener to verify the license.
@@ -25,7 +20,7 @@ import static org.springframework.core.io.support.PropertiesLoaderUtils.loadAllP
  * @author Vaadin Ltd
  */
 public class LicenseCheckerServiceInitListener
-        implements VaadinServiceInitListener {
+        extends BaseLicenseCheckerServiceInitListener {
 
     static final String PROPERTIES_RESOURCE = "sso-kit.properties";
 
@@ -33,25 +28,24 @@ public class LicenseCheckerServiceInitListener
 
     static final String PRODUCT_NAME = "hilla-sso-kit";
 
-    @Override
-    public void serviceInit(ServiceInitEvent event) {
-        final var service = event.getSource();
+    static final String PRODUCT_VERSION;
 
+    static {
+        final Properties properties = new Properties();
         try {
-            final var properties = loadAllProperties(PROPERTIES_RESOURCE);
-            final var version = properties.getProperty(VERSION_PROPERTY);
-
-            UsageStatistics.markAsUsed(PRODUCT_NAME, version);
-
-            // Check the license at runtime if in development mode
-            if (!service.getDeploymentConfiguration().isProductionMode()) {
-                // Using a null BuildType to allow trial licensing builds
-                // The variable is defined to avoid method signature ambiguity
-                BuildType buildType = null;
-                LicenseChecker.checkLicense(PRODUCT_NAME, version, buildType);
-            }
+            properties.load(LicenseCheckerServiceInitListener.class
+                    .getClassLoader().getResourceAsStream(PROPERTIES_RESOURCE));
+            PRODUCT_VERSION = properties.getProperty(VERSION_PROPERTY);
         } catch (IOException e) {
             throw new ExceptionInInitializerError(e);
         }
+    }
+
+    /**
+     * Initialises a license checking mechanism for SSO Kit using it's product
+     * name and current version.
+     */
+    public LicenseCheckerServiceInitListener() {
+        super(PRODUCT_NAME, PRODUCT_VERSION);
     }
 }
