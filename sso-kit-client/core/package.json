@@ -1,7 +1,7 @@
 {
   "name": "@vaadin/sso-kit-client-core",
   "private": true,
-  "version": "3.2.0-rc1",
+  "version": "3.2.1",
   "description": "SSO Kit Client Core",
   "main": "lib/index.js",
   "module": "index.js",
