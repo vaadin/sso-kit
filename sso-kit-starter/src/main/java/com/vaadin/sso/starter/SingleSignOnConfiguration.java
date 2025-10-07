@@ -30,7 +30,6 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 import com.vaadin.flow.spring.SpringSecurityAutoConfiguration;
-import com.vaadin.flow.spring.security.VaadinSavedRequestAwareAuthenticationSuccessHandler;
 import com.vaadin.sso.core.BackChannelLogoutFilter;
 
 import static com.vaadin.flow.spring.security.VaadinSecurityConfigurer.vaadin;
