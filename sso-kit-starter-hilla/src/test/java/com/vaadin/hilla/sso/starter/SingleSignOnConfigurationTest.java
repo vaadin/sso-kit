@@ -97,7 +97,7 @@ public class SingleSignOnConfigurationTest {
         contextRunner.withPropertyValues("hilla.sso.back-channel-logout=true")
                 .run(ctx -> {
                     var filterChain = (SecurityFilterChain) ctx
-                            .getBean("VaadinSecurityFilterChainBean");
+                            .getBean("vaadinSecurityFilterChain");
                     assertTrue(filterChain.getFilters().stream().anyMatch(
                             filter -> filter instanceof BackChannelLogoutFilter));
                 });
@@ -108,7 +108,7 @@ public class SingleSignOnConfigurationTest {
         contextRunner.withPropertyValues("hilla.sso.back-channel-logout=false")
                 .run(ctx -> {
                     var filterChain = (SecurityFilterChain) ctx
-                            .getBean("VaadinSecurityFilterChainBean");
+                            .getBean("vaadinSecurityFilterChain");
                     assertTrue(filterChain.getFilters().stream().noneMatch(
                             filter -> filter instanceof BackChannelLogoutFilter));
                 });

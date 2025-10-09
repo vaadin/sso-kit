@@ -94,7 +94,8 @@ public class SingleSignOnConfiguration {
     }
 
     @Bean
-    public SecurityFilterChain vaadinSecurityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain vaadinSecurityFilterChain(HttpSecurity http)
+            throws Exception {
         final var loginRoute = Objects.requireNonNullElse(
                 properties.getLoginRoute(),
                 SingleSignOnProperties.DEFAULT_LOGIN_ROUTE);
