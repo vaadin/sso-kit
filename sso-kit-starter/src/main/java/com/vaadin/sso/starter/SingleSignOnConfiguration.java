@@ -93,8 +93,8 @@ public class SingleSignOnConfiguration {
                 sessionRegistry, clientRegistrationRepository, eventPublisher);
     }
 
-    @Bean(name = "VaadinSecurityFilterChainBean")
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain vaadinSecurityFilterChain(HttpSecurity http) throws Exception {
         final var loginRoute = Objects.requireNonNullElse(
                 properties.getLoginRoute(),
                 SingleSignOnProperties.DEFAULT_LOGIN_ROUTE);
