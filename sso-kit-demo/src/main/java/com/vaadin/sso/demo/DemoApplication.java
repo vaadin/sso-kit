@@ -13,7 +13,6 @@ import com.vaadin.flow.theme.Theme;
  */
 @Theme("sso-kit-demo")
 @NpmPackage(value = "line-awesome", version = "1.3.0")
-@NpmPackage(value = "@vaadin-component-factory/vcf-nav", version = "1.1.3")
 @SpringBootApplication
 public class DemoApplication extends SpringBootServletInitializer
         implements AppShellConfigurator {
