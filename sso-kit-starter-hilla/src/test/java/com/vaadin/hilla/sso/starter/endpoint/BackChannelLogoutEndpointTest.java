@@ -18,10 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class BackChannelLogoutEndpointTest {
+class BackChannelLogoutEndpointTest {
 
     @Test
-    public void subscribe_returnsTheExpectedFluxMessage() {
+    void subscribe_returnsTheExpectedFluxMessage() {
         var singleSignOnContext = mock(SingleSignOnContext.class);
         var message = new BackChannelLogoutSubscription.Message(
                 "User logged out");

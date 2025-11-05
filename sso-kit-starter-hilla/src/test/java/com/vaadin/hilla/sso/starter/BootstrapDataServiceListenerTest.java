@@ -9,6 +9,7 @@
  */
 package com.vaadin.hilla.sso.starter;
 
+import com.vaadin.flow.server.ServiceInitEvent;
 import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +31,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class BootstrapDataServiceListenerTest {
+class BootstrapDataServiceListenerTest {
 
     private BootstrapDataServiceListener bootstrapDataServiceListener;
 
@@ -47,9 +48,8 @@ public class BootstrapDataServiceListenerTest {
     }
 
     @Test
-    public void serviceInit_indexHtmlRequestListenerIsAdded() {
-        var serviceInitEvent = mock(
-                com.vaadin.flow.server.ServiceInitEvent.class);
+    void serviceInit_indexHtmlRequestListenerIsAdded() {
+        var serviceInitEvent = mock(ServiceInitEvent.class);
 
         bootstrapDataServiceListener.serviceInit(serviceInitEvent);
 
@@ -57,9 +57,8 @@ public class BootstrapDataServiceListenerTest {
     }
 
     @Test
-    public void serviceInit_scriptAddedToIndexHtmlResponse_withExpectedData() {
-        var serviceInitEvent = mock(
-                com.vaadin.flow.server.ServiceInitEvent.class);
+    void serviceInit_scriptAddedToIndexHtmlResponse_withExpectedData() {
+        var serviceInitEvent = mock(ServiceInitEvent.class);
         var vaadinRequest = mock(VaadinRequest.class);
         var vaadinResponse = mock(VaadinResponse.class);
         var document = new Document("baseUri");
@@ -86,9 +85,8 @@ public class BootstrapDataServiceListenerTest {
     }
 
     @Test
-    public void serviceInit_scriptAddedToIndexHtmlResponse_withNullData() {
-        var serviceInitEvent = mock(
-                com.vaadin.flow.server.ServiceInitEvent.class);
+    void serviceInit_scriptAddedToIndexHtmlResponse_withNullData() {
+        var serviceInitEvent = mock(ServiceInitEvent.class);
         var vaadinRequest = mock(VaadinRequest.class);
         var vaadinResponse = mock(VaadinResponse.class);
         var document = new Document("baseUri");

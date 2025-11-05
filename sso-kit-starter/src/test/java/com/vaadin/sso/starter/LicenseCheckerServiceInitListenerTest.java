@@ -32,6 +32,7 @@ import com.vaadin.pro.licensechecker.LicenseChecker;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.text.MatchesPattern.matchesPattern;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
@@ -47,17 +48,17 @@ class LicenseCheckerServiceInitListenerTest {
     private MockedStatic<LicenseChecker> licenseChecker;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         licenseChecker = mockStatic(LicenseChecker.class);
     }
 
     @AfterEach
-    public void cleanup() {
+    void cleanup() {
         licenseChecker.close();
     }
 
     @Test
-    public void developmentMode_licenseIsCheckedRuntime() {
+    void developmentMode_licenseIsCheckedRuntime() {
         when(service.getDeploymentConfiguration().isProductionMode())
                 .thenReturn(false);
 
@@ -78,7 +79,7 @@ class LicenseCheckerServiceInitListenerTest {
     }
 
     @Test
-    public void productionMode_licenseIsNotCheckedRuntime() {
+    void productionMode_licenseIsNotCheckedRuntime() {
         when(service.getDeploymentConfiguration().isProductionMode())
                 .thenReturn(true);
 
@@ -89,7 +90,7 @@ class LicenseCheckerServiceInitListenerTest {
     }
 
     @Test
-    public void staticInitializer_throwsException_whenPropertiesMissing() {
+    void staticInitializer_throwsException_whenPropertiesMissing() {
         // Create a class loader that hides the sso-kit.properties resource
         ClassLoader parent = LicenseCheckerServiceInitListenerTest.class
                 .getClassLoader();
@@ -100,7 +101,7 @@ class LicenseCheckerServiceInitListenerTest {
         // custom loader
         byte[] classBytes;
         try (InputStream in = parent.getResourceAsStream(targetClassPath)) {
-            Assertions.assertNotNull(in,
+            assertNotNull(in,
                     "Test setup failure: could not find class bytes for "
                             + targetClassPath);
             classBytes = in.readAllBytes();

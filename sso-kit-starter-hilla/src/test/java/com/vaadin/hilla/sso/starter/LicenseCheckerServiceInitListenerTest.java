@@ -47,17 +47,17 @@ class LicenseCheckerServiceInitListenerTest {
     private MockedStatic<LicenseChecker> licenseChecker;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         licenseChecker = mockStatic(LicenseChecker.class);
     }
 
     @AfterEach
-    public void cleanup() {
+    void cleanup() {
         licenseChecker.close();
     }
 
     @Test
-    public void developmentMode_licenseIsCheckedRuntime() {
+    void developmentMode_licenseIsCheckedRuntime() {
         when(service.getDeploymentConfiguration().isProductionMode())
                 .thenReturn(false);
 
@@ -78,7 +78,7 @@ class LicenseCheckerServiceInitListenerTest {
     }
 
     @Test
-    public void productionMode_licenseIsNotCheckedRuntime() {
+    void productionMode_licenseIsNotCheckedRuntime() {
         when(service.getDeploymentConfiguration().isProductionMode())
                 .thenReturn(true);
 
@@ -89,7 +89,7 @@ class LicenseCheckerServiceInitListenerTest {
     }
 
     @Test
-    public void staticInitializer_throwsException_whenPropertiesMissing() {
+    void staticInitializer_throwsException_whenPropertiesMissing() {
         // Create a class loader that hides the sso-kit.properties resource
         ClassLoader parent = LicenseCheckerServiceInitListenerTest.class
                 .getClassLoader();

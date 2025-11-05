@@ -26,10 +26,10 @@ import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mockStatic;
 
-public class UserEndpointTest {
+class UserEndpointTest {
 
     @Test
-    public void getAuthenticatedUser_returnsTheExpectedUser() {
+    void getAuthenticatedUser_returnsTheExpectedUser() {
         try (MockedStatic<SingleSignOnContext> singleSignOnContextMockedStatic = mockStatic(
                 SingleSignOnContext.class)) {
             var userEndpoint = new UserEndpoint();

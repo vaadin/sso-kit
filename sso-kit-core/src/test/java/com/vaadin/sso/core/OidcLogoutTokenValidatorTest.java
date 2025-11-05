@@ -23,7 +23,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class OidcLogoutTokenValidatorTest {
+class OidcLogoutTokenValidatorTest {
 
     private static final String CLIENT_ID = "test-client";
 
@@ -36,7 +36,7 @@ public class OidcLogoutTokenValidatorTest {
     private OidcLogoutTokenValidator validator;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         // @formatter:off
         clientRegistration = ClientRegistration
                 .withRegistrationId("test")
@@ -51,7 +51,7 @@ public class OidcLogoutTokenValidatorTest {
     }
 
     @Test
-    public void validToken_validationSuccedes() {
+    void validToken_validationSuccedes() {
         final var token = createValidLogoutToken().build();
         final var result = validator.validate(token);
 
@@ -59,7 +59,7 @@ public class OidcLogoutTokenValidatorTest {
     }
 
     @Test
-    public void invalidAlgorithm_validationFails() {
+    void invalidAlgorithm_validationFails() {
         // @formatter:off
         final var token = createValidLogoutToken()
                 .header("alg", "none")
@@ -71,7 +71,7 @@ public class OidcLogoutTokenValidatorTest {
     }
 
     @Test
-    public void invalidIssuer_validationFails() {
+    void invalidIssuer_validationFails() {
         // @formatter:off
         final var token = createValidLogoutToken()
                 .issuer("http://invalid")
@@ -83,7 +83,7 @@ public class OidcLogoutTokenValidatorTest {
     }
 
     @Test
-    public void invalidIssuedAt_validationFails() {
+    void invalidIssuedAt_validationFails() {
         final var inTheFuture = Instant.now().plusSeconds(61);
         // @formatter:off
         final var token = createValidLogoutToken()
@@ -96,7 +96,7 @@ public class OidcLogoutTokenValidatorTest {
     }
 
     @Test
-    public void missingSubjectAndSession_validationFails() {
+    void missingSubjectAndSession_validationFails() {
         // @formatter:off
         final var token = createValidLogoutToken()
                 .subject(null)
@@ -109,7 +109,7 @@ public class OidcLogoutTokenValidatorTest {
     }
 
     @Test
-    public void missingBackChannelEvent_validationFails() {
+    void missingBackChannelEvent_validationFails() {
         // @formatter:off
         final var token = createValidLogoutToken()
                 .claim(LogoutTokenClaimNames.EVENTS, Map.of())
@@ -121,7 +121,7 @@ public class OidcLogoutTokenValidatorTest {
     }
 
     @Test
-    public void nonceClaimPresent_validationFails() {
+    void nonceClaimPresent_validationFails() {
         // @formatter:off
         final var token = createValidLogoutToken()
                 .claim(IdTokenClaimNames.NONCE, "nonce")

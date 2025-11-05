@@ -46,7 +46,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class SingleSignOnContextTest {
+class SingleSignOnContextTest {
 
     @Mock
     private ClientRegistrationRepository defaultClientRegistrationRepository;
@@ -58,7 +58,7 @@ public class SingleSignOnContextTest {
     private BackChannelLogoutSubscription defaultBackChannelLogoutSubscription;
 
     @Test
-    public void getOidcUser_returnsUser() {
+    void getOidcUser_returnsUser() {
         var securityContext = mock(SecurityContext.class);
         var authentication = mock(Authentication.class);
         var oidcUser = mock(OidcUser.class);
@@ -73,7 +73,7 @@ public class SingleSignOnContextTest {
     }
 
     @Test
-    public void getCurrentHttpRequest_returnsHttpServletRequest() {
+    void getCurrentHttpRequest_returnsHttpServletRequest() {
         var attributes = mock(ServletRequestAttributes.class);
         var request = mock(HttpServletRequest.class);
 
@@ -86,7 +86,7 @@ public class SingleSignOnContextTest {
     }
 
     @Test
-    public void getRegisteredProviders_returnsAListOfRegisteredProviders() {
+    void getRegisteredProviders_returnsAListOfRegisteredProviders() {
         var names = List.of("google", "facebook");
         var repository = mock(InMemoryClientRegistrationRepository.class);
 
@@ -107,7 +107,7 @@ public class SingleSignOnContextTest {
     }
 
     @Test
-    public void getSingleSignOnData_returnsPopulatedData() {
+    void getSingleSignOnData_returnsPopulatedData() {
         var properties = mock(SingleSignOnProperties.class);
         var securityContext = mock(SecurityContext.class);
         var authenticationToken = mock(OAuth2AuthenticationToken.class);
@@ -156,11 +156,11 @@ public class SingleSignOnContextTest {
                 "https://vaadin.com/oauth2/logout?id_token_hint=tokenValue&post_logout_redirect_uri=logout"),
                 List.of(result.get(0).getLogoutLink(),
                         result.get(1).getLogoutLink()));
-        assertEquals("USER", result.get(0).getRoles().get(0));
+        assertEquals("USER", result.get(0).getRoles().getFirst());
     }
 
     @Test
-    public void isBackChannelLogoutEnabled_returnsTheCorrectValue() {
+    void isBackChannelLogoutEnabled_returnsTheCorrectValue() {
         var properties = mock(SingleSignOnProperties.class);
 
         when(properties.isBackChannelLogout()).thenReturn(true, false);
@@ -176,7 +176,7 @@ public class SingleSignOnContextTest {
     }
 
     @Test
-    public void getBackChannelLogoutFlux_returnsFluxMessage() {
+    void getBackChannelLogoutFlux_returnsFluxMessage() {
         var securityContext = mock(SecurityContext.class);
         var authentication = mock(Authentication.class);
         var subscription = mock(BackChannelLogoutSubscription.class);
