@@ -1,11 +1,9 @@
-/*-
- * Copyright (C) 2022 Vaadin Ltd
+/*
+ * Copyright 2000-2025 Vaadin Ltd.
  *
  * This program is available under Vaadin Commercial License and Service Terms.
  *
- *
- * See <https://vaadin.com/commercial-license-and-service-terms> for the full
- * license.
+ * See <https://vaadin.com/commercial-license-and-service-terms> for the full license.
  */
 package com.vaadin.sso.core;
 
@@ -47,7 +45,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class BackChannelLogoutFilterTest {
+class BackChannelLogoutFilterTest {
 
     private static final String CLIENT_ID = "test-client";
 
@@ -80,7 +78,7 @@ public class BackChannelLogoutFilterTest {
     private BackChannelLogoutFilter filter;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         // @formatter:off
         clientRegistration = ClientRegistration
                 .withRegistrationId("test")
@@ -104,12 +102,12 @@ public class BackChannelLogoutFilterTest {
     }
 
     @AfterEach
-    public void cleanup() {
+    void cleanup() {
         logoutTokenClaims.clear();
     }
 
     @Test
-    public void nonMatchingRequest_doesNotPerformLogout()
+    void nonMatchingRequest_doesNotPerformLogout()
             throws IOException, ServletException {
         when(request.getRequestURI()).thenReturn("/foo");
 
@@ -119,7 +117,7 @@ public class BackChannelLogoutFilterTest {
     }
 
     @Test
-    public void invalidRegistrationId_badRequest()
+    void invalidRegistrationId_badRequest()
             throws IOException, ServletException {
         when(request.getRequestURI()).thenReturn("/logout/back-channel/foo");
 
@@ -129,7 +127,7 @@ public class BackChannelLogoutFilterTest {
     }
 
     @Test
-    public void missingTokenParameter_badRequest()
+    void missingTokenParameter_badRequest()
             throws IOException, ServletException {
         when(request.getRequestURI()).thenReturn("/logout/back-channel/test");
 
@@ -139,7 +137,7 @@ public class BackChannelLogoutFilterTest {
     }
 
     @Test
-    public void withSidClaim_onlyMatchingSessionsSetToExpire()
+    void withSidClaim_onlyMatchingSessionsSetToExpire()
             throws IOException, ServletException {
         when(request.getRequestURI()).thenReturn("/logout/back-channel/test");
         when(request.getParameter(BackChannelLogoutFilter.TOKEN_PARAM_NAME))
@@ -173,7 +171,7 @@ public class BackChannelLogoutFilterTest {
     }
 
     @Test
-    public void withSubClaim_onlyMatchingSessionsSetToExpire()
+    void withSubClaim_onlyMatchingSessionsSetToExpire()
             throws IOException, ServletException {
         when(request.getRequestURI()).thenReturn("/logout/back-channel/test");
         when(request.getParameter(BackChannelLogoutFilter.TOKEN_PARAM_NAME))

@@ -1,11 +1,9 @@
-/*-
- * Copyright (C) 2024 Vaadin Ltd
+/*
+ * Copyright 2000-2025 Vaadin Ltd.
  *
  * This program is available under Vaadin Commercial License and Service Terms.
  *
- *
- * See <https://vaadin.com/commercial-license-and-service-terms> for the full
- * license.
+ * See <https://vaadin.com/commercial-license-and-service-terms> for the full license.
  */
 package com.vaadin.hilla.sso.starter;
 
@@ -17,9 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.vaadin.sso.core.UserLogoutEvent;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
@@ -27,10 +23,10 @@ import static org.mockito.Mockito.verify;
  * Test suite for {@link BackChannelLogoutSubscription}.
  */
 @ExtendWith(MockitoExtension.class)
-public class BackChannelLogoutSubscriptionTest {
+class BackChannelLogoutSubscriptionTest {
 
     @Test
-    public void onApplicationEvent_broadcastsEvent() {
+    void onApplicationEvent_broadcastsEvent() {
         var backChannelLogoutSubscription = spy(
                 new BackChannelLogoutSubscription());
         var backChannelLogoutEvent = new UserLogoutEvent("foo");
@@ -40,7 +36,7 @@ public class BackChannelLogoutSubscriptionTest {
     }
 
     @Test
-    public void getFluxForUser_returnsMessageFlux() {
+    void getFluxForUser_returnsMessageFlux() {
         var backChannelLogoutSubscription = new BackChannelLogoutSubscription();
         var flux = backChannelLogoutSubscription.getFluxForUser("foo");
         assertNotNull(flux);
@@ -52,9 +48,9 @@ public class BackChannelLogoutSubscriptionTest {
         backChannelLogoutSubscription.broadcast("foo");
         backChannelLogoutSubscription.broadcast("bar");
         assertEquals(2, received.size());
-        assertTrue(received
-                .get(0) instanceof BackChannelLogoutSubscription.Message);
-        assertTrue(received
-                .get(1) instanceof BackChannelLogoutSubscription.Message);
+        assertInstanceOf(BackChannelLogoutSubscription.Message.class,
+                received.get(0));
+        assertInstanceOf(BackChannelLogoutSubscription.Message.class,
+                received.get(1));
     }
 }

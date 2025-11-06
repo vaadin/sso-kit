@@ -1,11 +1,9 @@
-/*-
- * Copyright (C) 2024 Vaadin Ltd
+/*
+ * Copyright 2000-2025 Vaadin Ltd.
  *
  * This program is available under Vaadin Commercial License and Service Terms.
  *
- *
- * See <https://vaadin.com/commercial-license-and-service-terms> for the full
- * license.
+ * See <https://vaadin.com/commercial-license-and-service-terms> for the full license.
  */
 package com.vaadin.hilla.sso.starter.endpoint;
 
@@ -19,10 +17,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class SingleSignOnEndpointTest {
+class SingleSignOnEndpointTest {
 
     @Test
-    public void fetchAll_returnsTheExpectedSingleSignOnData() {
+    void fetchAll_returnsTheExpectedSingleSignOnData() {
         var expectedSingleSignOnData = new SingleSignOnData();
         var singleSignOnContext = mock(SingleSignOnContext.class);
 
@@ -37,7 +35,7 @@ public class SingleSignOnEndpointTest {
     }
 
     @Test
-    public void getRegisteredProviders_returnsTheExpectedProviders() {
+    void getRegisteredProviders_returnsTheExpectedProviders() {
         var expectedProviders = List.of("provider1", "provider2");
         var singleSignOnContext = mock(SingleSignOnContext.class);
 

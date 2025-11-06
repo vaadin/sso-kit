@@ -1,11 +1,9 @@
-/*-
- * Copyright (C) 2022 Vaadin Ltd
+/*
+ * Copyright 2000-2025 Vaadin Ltd.
  *
  * This program is available under Vaadin Commercial License and Service Terms.
  *
- *
- * See <https://vaadin.com/commercial-license-and-service-terms> for the full
- * license.
+ * See <https://vaadin.com/commercial-license-and-service-terms> for the full license.
  */
 package com.vaadin.sso.starter;
 
@@ -32,6 +30,7 @@ import com.vaadin.pro.licensechecker.LicenseChecker;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.text.MatchesPattern.matchesPattern;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
@@ -47,17 +46,17 @@ class LicenseCheckerServiceInitListenerTest {
     private MockedStatic<LicenseChecker> licenseChecker;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         licenseChecker = mockStatic(LicenseChecker.class);
     }
 
     @AfterEach
-    public void cleanup() {
+    void cleanup() {
         licenseChecker.close();
     }
 
     @Test
-    public void developmentMode_licenseIsCheckedRuntime() {
+    void developmentMode_licenseIsCheckedRuntime() {
         when(service.getDeploymentConfiguration().isProductionMode())
                 .thenReturn(false);
 
@@ -78,7 +77,7 @@ class LicenseCheckerServiceInitListenerTest {
     }
 
     @Test
-    public void productionMode_licenseIsNotCheckedRuntime() {
+    void productionMode_licenseIsNotCheckedRuntime() {
         when(service.getDeploymentConfiguration().isProductionMode())
                 .thenReturn(true);
 
@@ -89,7 +88,7 @@ class LicenseCheckerServiceInitListenerTest {
     }
 
     @Test
-    public void staticInitializer_throwsException_whenPropertiesMissing() {
+    void staticInitializer_throwsException_whenPropertiesMissing() {
         // Create a class loader that hides the sso-kit.properties resource
         ClassLoader parent = LicenseCheckerServiceInitListenerTest.class
                 .getClassLoader();
@@ -100,7 +99,7 @@ class LicenseCheckerServiceInitListenerTest {
         // custom loader
         byte[] classBytes;
         try (InputStream in = parent.getResourceAsStream(targetClassPath)) {
-            Assertions.assertNotNull(in,
+            assertNotNull(in,
                     "Test setup failure: could not find class bytes for "
                             + targetClassPath);
             classBytes = in.readAllBytes();

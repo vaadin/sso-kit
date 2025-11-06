@@ -1,11 +1,9 @@
-/*-
- * Copyright (C) 2024 Vaadin Ltd
+/*
+ * Copyright 2000-2025 Vaadin Ltd.
  *
  * This program is available under Vaadin Commercial License and Service Terms.
  *
- *
- * See <https://vaadin.com/commercial-license-and-service-terms> for the full
- * license.
+ * See <https://vaadin.com/commercial-license-and-service-terms> for the full license.
  */
 package com.vaadin.hilla.sso.starter;
 
@@ -47,17 +45,17 @@ class LicenseCheckerServiceInitListenerTest {
     private MockedStatic<LicenseChecker> licenseChecker;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         licenseChecker = mockStatic(LicenseChecker.class);
     }
 
     @AfterEach
-    public void cleanup() {
+    void cleanup() {
         licenseChecker.close();
     }
 
     @Test
-    public void developmentMode_licenseIsCheckedRuntime() {
+    void developmentMode_licenseIsCheckedRuntime() {
         when(service.getDeploymentConfiguration().isProductionMode())
                 .thenReturn(false);
 
@@ -78,7 +76,7 @@ class LicenseCheckerServiceInitListenerTest {
     }
 
     @Test
-    public void productionMode_licenseIsNotCheckedRuntime() {
+    void productionMode_licenseIsNotCheckedRuntime() {
         when(service.getDeploymentConfiguration().isProductionMode())
                 .thenReturn(true);
 
@@ -89,7 +87,7 @@ class LicenseCheckerServiceInitListenerTest {
     }
 
     @Test
-    public void staticInitializer_throwsException_whenPropertiesMissing() {
+    void staticInitializer_throwsException_whenPropertiesMissing() {
         // Create a class loader that hides the sso-kit.properties resource
         ClassLoader parent = LicenseCheckerServiceInitListenerTest.class
                 .getClassLoader();

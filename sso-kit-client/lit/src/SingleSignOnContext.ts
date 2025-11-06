@@ -1,11 +1,9 @@
-/*-
- * Copyright (C) 2023 Vaadin Ltd
+/*
+ * Copyright 2000-2025 Vaadin Ltd.
  *
  * This program is available under Vaadin Commercial License and Service Terms.
  *
- *
- * See <https://vaadin.com/commercial-license-and-service-terms> for the full
- * license.
+ * See <https://vaadin.com/commercial-license-and-service-terms> for the full license.
  */
 import type { Subscription } from "@vaadin/hilla-frontend";
 import { logout as serverLogout } from "@vaadin/hilla-frontend";

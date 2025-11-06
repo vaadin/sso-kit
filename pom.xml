@@ -38,11 +38,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring.boot.version>4.0.0-RC1</spring.boot.version>
-        <maven.jar.version>3.3.0</maven.jar.version>
-        <maven.source.version>3.2.1</maven.source.version>
-        <maven.javadoc.version>3.4.1</maven.javadoc.version>
+        <maven.jar.version>3.4.2</maven.jar.version>
+        <maven.source.version>3.3.1</maven.source.version>
+        <maven.javadoc.version>3.12.0</maven.javadoc.version>
         <maven.surefire.version>3.5.4</maven.surefire.version>
-        <maven.formatter.version>2.20.0</maven.formatter.version>
+        <maven.formatter.version>2.29.0</maven.formatter.version>
     </properties>
 
     <repositories>

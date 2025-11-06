@@ -1,11 +1,9 @@
-/*-
- * Copyright (C) 2024 Vaadin Ltd
+/*
+ * Copyright 2000-2025 Vaadin Ltd.
  *
  * This program is available under Vaadin Commercial License and Service Terms.
  *
- *
- * See <https://vaadin.com/commercial-license-and-service-terms> for the full
- * license.
+ * See <https://vaadin.com/commercial-license-and-service-terms> for the full license.
  */
 package com.vaadin.hilla.sso.starter.endpoint;
 
@@ -26,10 +24,10 @@ import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mockStatic;
 
-public class UserEndpointTest {
+class UserEndpointTest {
 
     @Test
-    public void getAuthenticatedUser_returnsTheExpectedUser() {
+    void getAuthenticatedUser_returnsTheExpectedUser() {
         try (MockedStatic<SingleSignOnContext> singleSignOnContextMockedStatic = mockStatic(
                 SingleSignOnContext.class)) {
             var userEndpoint = new UserEndpoint();

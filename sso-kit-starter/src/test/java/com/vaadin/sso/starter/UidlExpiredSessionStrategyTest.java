@@ -1,11 +1,9 @@
-/*-
- * Copyright (C) 2022 Vaadin Ltd
+/*
+ * Copyright 2000-2025 Vaadin Ltd.
  *
  * This program is available under Vaadin Commercial License and Service Terms.
  *
- *
- * See <https://vaadin.com/commercial-license-and-service-terms> for the full
- * license.
+ * See <https://vaadin.com/commercial-license-and-service-terms> for the full license.
  */
 package com.vaadin.sso.starter;
 
@@ -32,7 +30,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class UidlExpiredSessionStrategyTest {
+class UidlExpiredSessionStrategyTest {
 
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private HttpServletRequest request;
@@ -47,7 +45,7 @@ public class UidlExpiredSessionStrategyTest {
     private UidlExpiredSessionStrategy strategy;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         session = new SessionInformation("principal", "1234",
                 Date.from(Instant.now()));
         event = new SessionInformationExpiredEvent(session, request, response);
@@ -58,7 +56,7 @@ public class UidlExpiredSessionStrategyTest {
     }
 
     @Test
-    public void isInternalRequest_setVaadinRefreshToken()
+    void isInternalRequest_setVaadinRefreshToken()
             throws IOException, ServletException {
         when(request.getParameter(ApplicationConstants.REQUEST_TYPE_PARAMETER))
                 .thenReturn(ApplicationConstants.REQUEST_TYPE_UIDL);
@@ -69,7 +67,7 @@ public class UidlExpiredSessionStrategyTest {
     }
 
     @Test
-    public void isExternalRequest_setRedirectStatusAndHeader()
+    void isExternalRequest_setRedirectStatusAndHeader()
             throws IOException, ServletException {
 
         strategy.onExpiredSessionDetected(event);

@@ -1,11 +1,9 @@
-/*-
- * Copyright (C) 2022 Vaadin Ltd
+/*
+ * Copyright 2000-2025 Vaadin Ltd.
  *
  * This program is available under Vaadin Commercial License and Service Terms.
  *
- *
- * See <https://vaadin.com/commercial-license-and-service-terms> for the full
- * license.
+ * See <https://vaadin.com/commercial-license-and-service-terms> for the full license.
  */
 package com.vaadin.sso.starter;
 
@@ -31,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Test suite for {@link SingleSignOnConfiguration}.
  */
 @ExtendWith(MockitoExtension.class)
-public class SingleSignOnConfigurationTest {
+class SingleSignOnConfigurationTest {
 
     private WebApplicationContextRunner contextRunner;
 
@@ -39,7 +37,7 @@ public class SingleSignOnConfigurationTest {
     private ClientRegistrationRepository clientRegistrationRepository;
 
     @BeforeEach
-    public void init() {
+    void init() {
         contextRunner = new WebApplicationContextRunner()
                 .withConfiguration(
                         AutoConfigurations.of(SpringBootAutoConfiguration.class,
@@ -53,7 +51,7 @@ public class SingleSignOnConfigurationTest {
     }
 
     @Test
-    public void clientRepository_notAvailable_configurationDisabled() {
+    void clientRepository_notAvailable_configurationDisabled() {
         final var runner = new WebApplicationContextRunner().withConfiguration(
                 AutoConfigurations.of(SpringBootAutoConfiguration.class,
                         SpringSecurityAutoConfiguration.class,
@@ -64,7 +62,7 @@ public class SingleSignOnConfigurationTest {
     }
 
     @Test
-    public void loginRouteProperty_hasDefaultValue() {
+    void loginRouteProperty_hasDefaultValue() {
         contextRunner.run(ctx -> {
             var loginRoute = ctx.getBean(SingleSignOnProperties.class)
                     .getLoginRoute();
@@ -74,7 +72,7 @@ public class SingleSignOnConfigurationTest {
     }
 
     @Test
-    public void loginRouteProperty_hasCustomValue() {
+    void loginRouteProperty_hasCustomValue() {
         contextRunner.withPropertyValues("vaadin.sso.login-route=/custom")
                 .run(ctx -> {
                     var loginRoute = ctx.getBean(SingleSignOnProperties.class)
@@ -84,7 +82,7 @@ public class SingleSignOnConfigurationTest {
     }
 
     @Test
-    public void backChannelLogout_isTrue_backChannelLogoutFilterConfigured() {
+    void backChannelLogout_isTrue_backChannelLogoutFilterConfigured() {
         contextRunner.withPropertyValues("vaadin.sso.back-channel-logout=true")
                 .run(ctx -> {
                     var filterChain = (SecurityFilterChain) ctx
@@ -95,7 +93,7 @@ public class SingleSignOnConfigurationTest {
     }
 
     @Test
-    public void backChannelLogout_isFalse_backChannelLogoutFilterNotConfigured() {
+    void backChannelLogout_isFalse_backChannelLogoutFilterNotConfigured() {
         contextRunner.withPropertyValues("vaadin.sso.back-channel-logout=false")
                 .run(ctx -> {
                     var filterChain = (SecurityFilterChain) ctx

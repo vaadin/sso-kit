@@ -1,11 +1,9 @@
-/*-
- * Copyright (C) 2024 Vaadin Ltd
+/*
+ * Copyright 2000-2025 Vaadin Ltd.
  *
  * This program is available under Vaadin Commercial License and Service Terms.
  *
- *
- * See <https://vaadin.com/commercial-license-and-service-terms> for the full
- * license.
+ * See <https://vaadin.com/commercial-license-and-service-terms> for the full license.
  */
 package com.vaadin.hilla.sso.starter.endpoint;
 
@@ -18,10 +16,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class BackChannelLogoutEndpointTest {
+class BackChannelLogoutEndpointTest {
 
     @Test
-    public void subscribe_returnsTheExpectedFluxMessage() {
+    void subscribe_returnsTheExpectedFluxMessage() {
         var singleSignOnContext = mock(SingleSignOnContext.class);
         var message = new BackChannelLogoutSubscription.Message(
                 "User logged out");
