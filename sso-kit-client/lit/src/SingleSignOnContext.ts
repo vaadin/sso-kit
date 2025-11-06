@@ -5,19 +5,13 @@
  *
  * See <https://vaadin.com/commercial-license-and-service-terms> for the full license.
  */
-import type { Subscription } from "@vaadin/hilla-frontend";
-import { logout as serverLogout } from "@vaadin/hilla-frontend";
-import type {
-  ActionFn,
-  ActionResult,
-  Commands,
-  Context,
-  Route,
-} from "@vaadin/router";
-import type { AccessProps } from "../../core/src/AccessProps.js";
-import type { SingleSignOnData } from "../../core/src/SingleSignOnData.js";
-import type { User } from "../../core/src/User.js";
-import { EndpointImportError } from "../../core/src/EndpointImportError.js";
+import type { Subscription } from '@vaadin/hilla-frontend';
+import { logout as serverLogout } from '@vaadin/hilla-frontend';
+import type { ActionFn, ActionResult, Commands, Context, Route } from '@vaadin/router';
+import type { AccessProps } from '../../core/src/AccessProps.js';
+import type { SingleSignOnData } from '../../core/src/SingleSignOnData.js';
+import type { User } from '../../core/src/User.js';
+import { EndpointImportError } from '../../core/src/EndpointImportError.js';
 
 /**
  * Definition of the Route extended with {@link AccessProps},
@@ -93,29 +87,29 @@ export class SingleSignOnContext {
 
     this.#registrationIds = import(
       // @ts-ignore
-      "Frontend/generated/SingleSignOnEndpoint.ts"
+      'Frontend/generated/SingleSignOnEndpoint.ts'
     ).then(
       (endpoint) => endpoint.getRegisteredProviders(),
       (reason) => {
-        throw new EndpointImportError("SingleSignOnEndpoint", reason);
+        throw new EndpointImportError('SingleSignOnEndpoint', reason);
       }
     );
 
     // @ts-ignore
-    this.#user = import("Frontend/generated/UserEndpoint.ts").then(
+    this.#user = import('Frontend/generated/UserEndpoint.ts').then(
       (endpoint) => endpoint.getAuthenticatedUser(),
       (reason) => {
-        throw new EndpointImportError("UserEndpoint", reason);
+        throw new EndpointImportError('UserEndpoint', reason);
       }
     );
 
     if (this.authenticated && this.#backChannelLogoutEnabled) {
       // @ts-ignore
-      import("Frontend/generated/BackChannelLogoutEndpoint.ts")
+      import('Frontend/generated/BackChannelLogoutEndpoint.ts')
         .then(
           (endpoint) => endpoint.subscribe(),
           (reason) => {
-            throw new EndpointImportError("BackChannelLogoutEndpoint", reason);
+            throw new EndpointImportError('BackChannelLogoutEndpoint', reason);
           }
         )
         .then(
@@ -128,9 +122,7 @@ export class SingleSignOnContext {
             });
           },
           (reason: string) => {
-            throw new Error(
-              `Couldn't subscribe to the back-channel logout events: ${reason}`
-            );
+            throw new Error(`Couldn't subscribe to the back-channel logout events: ${reason}`);
           }
         );
     }
@@ -143,11 +135,11 @@ export class SingleSignOnContext {
    */
   fetchSingleSignOnData = () => {
     // @ts-ignore
-    return import("Frontend/generated/SingleSignOnEndpoint.ts")
+    return import('Frontend/generated/SingleSignOnEndpoint.ts')
       .then(
         (endpoint) => endpoint.fetchAll(),
         (reason) => {
-          throw new EndpointImportError("SingleSignOnEndpoint", reason);
+          throw new EndpointImportError('SingleSignOnEndpoint', reason);
         }
       )
       .then(
@@ -156,8 +148,7 @@ export class SingleSignOnContext {
           this.roles = singleSignOnData.roles;
           this.loginUrl = singleSignOnData.loginLink;
           this.logoutUrl = singleSignOnData.logoutLink;
-          this.#backChannelLogoutEnabled =
-            singleSignOnData.backChannelLogoutEnabled;
+          this.#backChannelLogoutEnabled = singleSignOnData.backChannelLogoutEnabled;
         },
         (reason: string) => {
           throw new Error(`Couldn't fetch single sign-on data: ${reason}`);
@@ -237,10 +228,7 @@ export class SingleSignOnContext {
    *                     which redirects the user to the provider's login page
    * @returns the {@param routes} with the protected routes, if any
    */
-  protectRoutes = (
-    routes: ProtectedRoute[],
-    redirectPath?: string
-  ): Route[] => {
+  protectRoutes = (routes: ProtectedRoute[], redirectPath?: string): Route[] => {
     const allRoutes: ProtectedRoute[] = this.collectRoutes(routes);
     allRoutes.forEach((route) => {
       if (route.requireAuthentication) {
@@ -249,28 +237,22 @@ export class SingleSignOnContext {
     });
 
     routes.push({
-      path: "ssologin",
-      component: "ssologin",
+      path: 'ssologin',
+      component: 'ssologin',
       action: async (_context: Context, _commands: Commands) => {
         window.location.href = this.loginUrl;
         return undefined;
-      },
+      }
     });
     return routes;
   };
 
-  private protectRoute = (
-    route: ProtectedRoute,
-    redirectPath?: string
-  ): void => {
+  private protectRoute = (route: ProtectedRoute, redirectPath?: string): void => {
     const routeAction: ActionFn | undefined = route.action;
-    route.action = (
-      _context: Context,
-      _commands: Commands
-    ): ActionResult | Promise<ActionResult> => {
+    route.action = (_context: Context, _commands: Commands): ActionResult | Promise<ActionResult> => {
       if (!this.hasAccess(route)) {
         if (redirectPath === undefined) {
-          redirectPath = "ssologin";
+          redirectPath = 'ssologin';
         }
         return _commands.redirect(redirectPath);
       }
@@ -283,9 +265,7 @@ export class SingleSignOnContext {
     routes.forEach((route) => {
       allRoutes.push(route);
       if (route.children !== undefined) {
-        allRoutes.push(
-          ...this.collectRoutes(route.children as ProtectedRoute[])
-        );
+        allRoutes.push(...this.collectRoutes(route.children as ProtectedRoute[]));
       }
     });
     return allRoutes;

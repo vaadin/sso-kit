@@ -147,10 +147,12 @@
           </java>
           <typescript>
             <includes>
-              <include>src/**/*.js</include>
-              <include>src/**/*.ts</include>
-              <include>frontend/**/*.js</include>
-              <include>frontend/**/*.ts</include>
+              <include>sso-kit-client/core/src/**/*.ts</include>
+              <include>sso-kit-client/core/test/**/*.ts</include>
+              <include>sso-kit-client/lit/src/**/*.ts</include>
+              <include>sso-kit-client/lit/test/**/*.ts</include>
+              <include>sso-kit-client/react/src/**/*.ts</include>
+              <include>sso-kit-client/react/test/**/*.ts</include>
             </includes>
             <excludes>
               <exclude>src/main/frontend/generated/**</exclude>
