@@ -5,7 +5,7 @@
  *
  * See <https://vaadin.com/commercial-license-and-service-terms> for the full license.
  */
-export { EndpointImportError } from "./EndpointImportError.js";
-export type { AccessProps } from "./AccessProps.js";
-export type { SingleSignOnData } from "./SingleSignOnData.js";
-export type { User } from "./User.js";
+export { EndpointImportError } from './EndpointImportError.js';
+export type { AccessProps } from './AccessProps.js';
+export type { SingleSignOnData } from './SingleSignOnData.js';
+export type { User } from './User.js';

@@ -5,20 +5,14 @@
  *
  * See <https://vaadin.com/commercial-license-and-service-terms> for the full license.
  */
-import type { ReactNode } from "react";
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
-import type { Subscription } from "@vaadin/hilla-frontend";
-import { logout as serverLogout } from "@vaadin/hilla-frontend";
-import type { AccessProps } from "../../core/src/AccessProps.js";
-import type { SingleSignOnData } from "../../core/src/SingleSignOnData.js";
-import type { User } from "../../core/src/User.js";
-import { EndpointImportError } from "../../core/src/EndpointImportError.js";
+import type { ReactNode } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import type { Subscription } from '@vaadin/hilla-frontend';
+import { logout as serverLogout } from '@vaadin/hilla-frontend';
+import type { AccessProps } from '../../core/src/AccessProps.js';
+import type { SingleSignOnData } from '../../core/src/SingleSignOnData.js';
+import type { User } from '../../core/src/User.js';
+import { EndpointImportError } from '../../core/src/EndpointImportError.js';
 
 /**
  * Definition of the back-channel logout endpoint subscription message.
@@ -36,8 +30,7 @@ function useSsoContextHook() {
   /**
    * Indicates if the single sing-on context has been initialized.
    */
-  const [ssoContextInitialized, setSsoContextInitialized] =
-    useState<boolean>(false);
+  const [ssoContextInitialized, setSsoContextInitialized] = useState<boolean>(false);
 
   /**
    * Indicates if the user has been authenticated.
@@ -52,7 +45,7 @@ function useSsoContextHook() {
   /**
    * The URL to call to log in to the authentication provider.
    */
-  const [loginUrl, setLoginUrl] = useState<string>("");
+  const [loginUrl, setLoginUrl] = useState<string>('');
 
   /**
    * The URL to call to log out from the authentication provider.
@@ -62,9 +55,7 @@ function useSsoContextHook() {
   /**
    * A list of the registered authentication provider registration ids.
    */
-  const [registrationIds, setRegistrationIds] = useState<
-    string[] | undefined
-  >();
+  const [registrationIds, setRegistrationIds] = useState<string[] | undefined>();
 
   /**
    * Contains information about the authenticated user.
@@ -75,15 +66,12 @@ function useSsoContextHook() {
    * Indicates if the back-channel logout is enabled.
    * If true, the application will listen to the back-channel logout events.
    */
-  const [backChannelLogoutEnabled, setBackChannelLogoutEnabled] =
-    useState<boolean>(false);
+  const [backChannelLogoutEnabled, setBackChannelLogoutEnabled] = useState<boolean>(false);
 
   /**
    * The back-channel logout subscription callback.
    */
-  const [logoutSubscriptionCallback, setLogoutSubscriptionCallback] = useState<
-    LogoutCallback | undefined
-  >();
+  const [logoutSubscriptionCallback, setLogoutSubscriptionCallback] = useState<LogoutCallback | undefined>();
 
   /**
    * Checks if the user has access to the given route.
@@ -134,11 +122,11 @@ function useSsoContextHook() {
    */
   const fetchSingleSignOnData = () => {
     // @ts-ignore
-    import("Frontend/generated/SingleSignOnEndpoint.ts")
+    import('Frontend/generated/SingleSignOnEndpoint.ts')
       .then(
         (endpoint) => endpoint.fetchAll(),
         (reason) => {
-          throw new EndpointImportError("SingleSignOnEndpoint", reason);
+          throw new EndpointImportError('SingleSignOnEndpoint', reason);
         }
       )
       .then(
@@ -147,9 +135,7 @@ function useSsoContextHook() {
           setRoles(singleSignOnData.roles);
           setLoginUrl(singleSignOnData.loginLink);
           setLogoutUrl(singleSignOnData.logoutLink);
-          setBackChannelLogoutEnabled(
-            singleSignOnData.backChannelLogoutEnabled
-          );
+          setBackChannelLogoutEnabled(singleSignOnData.backChannelLogoutEnabled);
         },
         (reason: string) => {
           throw new Error(`Couldn't fetch single sign-on data: ${reason}`);
@@ -160,11 +146,11 @@ function useSsoContextHook() {
   const initRegistrationIds = useCallback(async () => {
     const registeredProviders = await import(
       // @ts-ignore
-      "Frontend/generated/SingleSignOnEndpoint.ts"
+      'Frontend/generated/SingleSignOnEndpoint.ts'
     ).then(
       (endpoint) => endpoint.getRegisteredProviders(),
       (reason) => {
-        throw new EndpointImportError("SingleSignOnEndpoint", reason);
+        throw new EndpointImportError('SingleSignOnEndpoint', reason);
       }
     );
     setRegistrationIds(registeredProviders);
@@ -173,11 +159,11 @@ function useSsoContextHook() {
   const initUser = useCallback(async () => {
     const authenticatedUser = await import(
       // @ts-ignore
-      "Frontend/generated/UserEndpoint.ts"
+      'Frontend/generated/UserEndpoint.ts'
     ).then(
       (endpoint) => endpoint.getAuthenticatedUser(),
       (reason) => {
-        throw new EndpointImportError("UserEndpoint", reason);
+        throw new EndpointImportError('UserEndpoint', reason);
       }
     );
     setUser(authenticatedUser);
@@ -186,11 +172,11 @@ function useSsoContextHook() {
   const logoutSubscribe = useCallback(async () => {
     if (authenticated && backChannelLogoutEnabled) {
       // @ts-ignore
-      await import("Frontend/generated/BackChannelLogoutEndpoint.ts")
+      await import('Frontend/generated/BackChannelLogoutEndpoint.ts')
         .then(
           (endpoint) => endpoint.subscribe(),
           (reason) => {
-            throw new EndpointImportError("BackChannelLogoutEndpoint", reason);
+            throw new EndpointImportError('BackChannelLogoutEndpoint', reason);
           }
         )
         .then(
@@ -203,9 +189,7 @@ function useSsoContextHook() {
             });
           },
           (reason: string) => {
-            throw new Error(
-              `Couldn't subscribe to the back-channel logout events: ${reason}`
-            );
+            throw new Error(`Couldn't subscribe to the back-channel logout events: ${reason}`);
           }
         );
     }
@@ -219,9 +203,7 @@ function useSsoContextHook() {
           setRoles(singleSignOnData.roles);
           setLoginUrl(singleSignOnData.loginLink);
           setLogoutUrl(singleSignOnData.logoutLink);
-          setBackChannelLogoutEnabled(
-            singleSignOnData.backChannelLogoutEnabled
-          );
+          setBackChannelLogoutEnabled(singleSignOnData.backChannelLogoutEnabled);
         }
         initRegistrationIds();
         initUser();
@@ -250,7 +232,7 @@ function useSsoContextHook() {
     login,
     logout,
     onBackChannelLogout,
-    fetchSingleSignOnData,
+    fetchSingleSignOnData
   };
 }
 
@@ -260,7 +242,7 @@ const initialValue: SsoContextType = {
   ssoContextInitialized: false,
   authenticated: false,
   roles: [],
-  loginUrl: "",
+  loginUrl: '',
   logoutUrl: undefined,
   registrationIds: undefined,
   user: undefined,
@@ -277,7 +259,7 @@ const initialValue: SsoContextType = {
   },
   fetchSingleSignOnData: async () => {
     /* do nothing */
-  },
+  }
 };
 
 const SsoContext = createContext<SsoContextType>(initialValue);
@@ -292,9 +274,7 @@ interface SsoProviderProps {
  */
 export function SsoProvider({ children }: SsoProviderProps) {
   const ssoContext = useSsoContextHook();
-  return (
-    <SsoContext.Provider value={ssoContext}>{children}</SsoContext.Provider>
-  );
+  return <SsoContext.Provider value={ssoContext}>{children}</SsoContext.Provider>;
 }
 
 /**

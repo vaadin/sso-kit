@@ -7,12 +7,13 @@
  */
 package com.vaadin.hilla.sso.starter;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;

@@ -5,20 +5,20 @@
  *
  * See <https://vaadin.com/commercial-license-and-service-terms> for the full license.
  */
-import { assert, expect } from "@esm-bundle/chai";
-import { EndpointImportError } from "../src/index.js";
+import { assert, expect } from '@esm-bundle/chai';
+import { EndpointImportError } from '../src/index.js';
 
-describe("@vaadin/sso-kit-client-react", () => {
-  describe("Index", () => {
-    it("should export EndpointImportError", async () => {
+describe('@vaadin/sso-kit-client-react', () => {
+  describe('Index', () => {
+    it('should export EndpointImportError', async () => {
       expect(EndpointImportError).to.be.ok;
     });
 
-    it("should add registration", async () => {
+    it('should add registration', async () => {
       assert.isDefined(window.Vaadin);
       assert.isArray(window.Vaadin.registrations);
       const formRegistrations = window.Vaadin.registrations?.filter(
-        (r: any) => r.is === "@vaadin/sso-kit-client-react"
+        (r: any) => r.is === '@vaadin/sso-kit-client-react'
       );
       assert.lengthOf(formRegistrations!, 1);
     });

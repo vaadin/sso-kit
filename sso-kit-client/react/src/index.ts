@@ -5,13 +5,13 @@
  *
  * See <https://vaadin.com/commercial-license-and-service-terms> for the full license.
  */
-import type { SingleSignOnData } from "../../core/src/index.js";
+import type { SingleSignOnData } from '../../core/src/index.js';
 
-export * from "./ProtectedRoute.js";
-export * from "./useSsoContext.js";
-export { EndpointImportError } from "../../core/src/EndpointImportError.js";
-export type { AccessProps } from "../../core/src/AccessProps.js";
-export type { User } from "../../core/src/User.js";
+export * from './ProtectedRoute.js';
+export * from './useSsoContext.js';
+export { EndpointImportError } from '../../core/src/EndpointImportError.js';
+export type { AccessProps } from '../../core/src/AccessProps.js';
+export type { User } from '../../core/src/User.js';
 
 declare global {
   interface Window {
@@ -28,6 +28,6 @@ declare global {
 window.Vaadin = window.Vaadin || {};
 window.Vaadin.registrations = window.Vaadin.registrations || [];
 window.Vaadin.registrations.push({
-  is: "@vaadin/sso-kit-client-react",
-  version: "3.0.0",
+  is: '@vaadin/sso-kit-client-react',
+  version: '3.0.0'
 });

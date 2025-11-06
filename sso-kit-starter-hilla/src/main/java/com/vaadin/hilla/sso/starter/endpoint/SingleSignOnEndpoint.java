@@ -10,7 +10,6 @@ package com.vaadin.hilla.sso.starter.endpoint;
 import java.util.List;
 
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-
 import com.vaadin.hilla.Endpoint;
 import com.vaadin.hilla.Nonnull;
 import com.vaadin.hilla.sso.starter.SingleSignOnContext;

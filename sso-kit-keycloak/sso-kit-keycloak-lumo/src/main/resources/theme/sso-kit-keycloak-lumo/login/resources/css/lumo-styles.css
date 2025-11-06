@@ -8,8 +8,7 @@ body {
 
 .login {
   width: calc(var(--lumo-size-m) * 10);
-  background: var(--lumo-base-color)
-    linear-gradient(var(--lumo-tint-5pct), var(--lumo-tint-5pct));
+  background: var(--lumo-base-color) linear-gradient(var(--lumo-tint-5pct), var(--lumo-tint-5pct));
   max-width: 100%;
   border-radius: var(--lumo-border-radius-l);
   box-shadow: var(--lumo-box-shadow-s);
@@ -32,8 +31,7 @@ body {
   justify-content: flex-end;
   min-height: calc(var(--lumo-size-m) * 5);
   overflow: hidden;
-  padding: var(--lumo-space-l) var(--lumo-space-xl) var(--lumo-space-l)
-    var(--lumo-space-l);
+  padding: var(--lumo-space-l) var(--lumo-space-xl) var(--lumo-space-l) var(--lumo-space-l);
   height: 100%;
 }
 
@@ -47,12 +45,11 @@ body {
 }
 
 .form-title {
-  margin-block-start: calc(
-    var(--lumo-font-size-xxxl) - var(--lumo-font-size-xxl)
-  );
+  margin-block-start: calc(var(--lumo-font-size-xxxl) - var(--lumo-font-size-xxl));
 }
 
-.alert-error, .error-message {
+.alert-error,
+.error-message {
   background: var(--lumo-error-color-10pct);
   color: var(--lumo-error-text-color);
   padding: var(--lumo-space-s);
@@ -143,11 +140,7 @@ body {
   cursor: inherit;
   min-height: var(--lumo-text-field-size, var(--lumo-size-m));
   padding: 0 0.25em;
-  --_lumo-text-field-overflow-mask-image: linear-gradient(
-    to left,
-    transparent,
-    #000 1.25em
-  );
+  --_lumo-text-field-overflow-mask-image: linear-gradient(to left, transparent, #000 1.25em);
   -webkit-mask-image: var(--_lumo-text-field-overflow-mask-image);
   mask-image: var(--_lumo-text-field-overflow-mask-image);
   width: 100%;
@@ -179,10 +172,7 @@ body {
   font-size: var(--lumo-font-size-m);
   font-weight: 500;
   color: var(--_lumo-button-color, var(--lumo-primary-text-color));
-  background-color: var(
-    --_lumo-button-background-color,
-    var(--lumo-contrast-5pct)
-  );
+  background-color: var(--_lumo-button-background-color, var(--lumo-contrast-5pct));
   border-radius: var(--lumo-border-radius-m);
   cursor: var(--lumo-clickable-cursor);
   -webkit-tap-highlight-color: transparent;
@@ -247,8 +237,7 @@ body {
 }
 
 .button:has(input:focus-visible) {
-  box-shadow: 0 0 0 1px var(--lumo-base-color),
-    0 0 0 3px var(--lumo-primary-color-50pct);
+  box-shadow: 0 0 0 1px var(--lumo-base-color), 0 0 0 3px var(--lumo-primary-color-50pct);
 }
 
 /* Hover */
@@ -259,10 +248,7 @@ body {
 }
 
 .button-primary {
-  background-color: var(
-    --_lumo-button-primary-background-color,
-    var(--lumo-primary-color)
-  );
+  background-color: var(--_lumo-button-primary-background-color, var(--lumo-primary-color));
   color: var(--_lumo-button-primary-color, var(--lumo-primary-contrast-color));
   font-weight: 600;
   min-width: calc(var(--lumo-button-size) * 2.5);

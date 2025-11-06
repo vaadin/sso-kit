@@ -9,7 +9,6 @@ package com.vaadin.sso.starter;
 
 import java.util.Objects;
 
-import com.vaadin.flow.spring.security.VaadinAwareSecurityContextHolderStrategyConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -28,6 +27,7 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 import com.vaadin.flow.spring.SpringSecurityAutoConfiguration;
+import com.vaadin.flow.spring.security.VaadinAwareSecurityContextHolderStrategyConfiguration;
 import com.vaadin.sso.core.BackChannelLogoutFilter;
 
 import static com.vaadin.flow.spring.security.VaadinSecurityConfigurer.vaadin;

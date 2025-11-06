@@ -7,10 +7,11 @@
  */
 package com.vaadin.hilla.sso.starter.endpoint;
 
-import com.vaadin.hilla.sso.starter.BackChannelLogoutSubscription;
-import com.vaadin.hilla.sso.starter.SingleSignOnContext;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
+
+import com.vaadin.hilla.sso.starter.BackChannelLogoutSubscription;
+import com.vaadin.hilla.sso.starter.SingleSignOnContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;

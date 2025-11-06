@@ -9,9 +9,10 @@ package com.vaadin.hilla.sso.starter.endpoint;
 
 import java.util.List;
 
+import org.junit.jupiter.api.Test;
+
 import com.vaadin.hilla.sso.starter.SingleSignOnContext;
 import com.vaadin.hilla.sso.starter.SingleSignOnData;
-import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;

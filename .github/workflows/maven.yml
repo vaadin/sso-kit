@@ -21,7 +21,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Validate formatting
-      run: mvn -ntp -B formatter:validate
+      run: mvn -ntp -B spotless:check
   unit-test:
     runs-on: ubuntu-latest
     steps:

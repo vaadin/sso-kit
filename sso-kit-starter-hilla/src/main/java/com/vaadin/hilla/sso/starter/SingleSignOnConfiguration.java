@@ -7,11 +7,8 @@
  */
 package com.vaadin.hilla.sso.starter;
 
-import com.vaadin.flow.spring.SpringSecurityAutoConfiguration;
-import com.vaadin.flow.spring.security.VaadinAwareSecurityContextHolderStrategyConfiguration;
-import com.vaadin.hilla.sso.starter.endpoint.BackChannelLogoutEndpoint;
-import com.vaadin.hilla.sso.starter.endpoint.SingleSignOnEndpoint;
-import com.vaadin.hilla.sso.starter.endpoint.UserEndpoint;
+import java.util.Objects;
+
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -27,9 +24,12 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 
+import com.vaadin.flow.spring.SpringSecurityAutoConfiguration;
+import com.vaadin.flow.spring.security.VaadinAwareSecurityContextHolderStrategyConfiguration;
+import com.vaadin.hilla.sso.starter.endpoint.BackChannelLogoutEndpoint;
+import com.vaadin.hilla.sso.starter.endpoint.SingleSignOnEndpoint;
+import com.vaadin.hilla.sso.starter.endpoint.UserEndpoint;
 import com.vaadin.sso.core.BackChannelLogoutFilter;
-
-import java.util.Objects;
 
 import static com.vaadin.flow.spring.security.VaadinSecurityConfigurer.vaadin;
 

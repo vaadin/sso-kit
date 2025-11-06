@@ -7,9 +7,6 @@
  */
 package com.vaadin.hilla.sso.starter;
 
-import com.vaadin.hilla.sso.starter.endpoint.BackChannelLogoutEndpoint;
-import com.vaadin.hilla.sso.starter.endpoint.SingleSignOnEndpoint;
-import com.vaadin.hilla.sso.starter.endpoint.UserEndpoint;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,6 +19,9 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import com.vaadin.flow.spring.SpringBootAutoConfiguration;
 import com.vaadin.flow.spring.SpringSecurityAutoConfiguration;
+import com.vaadin.hilla.sso.starter.endpoint.BackChannelLogoutEndpoint;
+import com.vaadin.hilla.sso.starter.endpoint.SingleSignOnEndpoint;
+import com.vaadin.hilla.sso.starter.endpoint.UserEndpoint;
 import com.vaadin.sso.core.BackChannelLogoutFilter;
 
 import static org.assertj.core.api.Assertions.assertThat;
