@@ -42,7 +42,7 @@
         <maven.source.version>3.3.1</maven.source.version>
         <maven.javadoc.version>3.12.0</maven.javadoc.version>
         <maven.surefire.version>3.5.4</maven.surefire.version>
-        <maven.formatter.version>2.29.0</maven.formatter.version>
+        <spotless.plugin.version>3.0.0</spotless.plugin.version>
     </properties>
 
     <repositories>
@@ -129,14 +129,54 @@
             </plugin>
 
             <plugin>
-                <groupId>net.revelc.code.formatter</groupId>
-                <artifactId>formatter-maven-plugin</artifactId>
-                <version>${maven.formatter.version}</version>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>${spotless.plugin.version}</version>
                 <configuration>
-                    <configFile>https://raw.githubusercontent.com/vaadin/flow/master/eclipse/VaadinJavaConventions.xml</configFile>
-                    <skipHtmlFormatting>true</skipHtmlFormatting>
-                    <lineEnding>LF</lineEnding>
-                    <encoding>UTF-8</encoding>
+                    <java>
+                        <eclipse>
+                            <file>https://raw.githubusercontent.com/vaadin/flow/master/eclipse/VaadinJavaConventions.xml</file>
+                        </eclipse>
+                        <endWithNewline/>
+                        <removeUnusedImports/>
+                        <importOrder>
+                            <file>https://raw.githubusercontent.com/vaadin/flow/refs/heads/main/eclipse/flow.importorder</file>
+                        </importOrder>
+                        <forbidWildcardImports/>
+                    </java>
+                    <typescript>
+                        <includes>
+                            <include>src/**/*.js</include>
+                            <include>src/**/*.ts</include>
+                            <include>frontend/**/*.js</include>
+                            <include>frontend/**/*.ts</include>
+                        </includes>
+                        <excludes>
+                            <exclude>src/main/frontend/generated/**</exclude>
+                        </excludes>
+                        <prettier>
+                            <configFile>${maven.multiModuleProjectDirectory}/.prettierrc</configFile>
+                            <npmInstallCache>${maven.multiModuleProjectDirectory}/target/.spotless-npm-install-cache</npmInstallCache>
+                        </prettier>
+                    </typescript>
+                    <css>
+                        <includes>
+                            <include>src/**/*.css</include>
+                            <include>frontend/**/*.css</include>
+                        </includes>
+                        <excludes>
+                            <exclude>src/main/frontend/generated/**</exclude>
+                        </excludes>
+                        <prettier>
+                            <configFile>${maven.multiModuleProjectDirectory}/.prettierrc</configFile>
+                            <npmInstallCache>${maven.multiModuleProjectDirectory}/target/.spotless-npm-install-cache</npmInstallCache>
+                        </prettier>
+                    </css>
+                    <pom>
+                        <sortPom>
+                            <expandEmptyElements>false</expandEmptyElements>
+                        </sortPom>
+                    </pom>
                 </configuration>
             </plugin>
         </plugins>
