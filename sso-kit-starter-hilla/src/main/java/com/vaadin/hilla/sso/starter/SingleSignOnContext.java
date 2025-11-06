@@ -7,6 +7,8 @@
  */
 package com.vaadin.hilla.sso.starter;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -24,10 +26,9 @@ import org.springframework.security.web.util.UrlUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
+import reactor.core.publisher.Flux;
 
 import com.vaadin.hilla.Nonnull;
-import jakarta.servlet.http.HttpServletRequest;
-import reactor.core.publisher.Flux;
 
 /**
  * Contains utility methods and information related to single sign-on.

@@ -13,13 +13,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.vaadin.hilla.sso.starter.SingleSignOnContext;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+
+import com.vaadin.hilla.sso.starter.SingleSignOnContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mockStatic;

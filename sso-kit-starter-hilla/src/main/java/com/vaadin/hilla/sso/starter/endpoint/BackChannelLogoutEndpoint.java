@@ -7,12 +7,14 @@
  */
 package com.vaadin.hilla.sso.starter.endpoint;
 
+import jakarta.annotation.security.PermitAll;
+
+import reactor.core.publisher.Flux;
+
 import com.vaadin.hilla.Endpoint;
 import com.vaadin.hilla.Nonnull;
 import com.vaadin.hilla.sso.starter.BackChannelLogoutSubscription;
 import com.vaadin.hilla.sso.starter.SingleSignOnContext;
-import jakarta.annotation.security.PermitAll;
-import reactor.core.publisher.Flux;
 
 /**
  * Endpoint for getting messages about back-channel logout events.
