@@ -38,7 +38,7 @@
     <maven.compiler.target>${maven.compiler.release}</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.boot.version>4.0.0-RC1</spring.boot.version>
+    <spring.boot.version>4.0.0-RC2</spring.boot.version>
     <maven.jar.version>3.4.2</maven.jar.version>
     <maven.source.version>3.3.1</maven.source.version>
     <maven.javadoc.version>3.12.0</maven.javadoc.version>
