@@ -76,6 +76,12 @@ public abstract class AbstractSingleSignOnProperties {
     private int maximumConcurrentSessions = DEFAULT_MAXIMUM_SESSIONS_PER_USER;
 
     /**
+     * If set to {@code true} it enables mapping of Keycloak realm and client
+     * roles to Spring Security granted authorities.
+     */
+    private boolean keycloakRoles = false;
+
+    /**
      * Checks is auto-configuration of SingleSignOnConfiguration is enabled.
      *
      * @return always true, see deprecation tag
@@ -196,5 +202,26 @@ public abstract class AbstractSingleSignOnProperties {
      */
     public void setMaximumConcurrentSessions(int maximumConcurrentSessions) {
         this.maximumConcurrentSessions = maximumConcurrentSessions;
+    }
+
+    /**
+     * Checks whether Keycloak role mapping is enabled.
+     *
+     * @return {@code true} if Keycloak role mapping is enabled, {@code false}
+     *         otherwise
+     */
+    public boolean isKeycloakRoles() {
+        return keycloakRoles;
+    }
+
+    /**
+     * Enables or disables mapping of Keycloak realm and client roles to Spring
+     * Security granted authorities.
+     *
+     * @param keycloakRoles
+     *            whether to enable or disable Keycloak role mapping
+     */
+    public void setKeycloakRoles(boolean keycloakRoles) {
+        this.keycloakRoles = keycloakRoles;
     }
 }
