@@ -2,6 +2,30 @@
   "realm": "sso-kit-demo",
   "enabled": true,
   "registrationAllowed": false,
+  "roles": {
+    "realm": [
+      {
+        "name": "user",
+        "description": "Regular user"
+      },
+      {
+        "name": "admin",
+        "description": "Administrator"
+      }
+    ],
+    "client": {
+      "sso-kit-demo": [
+        {
+          "name": "view-profile",
+          "description": "Can view own profile"
+        },
+        {
+          "name": "manage-users",
+          "description": "Can manage users"
+        }
+      ]
+    }
+  },
   "clients": [
     {
       "clientId": "sso-kit-demo",
@@ -32,7 +56,39 @@
           "value": "user",
           "temporary": false
         }
-      ]
+      ],
+      "realmRoles": [
+        "user"
+      ],
+      "clientRoles": {
+        "sso-kit-demo": [
+          "view-profile"
+        ]
+      }
+    },
+    {
+      "username": "admin",
+      "email": "admin@example.com",
+      "firstName": "Jane",
+      "lastName": "Doe",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "admin",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "user",
+        "admin"
+      ],
+      "clientRoles": {
+        "sso-kit-demo": [
+          "view-profile",
+          "manage-users"
+        ]
+      }
     }
   ]
 }

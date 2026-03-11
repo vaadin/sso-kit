@@ -16,7 +16,7 @@ docker compose up -d
 ```
 
 This starts a Keycloak instance on port 8180 with a pre-configured realm,
-a client for the demo application, and a test user.
+a client for the demo application, and two test users with different roles.
 
 Start the application:
 
@@ -26,11 +26,12 @@ mvn -pl :sso-kit-demo
 
 Open http://localhost:8080 in your browser.
 
-## Test user
+## Test users
 
-| Username | Password |
-|----------|----------|
-| user     | user     |
+| Username | Password | Realm roles    | Client roles                  |
+|----------|----------|----------------|-------------------------------|
+| user     | user     | user           | view-profile                  |
+| admin    | admin    | user, admin    | view-profile, manage-users    |
 
 ## Keycloak admin console
 

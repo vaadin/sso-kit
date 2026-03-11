@@ -13,3 +13,7 @@ spring:
         provider:
           keycloak:
             issuer-uri: http://localhost:8180/realms/sso-kit-demo
+
+vaadin:
+  sso:
+    keycloak-roles: true
