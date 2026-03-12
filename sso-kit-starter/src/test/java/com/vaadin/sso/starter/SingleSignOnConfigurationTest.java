@@ -14,12 +14,15 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import com.vaadin.flow.spring.SpringBootAutoConfiguration;
 import com.vaadin.flow.spring.SpringSecurityAutoConfiguration;
 import com.vaadin.sso.core.BackChannelLogoutFilter;
+import com.vaadin.sso.core.KeycloakUserMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -101,5 +104,24 @@ class SingleSignOnConfigurationTest {
                     assertTrue(filterChain.getFilters().stream().noneMatch(
                             filter -> filter instanceof BackChannelLogoutFilter));
                 });
+    }
+
+    @Test
+    void keycloakRoles_isTrue_oidcUserServiceHasKeycloakUserMapper() {
+        contextRunner.withPropertyValues("vaadin.sso.keycloak-roles=true")
+                .run(ctx -> {
+                    assertThat(ctx).hasSingleBean(OidcUserService.class);
+                    var oidcUserService = ctx.getBean(OidcUserService.class);
+                    var oidcUserConverter = ReflectionTestUtils
+                            .getField(oidcUserService, "oidcUserConverter");
+                    assertThat(oidcUserConverter)
+                            .isInstanceOf(KeycloakUserMapper.class);
+                });
+    }
+
+    @Test
+    void keycloakRoles_isFalse_noOidcUserServiceBean() {
+        contextRunner.run(
+                ctx -> assertThat(ctx).doesNotHaveBean(OidcUserService.class));
     }
 }
