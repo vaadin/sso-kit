@@ -1,0 +1,94 @@
+{
+  "realm": "sso-kit-demo",
+  "enabled": true,
+  "registrationAllowed": false,
+  "roles": {
+    "realm": [
+      {
+        "name": "user",
+        "description": "Regular user"
+      },
+      {
+        "name": "admin",
+        "description": "Administrator"
+      }
+    ],
+    "client": {
+      "sso-kit-demo": [
+        {
+          "name": "view-profile",
+          "description": "Can view own profile"
+        },
+        {
+          "name": "manage-users",
+          "description": "Can manage users"
+        }
+      ]
+    }
+  },
+  "clients": [
+    {
+      "clientId": "sso-kit-demo",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "secret": "pMgMHnEaVVQEnSbMzKMKBiiufkSsZzAR",
+      "redirectUris": [
+        "http://localhost:8080/*"
+      ],
+      "webOrigins": [
+        "http://localhost:8080"
+      ],
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false
+    }
+  ],
+  "users": [
+    {
+      "username": "user",
+      "email": "user@example.com",
+      "firstName": "John",
+      "lastName": "Doe",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "user",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "user"
+      ],
+      "clientRoles": {
+        "sso-kit-demo": [
+          "view-profile"
+        ]
+      }
+    },
+    {
+      "username": "admin",
+      "email": "admin@example.com",
+      "firstName": "Jane",
+      "lastName": "Doe",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "admin",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "user",
+        "admin"
+      ],
+      "clientRoles": {
+        "sso-kit-demo": [
+          "view-profile",
+          "manage-users"
+        ]
+      }
+    }
+  ]
+}

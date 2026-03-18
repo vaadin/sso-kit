@@ -1,2 +1,19 @@
 server:
   port: ${PORT:8080}
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: sso-kit-demo
+            client-secret: pMgMHnEaVVQEnSbMzKMKBiiufkSsZzAR
+            scope: openid,profile,email
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8180/realms/sso-kit-demo
+
+vaadin:
+  sso:
+    keycloak-roles: true
