@@ -1,0 +1,105 @@
+name: Integration Test
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+  workflow_dispatch:
+  merge_group:
+permissions:
+  contents: read
+concurrency:
+  group: it-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+env:
+  JAVA_VERSION: '21'
+  APP_URL: http://localhost:8080
+  KEYCLOAK_URL: http://localhost:8180
+jobs:
+  integration-test:
+    timeout-minutes: 45
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'maven'
+      - name: Set TB license
+        env:
+          TB_LICENSE: ${{ secrets.TB_LICENSE }}
+        run: |
+          mkdir -p ~/.vaadin/
+          echo '{"username":"'$(echo "$TB_LICENSE" | cut -d / -f1)'","proKey":"'$(echo "$TB_LICENSE" | cut -d / -f2)'"}' > ~/.vaadin/proKey
+      - name: Build starter
+        run: mvn install -B -e -ntp -pl :sso-kit-starter -am -DskipTests
+      - name: Build demo jar
+        run: mvn package -B -e -ntp -pl :sso-kit-demo -Pproduction -DskipTests
+      - name: Start Keycloak
+        working-directory: sso-kit-demo
+        run: docker compose up -d
+      - name: Wait for Keycloak
+        run: |
+          for i in $(seq 1 60); do
+            if curl -sf "${KEYCLOAK_URL}/realms/sso-kit-demo/.well-known/openid-configuration" > /dev/null; then
+              echo "Keycloak is ready"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Keycloak did not become ready in time"
+          docker compose -f sso-kit-demo/docker-compose.yml logs
+          exit 1
+      - name: Start demo application
+        run: |
+          APP_JAR=$(find sso-kit-demo/target -maxdepth 1 -name 'sso-kit-demo-*.jar' \! -name '*-sources.jar' \! -name '*-javadoc.jar' | head -1)
+          if [ -z "$APP_JAR" ]; then
+            echo "Could not locate demo jar under sso-kit-demo/target"
+            ls -la sso-kit-demo/target || true
+            exit 1
+          fi
+          echo "Launching $APP_JAR"
+          nohup java -jar "$APP_JAR" > app.log 2>&1 &
+          echo "APP_PID=$!" >> "$GITHUB_ENV"
+      - name: Wait for demo application
+        run: |
+          for i in $(seq 1 90); do
+            if curl -sf -o /dev/null "${APP_URL}"; then
+              echo "App is ready"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "App did not become ready in time"
+          tail -n 200 app.log || true
+          exit 1
+      - name: Install Playwright browsers
+        run: npx --yes playwright@1.52.0 install chromium --with-deps
+      - name: Run integration tests
+        run: |
+          mvn failsafe:integration-test failsafe:verify -B -e -ntp \
+            -pl :sso-kit-demo \
+            -Pintegration-test \
+            -Dapp.url=${APP_URL}
+      - name: Collect diagnostics on failure
+        if: failure()
+        run: |
+          echo "=== Demo app log (tail) ==="
+          tail -n 500 app.log || true
+          echo "=== docker ps ==="
+          docker ps -a
+          echo "=== Keycloak logs ==="
+          docker compose -f sso-kit-demo/docker-compose.yml logs keycloak || true
+      - name: Stop demo application
+        if: always()
+        run: |
+          if [ -n "${APP_PID:-}" ]; then
+            kill "${APP_PID}" 2>/dev/null || true
+          fi
+      - name: Stop Keycloak
+        if: always()
+        working-directory: sso-kit-demo
+        run: docker compose down -v
