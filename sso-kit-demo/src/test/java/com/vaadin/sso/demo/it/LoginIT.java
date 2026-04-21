@@ -8,12 +8,20 @@
 
 package com.vaadin.sso.demo.it;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.Tracing;
 import com.microsoft.playwright.assertions.LocatorAssertions;
 import com.microsoft.playwright.junit.UsePlaywright;
 import com.microsoft.playwright.options.WaitUntilState;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
@@ -23,6 +31,9 @@ class LoginIT {
     static final String APP_URL = System.getProperty("app.url",
             "http://localhost:8080");
 
+    private static final Path TRACE_DIR = Paths.get("target",
+            "playwright-traces");
+
     private static final LocatorAssertions.ContainsTextOptions SLOW_CONTAINS = new LocatorAssertions.ContainsTextOptions()
             .setTimeout(30_000);
 
@@ -31,6 +42,21 @@ class LoginIT {
 
     private static final LocatorAssertions.IsVisibleOptions SLOW_VISIBLE = new LocatorAssertions.IsVisibleOptions()
             .setTimeout(30_000);
+
+    @BeforeEach
+    void startTrace(BrowserContext context) {
+        context.tracing().start(new Tracing.StartOptions().setScreenshots(true)
+                .setSnapshots(true).setSources(true));
+    }
+
+    @AfterEach
+    void stopTrace(BrowserContext context, TestInfo testInfo) {
+        String name = testInfo.getTestMethod().map(m -> m.getName())
+                .orElse("trace");
+        Path target = TRACE_DIR.resolve(name + ".zip");
+        target.getParent().toFile().mkdirs();
+        context.tracing().stop(new Tracing.StopOptions().setPath(target));
+    }
 
     @Test
     void userLoginShowsUserIdentityAndRoles(Page page) {

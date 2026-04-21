@@ -34,10 +34,8 @@ jobs:
         run: |
           mkdir -p ~/.vaadin/
           echo '{"username":"'$(echo "$TB_LICENSE" | cut -d / -f1)'","proKey":"'$(echo "$TB_LICENSE" | cut -d / -f2)'"}' > ~/.vaadin/proKey
-      - name: Build starter
-        run: mvn install -B -e -ntp -pl :sso-kit-starter -am -DskipTests
       - name: Build demo jar
-        run: mvn package -B -e -ntp -pl :sso-kit-demo -Pproduction -DskipTests
+        run: mvn package -B -e -ntp -pl :sso-kit-demo -am -Pproduction -DskipTests
       - name: Start Keycloak
         working-directory: sso-kit-demo
         run: docker compose up -d
@@ -55,9 +53,9 @@ jobs:
           exit 1
       - name: Start demo application
         run: |
-          APP_JAR=$(find sso-kit-demo/target -maxdepth 1 -name 'sso-kit-demo-*.jar' \! -name '*-sources.jar' \! -name '*-javadoc.jar' | head -1)
-          if [ -z "$APP_JAR" ]; then
-            echo "Could not locate demo jar under sso-kit-demo/target"
+          APP_JAR=sso-kit-demo/target/$(mvn -pl :sso-kit-demo -q help:evaluate -DforceStdout -Dexpression=project.build.finalName).jar
+          if [ ! -f "$APP_JAR" ]; then
+            echo "Could not locate demo jar at $APP_JAR"
             ls -la sso-kit-demo/target || true
             exit 1
           fi
@@ -84,15 +82,21 @@ jobs:
             -pl :sso-kit-demo \
             -Pintegration-test \
             -Dapp.url=${APP_URL}
-      - name: Collect diagnostics on failure
+      - name: Collect Keycloak logs
         if: failure()
-        run: |
-          echo "=== Demo app log (tail) ==="
-          tail -n 500 app.log || true
-          echo "=== docker ps ==="
-          docker ps -a
-          echo "=== Keycloak logs ==="
-          docker compose -f sso-kit-demo/docker-compose.yml logs keycloak || true
+        run: docker compose -f sso-kit-demo/docker-compose.yml logs keycloak > keycloak.log 2>&1 || true
+      - name: Upload diagnostics on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-test-diagnostics
+          path: |
+            app.log
+            keycloak.log
+            sso-kit-demo/target/failsafe-reports/**
+            sso-kit-demo/target/playwright-traces/**
+          if-no-files-found: ignore
+          retention-days: 14
       - name: Stop demo application
         if: always()
         run: |
