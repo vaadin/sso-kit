@@ -1,6 +1,6 @@
 {
   "name": "@vaadin/sso-kit-client-react",
-  "version": "3.2.3",
+  "version": "3.2.4",
   "description": "SSO Kit Client React",
   "main": "lib/react/src/index.js",
   "module": "index.js",
