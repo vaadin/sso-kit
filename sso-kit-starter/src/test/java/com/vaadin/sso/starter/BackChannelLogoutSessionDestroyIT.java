@@ -7,6 +7,25 @@
  */
 package com.vaadin.sso.starter;
 
+import java.net.InetSocketAddress;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpRequest.BodyPublishers;
+import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
+
 import com.nimbusds.jose.JOSEObjectType;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
@@ -18,12 +37,6 @@ import com.nimbusds.jose.jwk.gen.RSAKeyGenerator;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import com.sun.net.httpserver.HttpServer;
-
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.Tag;
-import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -48,24 +61,10 @@ import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 
-import java.net.InetSocketAddress;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpRequest.BodyPublishers;
-import java.net.http.HttpResponse;
-import java.net.http.HttpResponse.BodyHandlers;
-import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.Tag;
+import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
@@ -155,13 +154,10 @@ class BackChannelLogoutSessionDestroyIT {
         // kit's auto-config runs. The actual ClientRegistration is built by
         // the @Bean below — Spring Boot's autoconfig backs off because we
         // provide our own ClientRegistrationRepository.
-        registry.add(
-                "spring.security.oauth2.client.registration." + REGISTRATION_ID
-                        + ".client-id",
-                () -> CLIENT_ID);
-        registry.add("test.jwks-uri",
-                () -> "http://localhost:" + jwksServer.getAddress().getPort()
-                        + "/jwks");
+        registry.add("spring.security.oauth2.client.registration."
+                + REGISTRATION_ID + ".client-id", () -> CLIENT_ID);
+        registry.add("test.jwks-uri", () -> "http://localhost:"
+                + jwksServer.getAddress().getPort() + "/jwks");
         // Production mode skips the dev-mode init that needs Node.js, so the
         // test boots without a local frontend bundle.
         registry.add("vaadin.productionMode", () -> "true");
@@ -173,12 +169,10 @@ class BackChannelLogoutSessionDestroyIT {
         // 1. Hit a Vaadin route to bootstrap an HTTP session with a real
         // VaadinSession bound to it. This is what a logged-in user's session
         // looks like as far as Vaadin's session-listener wiring is concerned.
-        HttpResponse<String> bootstrap = http.send(
-                HttpRequest
-                        .newBuilder(URI.create("http://localhost:" + appPort
-                                + "/" + TestRoute.PATH))
-                        .GET().build(),
-                BodyHandlers.ofString());
+        HttpResponse<String> bootstrap = http.send(HttpRequest
+                .newBuilder(URI.create(
+                        "http://localhost:" + appPort + "/" + TestRoute.PATH))
+                .GET().build(), BodyHandlers.ofString());
         String jsessionId = extractJsessionId(bootstrap);
         assertThat(jsessionId).as("JSESSIONID issued by bootstrap request")
                 .isNotBlank();
@@ -195,16 +189,12 @@ class BackChannelLogoutSessionDestroyIT {
         String logoutToken = signLogoutToken(sid);
 
         // 4. POST it to the BC logout endpoint, exactly as Keycloak would.
-        HttpResponse<String> bc = http
-                .send(HttpRequest
-                        .newBuilder(URI.create("http://localhost:" + appPort
-                                + "/logout/connect/back-channel/"
-                                + REGISTRATION_ID))
-                        .header("Content-Type",
-                                "application/x-www-form-urlencoded")
-                        .POST(BodyPublishers.ofString(
-                                "logout_token=" + logoutToken))
-                        .build(), BodyHandlers.ofString());
+        HttpResponse<String> bc = http.send(HttpRequest
+                .newBuilder(URI.create("http://localhost:" + appPort
+                        + "/logout/connect/back-channel/" + REGISTRATION_ID))
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .POST(BodyPublishers.ofString("logout_token=" + logoutToken))
+                .build(), BodyHandlers.ofString());
         assertThat(bc.statusCode())
                 .as("BC logout responded 2xx; body=%s", bc.body())
                 .isBetween(200, 299);
@@ -212,10 +202,10 @@ class BackChannelLogoutSessionDestroyIT {
         // 5. Spring's handler does an internal HTTP loopback to invalidate the
         // session, which travels through the servlet container's listeners.
         // Wait for the captured Vaadin SessionDestroyEvent.
-        await().atMost(5, TimeUnit.SECONDS).untilAsserted(
-                () -> assertThat(captured.destroyedHttpSessionIds)
-                        .as("Vaadin SessionDestroyEvent fired for the logged-out session")
-                        .contains(jsessionId));
+        await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> assertThat(
+                captured.destroyedHttpSessionIds)
+                .as("Vaadin SessionDestroyEvent fired for the logged-out session")
+                .contains(jsessionId));
     }
 
     private DefaultOidcUser buildOidcUser(String sid) {
@@ -242,11 +232,9 @@ class BackChannelLogoutSessionDestroyIT {
                         "http://schemas.openid.net/event/backchannel-logout",
                         Map.of()))
                 .build();
-        SignedJWT jwt = new SignedJWT(
-                new JWSHeader.Builder(JWSAlgorithm.RS256)
-                        .type(new JOSEObjectType("logout+jwt"))
-                        .keyID(signingKey.getKeyID()).build(),
-                claims);
+        SignedJWT jwt = new SignedJWT(new JWSHeader.Builder(JWSAlgorithm.RS256)
+                .type(new JOSEObjectType("logout+jwt"))
+                .keyID(signingKey.getKeyID()).build(), claims);
         jwt.sign(new RSASSASigner(signingKey));
         return jwt.serialize();
     }
@@ -285,8 +273,7 @@ class BackChannelLogoutSessionDestroyIT {
                             ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                     .authorizationGrantType(
                             AuthorizationGrantType.AUTHORIZATION_CODE)
-                    .redirectUri(
-                            "{baseUrl}/login/oauth2/code/{registrationId}")
+                    .redirectUri("{baseUrl}/login/oauth2/code/{registrationId}")
                     .scope("openid")
                     .authorizationUri(ISSUER + "/protocol/openid-connect/auth")
                     .tokenUri(ISSUER + "/protocol/openid-connect/token")
