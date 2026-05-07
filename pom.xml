@@ -29,8 +29,8 @@
   </modules>
 
   <properties>
-    <flow.version>25.0-SNAPSHOT</flow.version>
-    <hilla.version>25.0-SNAPSHOT</hilla.version>
+    <flow.version>25.1-SNAPSHOT</flow.version>
+    <hilla.version>25.1-SNAPSHOT</hilla.version>
     <vaadin.license.checker.version>3.0.1</vaadin.license.checker.version>
 
     <maven.compiler.release>21</maven.compiler.release>

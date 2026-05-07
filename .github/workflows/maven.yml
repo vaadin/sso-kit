@@ -34,10 +34,11 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Set TB License
+      env:
+        TB_LICENSE: ${{ secrets.TB_LICENSE }}
       run: |
-        TB_LICENSE=${{secrets.TB_LICENSE}}
         mkdir -p ~/.vaadin/
-        echo '{"username":"'`echo $TB_LICENSE | cut -d / -f1`'","proKey":"'`echo $TB_LICENSE | cut -d / -f2`'"}' > ~/.vaadin/proKey
+        echo '{"username":"'$(echo "$TB_LICENSE" | cut -d / -f1)'","proKey":"'$(echo "$TB_LICENSE" | cut -d / -f2)'"}' > ~/.vaadin/proKey
     - name: Run Java tests
       run: mvn -ntp -B verify
     - name: Setup Node.js
