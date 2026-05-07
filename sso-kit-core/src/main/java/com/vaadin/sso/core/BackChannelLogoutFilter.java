@@ -98,6 +98,10 @@ public class BackChannelLogoutFilter extends GenericFilterBean {
                             .createDefaultWithValidators(typeValidator));
                     return decoder;
                 });
+        logger.warn("BackChannelLogoutFilter is deprecated and will be removed "
+                + "in the future. SpringSecurity provides equivalent function "
+                + "by default. Remove  `vaadin.sso.back-channel-logout=true` "
+                + "setting in your configuration.");
     }
 
     BackChannelLogoutFilter(SessionRegistry sessionRegistry,
