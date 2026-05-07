@@ -64,6 +64,7 @@ import org.springframework.test.context.DynamicPropertySource;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.VaadinServiceInitListener;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -289,7 +290,7 @@ class BackChannelLogoutSessionDestroyIT {
         }
 
         @Bean
-        com.vaadin.flow.server.VaadinServiceInitListener captureSessionDestroy(
+        VaadinServiceInitListener captureSessionDestroy(
                 CapturedSessionDestroyEvents captured) {
             return event -> event.getSource()
                     .addSessionDestroyListener(destroy -> {
