@@ -14,6 +14,9 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextField;
@@ -47,6 +50,8 @@ public class ProfileView extends VerticalLayout {
             emailField.setWidthFull();
             nameField.setReadOnly(true);
             emailField.setReadOnly(true);
+            nameField.setId("name");
+            emailField.setId("email");
 
             avatar.setName(fullName);
             nameField.setValue(fullName);
@@ -56,6 +61,16 @@ public class ProfileView extends VerticalLayout {
             }
 
             add(avatar, nameField, emailField);
+
+            H3 rolesTitle = new H3("Roles");
+            Div roles = new Div();
+            roles.setId("roles");
+            authContext.getGrantedAuthorities().forEach(authority -> {
+                Span span = new Span(authority.getAuthority());
+                span.addClassName("role");
+                roles.add(span);
+            });
+            add(rolesTitle, roles);
         });
 
         add(new Button("Logout", click -> authContext.logout()));
