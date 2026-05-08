@@ -43,6 +43,7 @@
       <groupId>com.vaadin</groupId>
       <artifactId>vaadin-dev-server</artifactId>
       <version>${flow.version}</version>
+      <optional>true</optional>
     </dependency>
 
     <dependency>
@@ -100,6 +101,18 @@
       <artifactId>spring-boot-devtools</artifactId>
       <optional>true</optional>
     </dependency>
+
+    <dependency>
+      <groupId>com.microsoft.playwright</groupId>
+      <artifactId>playwright</artifactId>
+      <version>1.52.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -125,7 +138,7 @@
         <executions>
           <execution>
             <goals>
-              <goal>prepare-frontend</goal>
+              <goal>build-frontend</goal>
             </goals>
           </execution>
         </executions>
@@ -135,22 +148,24 @@
 
   <profiles>
     <profile>
-      <id>production</id>
+      <id>integration-test</id>
       <build>
         <plugins>
           <plugin>
-            <groupId>com.vaadin</groupId>
-            <artifactId>flow-maven-plugin</artifactId>
-            <version>${flow.version}</version>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>${maven.surefire.version}</version>
             <configuration>
-              <productionMode>true</productionMode>
+              <systemPropertyVariables>
+                <app.url>${app.url}</app.url>
+              </systemPropertyVariables>
             </configuration>
             <executions>
               <execution>
                 <goals>
-                  <goal>build-frontend</goal>
+                  <goal>integration-test</goal>
+                  <goal>verify</goal>
                 </goals>
-                <phase>compile</phase>
               </execution>
             </executions>
           </plugin>
