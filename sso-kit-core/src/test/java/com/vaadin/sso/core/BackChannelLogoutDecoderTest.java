@@ -19,7 +19,6 @@ import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.crypto.RSASSASigner;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.security.oauth2.jwt.JwtTypeValidator;
 import org.springframework.security.oauth2.jwt.JwtValidationException;
@@ -31,9 +30,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * Tests that the decoder configuration used by
- * {@link BackChannelLogoutFilter}'s public constructor correctly accepts
- * OpenID Connect Back-Channel Logout tokens with {@code typ=logout+jwt} and
- * rejects tokens carrying a different type.
+ * {@link BackChannelLogoutFilter}'s public constructor correctly accepts OpenID
+ * Connect Back-Channel Logout tokens with {@code typ=logout+jwt} and rejects
+ * tokens carrying a different type.
  */
 class BackChannelLogoutDecoderTest {
 
@@ -91,8 +90,8 @@ class BackChannelLogoutDecoderTest {
         final var header = new JWSHeader.Builder(JWSAlgorithm.RS256)
                 .type(new JOSEObjectType(typ)).build();
         final var claimsSet = new JWTClaimsSet.Builder().issuer(ISSUER_URI)
-                .audience(CLIENT_ID)
-                .issueTime(Date.from(Instant.now())).subject("john").build();
+                .audience(CLIENT_ID).issueTime(Date.from(Instant.now()))
+                .subject("john").build();
         final var signedJwt = new SignedJWT(header, claimsSet);
         signedJwt.sign(new RSASSASigner(privateKey));
         return signedJwt.serialize();
