@@ -65,6 +65,12 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
+    <!-- Pulls in Tomcat for @SpringBootTest(webEnvironment = RANDOM_PORT). -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
