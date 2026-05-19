@@ -26,8 +26,10 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.jwt.JwtDecoderFactory;
-import org.springframework.security.oauth2.jwt.JwtDecoders;
+import org.springframework.security.oauth2.jwt.JwtTypeValidator;
 import org.springframework.security.oauth2.jwt.JwtValidationException;
+import org.springframework.security.oauth2.jwt.JwtValidators;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.filter.GenericFilterBean;
@@ -78,10 +80,28 @@ public class BackChannelLogoutFilter extends GenericFilterBean {
             ApplicationEventPublisher eventPublisher) {
         this(sessionRegistry, clientRegistrationRepository, eventPublisher,
                 clientRegistration -> {
-                    final var issuerUri = clientRegistration
-                            .getProviderDetails().getIssuerUri();
-                    return JwtDecoders.fromOidcIssuerLocation(issuerUri);
+                    final var jwkSetUri = clientRegistration
+                            .getProviderDetails().getJwkSetUri();
+                    // OpenID Connect Back-Channel Logout tokens use
+                    // typ=logout+jwt per the spec. Spring Security 7 enforces
+                    // typ=JWT by default, which breaks logout token decoding.
+                    // We disable that Nimbus-level check and replace it with a
+                    // JwtTypeValidator that explicitly accepts logout+jwt (and
+                    // tokens without a typ header for backward compatibility).
+                    final var typeValidator = new JwtTypeValidator(
+                            "logout+jwt");
+                    typeValidator.setAllowEmpty(true);
+                    final var decoder = NimbusJwtDecoder
+                            .withJwkSetUri(jwkSetUri).validateType(false)
+                            .build();
+                    decoder.setJwtValidator(JwtValidators
+                            .createDefaultWithValidators(typeValidator));
+                    return decoder;
                 });
+        logger.warn("BackChannelLogoutFilter is deprecated and will be removed "
+                + "in the future. SpringSecurity provides equivalent function "
+                + "by default. Remove  `vaadin.sso.back-channel-logout=true` "
+                + "setting in your configuration.");
     }
 
     BackChannelLogoutFilter(SessionRegistry sessionRegistry,
