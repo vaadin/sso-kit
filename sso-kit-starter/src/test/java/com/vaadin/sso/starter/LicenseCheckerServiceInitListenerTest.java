@@ -27,13 +27,11 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 import com.vaadin.flow.server.ServiceInitEvent;
 import com.vaadin.flow.server.VaadinService;
 import com.vaadin.pro.licensechecker.BuildType;
-import com.vaadin.pro.licensechecker.Capability;
 import com.vaadin.pro.licensechecker.LicenseChecker;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.text.MatchesPattern.matchesPattern;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
@@ -74,7 +72,7 @@ class LicenseCheckerServiceInitListenerTest {
         BuildType buildType = null;
         licenseChecker.verify(() -> LicenseChecker.checkLicense(
                 eq(LicenseCheckerServiceInitListener.PRODUCT_NAME), eq(version),
-                argThat(cap -> cap.has(Capability.PRE_TRIAL)), eq(buildType)));
+                eq(buildType)));
     }
 
     @Test
