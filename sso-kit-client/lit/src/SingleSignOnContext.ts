@@ -7,7 +7,7 @@
  */
 import type { Subscription } from '@vaadin/hilla-frontend';
 import { logout as serverLogout } from '@vaadin/hilla-frontend';
-import type { ActionFn, ActionResult, Commands, Context, Route } from '@vaadin/router';
+import type { ActionResult, Commands, Route, RouteContext } from '@vaadin/router';
 import type { AccessProps } from '../../core/src/AccessProps.js';
 import type { SingleSignOnData } from '../../core/src/SingleSignOnData.js';
 import type { User } from '../../core/src/User.js';
@@ -239,7 +239,7 @@ export class SingleSignOnContext {
     routes.push({
       path: 'ssologin',
       component: 'ssologin',
-      action: async (_context: Context, _commands: Commands) => {
+      action: async (_context: RouteContext, _commands: Commands) => {
         window.location.href = this.loginUrl;
         return undefined;
       }
@@ -248,8 +248,8 @@ export class SingleSignOnContext {
   };
 
   private protectRoute = (route: ProtectedRoute, redirectPath?: string): void => {
-    const routeAction: ActionFn | undefined = route.action;
-    route.action = (_context: Context, _commands: Commands): ActionResult | Promise<ActionResult> => {
+    const routeAction = route.action;
+    route.action = (_context: RouteContext, _commands: Commands): ActionResult | Promise<ActionResult> => {
       if (!this.hasAccess(route)) {
         if (redirectPath === undefined) {
           redirectPath = 'ssologin';
