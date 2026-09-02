@@ -59,8 +59,6 @@
   },
   "dependencies": {
     "@vaadin/hilla-frontend": "25.3.0-beta1",
-    "react": "^19.2.0",
-    "react-router-dom": "^7.18.0",
     "tslib": "^2.3.1"
   },
   "devDependencies": {
@@ -69,6 +67,7 @@
     "@types/chai-dom": "^1.11.0",
     "@types/mocha": "^10.0.1",
     "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
     "@types/sinon": "^10.0.13",
     "@types/sinon-chai": "^3.2.9",
     "chai": "^4.3.4",
@@ -84,8 +83,15 @@
     "karma-vite": "^1.0.4",
     "lerna": "^6.5.1",
     "mocha": "^10.2.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router": "^8.3.1",
     "rimraf": "^3.0.2",
     "sinon": "^15.0.2",
     "sinon-chai": "^3.7.0"
+  },
+  "peerDependencies": {
+    "react": "18 || 19",
+    "react-router": "7 || 8"
   }
 }

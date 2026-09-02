@@ -7,8 +7,8 @@
  */
 import type { ReactNode } from 'react';
 import React from 'react';
-import type { RouteObject } from 'react-router-dom';
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import type { RouteObject } from 'react-router';
+import { Navigate, Outlet, useLocation } from 'react-router';
 import { useSsoContext } from './useSsoContext.js';
 import type { AccessProps } from '../../core/src/AccessProps.js';
 
