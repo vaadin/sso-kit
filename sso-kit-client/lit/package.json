@@ -55,8 +55,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@vaadin/hilla-frontend": "24.4.0-alpha4",
-    "@vaadin/router": "1.7.5",
+    "@vaadin/hilla-frontend": "25.3.0-beta1",
+    "@vaadin/router": "2.0.1",
     "tslib": "^2.3.1"
   },
   "peerDependencies": {

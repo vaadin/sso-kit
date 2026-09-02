@@ -17,7 +17,7 @@ interface ProtectedRouteProps {
   route: ReactNode;
 }
 
-function ProtectedRoute({ redirectPath, route }: ProtectedRouteProps): JSX.Element | null {
+function ProtectedRoute({ redirectPath, route }: ProtectedRouteProps): React.JSX.Element | null {
   const { authenticated, ssoContextInitialized } = useSsoContext();
   const location = useLocation();
 
@@ -32,7 +32,7 @@ function ProtectedRoute({ redirectPath, route }: ProtectedRouteProps): JSX.Eleme
     return <Navigate to={redirectPath} state={{ from: location }} replace />;
   }
 
-  return route ? (route as JSX.Element) : <Outlet />;
+  return route ? (route as React.JSX.Element) : <Outlet />;
 }
 
 const collectRoutes = <T,>(routes: T[]): T[] => {
