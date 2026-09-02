@@ -35,3 +35,7 @@ sso-kit-client/**/*.js.map
 sso-kit-client/**/.coverage
 sso-kit-client/**/.vite
 sso-kit-client/**/lib
+
+# Vaadin frontend build output
+sso-kit-demo/src/main/bundles
+sso-kit-demo/src/main/frontend/generated
