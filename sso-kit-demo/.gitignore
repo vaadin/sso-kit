@@ -10,9 +10,7 @@
 
 # The following files are generated/updated by vaadin-maven-plugin
 node_modules/
-src/main/frontend/generated/
-src/main/bundles/
-src/main/dev-bundle/
+frontend/generated/
 pnpmfile.js
 vite.generated.ts
 
