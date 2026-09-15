@@ -1,10 +1,10 @@
 name: Integration Test
 on:
   push:
-    branches: [main]
+    branches: [4.1]
   pull_request:
     types: [opened, synchronize, reopened]
-    branches: [main]
+    branches: [4.1]
   workflow_dispatch:
   merge_group:
 permissions:
@@ -77,7 +77,7 @@ jobs:
           tail -n 200 app.log || true
           exit 1
       - name: Install Playwright browsers
-        run: npx --yes playwright@1.62.0 install chromium --with-deps
+        run: npx --yes playwright@1.52.0 install chromium --with-deps
       - name: Run integration tests
         run: |
           mvn failsafe:integration-test failsafe:verify -B -e -ntp \

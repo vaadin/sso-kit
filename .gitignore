@@ -22,7 +22,7 @@
 # NodeJS files
 **/dist
 **/*.tsbuildinfo
-**/node_modules
+sso-kit-client/node_modules
 
 # Testing files
 .coverage
