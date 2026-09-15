@@ -1,10 +1,10 @@
 name: Integration Test
 on:
   push:
-    branches: [main]
+    branches: [4.1]
   pull_request:
     types: [opened, synchronize, reopened]
-    branches: [main]
+    branches: [4.1]
   workflow_dispatch:
   merge_group:
 permissions:
