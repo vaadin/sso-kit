@@ -37,7 +37,7 @@ jobs:
           mkdir -p ~/.vaadin/
           echo '{"username":"'$(echo "$TB_LICENSE" | cut -d / -f1)'","proKey":"'$(echo "$TB_LICENSE" | cut -d / -f2)'"}' > ~/.vaadin/proKey
       - name: Build demo jar
-        run: mvn package -B -e -ntp -pl :sso-kit-demo -am -Pproduction -DskipTests
+        run: mvn install -B -e -ntp -pl :sso-kit-demo -am -Pproduction -DskipTests
       - name: Start Keycloak
         working-directory: sso-kit-demo
         run: docker compose up -d
