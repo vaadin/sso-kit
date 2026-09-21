@@ -39,7 +39,12 @@ import org.springframework.util.StringUtils;
  *
  * @author Vaadin Ltd
  * @since 4.0
+ *
+ * @deprecated SSO Kit is deprecated as of Vaadin 25.3 and will be removed in
+ *             Vaadin 26.0. Use the built-in Spring Security support for OpenID
+ *             Connect instead.
  */
+@Deprecated(since = "4.2", forRemoval = true)
 public class KeycloakUserMapper implements Converter<OidcUserSource, OidcUser> {
 
     static final String REALM_ACCESS_CLAIM = "realm_access";

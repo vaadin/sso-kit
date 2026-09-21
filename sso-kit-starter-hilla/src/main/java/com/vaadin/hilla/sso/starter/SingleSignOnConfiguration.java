@@ -49,6 +49,10 @@ import static com.vaadin.flow.spring.security.VaadinSecurityConfigurer.vaadin;
  *
  * @author Vaadin Ltd
  * @since 2.0
+ *
+ * @deprecated SSO Kit is deprecated as of Vaadin 25.3 and will be removed in
+ *             Vaadin 26.0. Use the built-in Spring Security support for OpenID
+ *             Connect instead.
  */
 @AutoConfiguration
 @AutoConfigureBefore(SpringSecurityAutoConfiguration.class)
@@ -56,6 +60,7 @@ import static com.vaadin.flow.spring.security.VaadinSecurityConfigurer.vaadin;
 @ConditionalOnOAuth2ClientRegistrationProperties
 @EnableConfigurationProperties(SingleSignOnProperties.class)
 @Import(VaadinAwareSecurityContextHolderStrategyConfiguration.class)
+@Deprecated(since = "4.2", forRemoval = true)
 public class SingleSignOnConfiguration {
 
     private final SingleSignOnProperties properties;

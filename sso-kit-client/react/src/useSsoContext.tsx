@@ -271,6 +271,10 @@ interface SsoProviderProps {
 /**
  * Provider for the single sign-on context that can be used to pass the context
  * to the router provider.
+ *
+ * @deprecated SSO Kit is deprecated as of Vaadin 25.3 and will be removed in
+ * Vaadin 26.0. Use the built-in Spring Security support for OpenID Connect
+ * instead.
  */
 export function SsoProvider({ children }: SsoProviderProps) {
   const ssoContext = useSsoContextHook();
@@ -281,6 +285,10 @@ export function SsoProvider({ children }: SsoProviderProps) {
  * Hook for the context of the single sign-on authentication process. It provides
  * authentication information and functions to operate on the current
  * state, such as logging in and out.
+ *
+ * @deprecated SSO Kit is deprecated as of Vaadin 25.3 and will be removed in
+ * Vaadin 26.0. Use the built-in Spring Security support for OpenID Connect
+ * instead.
  */
 export function useSsoContext() {
   return useContext(SsoContext);

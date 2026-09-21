@@ -16,8 +16,13 @@ import com.vaadin.sso.core.AbstractSingleSignOnProperties;
  *
  * @author Vaadin Ltd
  * @since 1.0
+ *
+ * @deprecated SSO Kit is deprecated as of Vaadin 25.3 and will be removed in
+ *             Vaadin 26.0. Use the built-in Spring Security support for OpenID
+ *             Connect instead.
  */
 @ConfigurationProperties(prefix = SingleSignOnProperties.PREFIX)
+@Deprecated(since = "4.2", forRemoval = true)
 public class SingleSignOnProperties extends AbstractSingleSignOnProperties {
 
     /**

@@ -32,7 +32,12 @@ import com.vaadin.hilla.Nonnull;
 
 /**
  * Contains utility methods and information related to single sign-on.
+ *
+ * @deprecated SSO Kit is deprecated as of Vaadin 25.3 and will be removed in
+ *             Vaadin 26.0. Use the built-in Spring Security support for OpenID
+ *             Connect instead.
  */
+@Deprecated(since = "4.2", forRemoval = true)
 public class SingleSignOnContext {
 
     private static final String ROLE_PREFIX = "ROLE_";
