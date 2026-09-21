@@ -66,7 +66,8 @@ const protectRoute = <T,>(route: T, redirectPath?: string): void => {
  * @returns the routes extended with protection if needed
  *
  * @deprecated SSO Kit is deprecated as of Vaadin 25.3 and will be removed in
- * Vaadin 26.0.
+ * Vaadin 26.0. Use the built-in Spring Security support for OpenID Connect
+ * instead.
  */
 export const protectRoutes = <T,>(routes: T[], redirectPath?: string): T[] => {
   const allRoutes: T[] = collectRoutes(routes);

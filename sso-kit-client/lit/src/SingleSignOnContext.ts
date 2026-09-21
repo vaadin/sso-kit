@@ -37,7 +37,8 @@ type LogoutCallback = () => void;
  * state, such as logging in and out.
  *
  * @deprecated SSO Kit is deprecated as of Vaadin 25.3 and will be removed in
- * Vaadin 26.0.
+ * Vaadin 26.0. Use the built-in Spring Security support for OpenID Connect
+ * instead.
  */
 export class SingleSignOnContext {
   /**
