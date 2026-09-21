@@ -41,5 +41,11 @@ window.Vaadin.SingleSignOnData = window.Vaadin.SingleSignOnData || {
   backChannelLogoutEnabled: false
 };
 
+/**
+ * The single sign-on context of the application.
+ *
+ * @deprecated SSO Kit is deprecated as of Vaadin 25.3 and will be removed in
+ * Vaadin 26.0.
+ */
 const ssoContext = new SingleSignOnContext(window.Vaadin.SingleSignOnData);
 export default ssoContext;

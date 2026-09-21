@@ -35,6 +35,9 @@ type LogoutCallback = () => void;
  * The context of the single sign-on authentication process. It provides
  * authentication information and functions to operate on the current
  * state, such as logging in and out.
+ *
+ * @deprecated SSO Kit is deprecated as of Vaadin 25.3 and will be removed in
+ * Vaadin 26.0.
  */
 export class SingleSignOnContext {
   /**

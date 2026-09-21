@@ -64,6 +64,9 @@ const protectRoute = <T,>(route: T, redirectPath?: string): void => {
  * protected and the user is not authenticated. The default value is the
  * '/ssologin' path which redirects the user to the providers login page
  * @returns the routes extended with protection if needed
+ *
+ * @deprecated SSO Kit is deprecated as of Vaadin 25.3 and will be removed in
+ * Vaadin 26.0.
  */
 export const protectRoutes = <T,>(routes: T[], redirectPath?: string): T[] => {
   const allRoutes: T[] = collectRoutes(routes);
