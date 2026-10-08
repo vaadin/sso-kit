@@ -11,7 +11,7 @@ on:
 
 jobs:
   validate-formatting:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
     - uses: actions/checkout@v5
     - name: Set up JDK 21
@@ -23,7 +23,7 @@ jobs:
     - name: Validate formatting
       run: mvn -ntp -B spotless:check
   unit-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
     - name: Checkout project code
       uses: actions/checkout@v5
